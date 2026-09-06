@@ -1,8 +1,8 @@
 'use client';
 /* oxlint-disable jsx-a11y/prefer-tag-over-role -- SVG control circles are two-dimensional sliders with keyboard handlers; HTML inputs cannot occupy an SVG path layer. */
-import { articulationContact } from '../../engine/contact';
+import { airflowPath } from '../../engine/airflow';
 import { useId, useRef, useState } from 'react';
-import type { PointerEvent, KeyboardEvent } from 'react';
+import type { PointerEvent, KeyboardEvent, MouseEvent } from 'react';
 import type { Pose, Place, TongueKey, Point } from '../../domain/phonetics';
 import {
   tonguePath,
@@ -13,9 +13,9 @@ import {
   surface,
   jawPoint,
   jawPath,
+  roof,
 } from '../../engine/geometry';
 import { anatomyPaths as paths } from '../../data/anatomy-paths';
-import { placeLabels } from '../../data/labels';
 export interface Display {
   labels: boolean;
   zones: boolean;
@@ -50,22 +50,29 @@ export function VocalTract({
     ref = useRef<SVGSVGElement>(null),
     [hover, setHover] = useState(''),
     [locked, setLocked] = useState('');
-  const drag = useRef<{ key: TongueKey; offset: Point } | null>(null);
+  const drag = useRef<{
+    key: TongueKey;
+    offset: Point;
+    startPose: Pose;
+  } | null>(null);
   const label = locked || hover;
-  const contact = articulationContact(pose, place);
   const meta = (name: string) => ({
+    'data-anatomy-label': name,
+    pointerEvents: 'visiblePainted' as const,
     role: 'button' as const,
     tabIndex: 0,
     'aria-label': name,
     'aria-pressed': locked === name,
     onFocus: () => setHover(name),
     onBlur: () => setHover(''),
-    onPointerEnter: () => setHover(name),
-    onPointerLeave: () => setHover(''),
-    onClick: () => setLocked(locked === name ? '' : name),
+    onClick: (e: MouseEvent<SVGElement>) => {
+      e.stopPropagation();
+      setLocked(locked === name ? '' : name);
+    },
     onKeyDown: (e: KeyboardEvent<SVGElement>) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
+        e.stopPropagation();
         setLocked(locked === name ? '' : name);
       }
     },
@@ -89,24 +96,12 @@ export function VocalTract({
     x: lipRest.x + (lipTarget.x - lipRest.x) * pose.lowerLip,
     y: lipRest.y + (lipTarget.y - lipRest.y) * pose.lowerLip,
   };
-  const oral =
-    'M 699 973 C 704 896 688 823 655 757 Q 638 675 ' +
-    (top[top.length - 1]!.x + 35) +
-    ' ' +
-    (top[top.length - 1]!.y - 10) +
-    ' L ' +
-    [...top]
-      .reverse()
-      .filter((_, i) => i % 4 === 0)
-      .map((p) => p.x + 3 + ' ' + (p.y - 11))
-      .join(' L ') +
-    ' Q 143 ' +
-    (422 + lip.y) / 2 +
-    ' 62 ' +
-    (422 + lip.y) / 2;
-  const air = nasal
-    ? 'M 699 973 C 703 821 663 705 655 560 L 650 374 Q 650 285 563 260 C 387 230 234 220 71 223'
-    : oral;
+  const air = airflowPath(pose, lip);
+  const mouthFloor = jawPoint({ x: 139, y: 745 }, pose.jaw);
+  const oralCavity =
+    'M 105 443 L ' +
+    roof.map((p) => `${p.x} ${p.y}`).join(' L ') +
+    ` L 610 740 L 568 828 L ${mouthFloor.x} ${mouthFloor.y} L ${lip.x + 20} ${lip.y + 29} Z`;
   const velum = nasal
     ? 'M 526 337 C 588 331 628 339 640 376 C 651 409 638 461 624 501 Q 624 535 612 536 Q 598 535 606 491 C 596 427 578 389 550 373 L 526 361 Z'
     : 'M 526 337 C 572 333 621 319 667 334 L 667 365 C 643 379 640 407 626 428 Q 622 443 614 439 Q 607 435 613 421 C 610 392 580 375 550 369 L 526 361 Z';
@@ -123,6 +118,16 @@ export function VocalTract({
         viewBox="-35 -18 890 1058"
         className="tract"
         aria-label="依照教材参考图分层的发音器官矢状面，面向左侧"
+        onPointerMove={(e) => {
+          if (drag.current) return;
+          const target = e.target as Element;
+          setHover(
+            target
+              .closest('[data-anatomy-label]')
+              ?.getAttribute('data-anatomy-label') || '',
+          );
+        }}
+        onPointerLeave={() => setHover('')}
       >
         <defs>
           <linearGradient id={id + 'tissue'} x1="0" y1="0" x2="1" y2="1">
@@ -174,6 +179,7 @@ export function VocalTract({
           stroke="#96776a"
           strokeWidth="2.4"
           strokeLinejoin="round"
+          pointerEvents="none"
         >
           <rect
             x="0"
@@ -181,6 +187,26 @@ export function VocalTract({
             width="800"
             height="1000"
             fill="#faf8f2"
+            stroke="none"
+          />
+          {/* Cavity hit regions are beneath the anatomy: tissue, teeth and
+              the moving tongue occlude them through normal SVG hit testing. */}
+          <path
+            {...meta('鼻腔 · Nasal cavity')}
+            d="M 71 230 Q 83 154 171 62 Q 255 12 364 19 Q 465 54 535 66 Q 543 120 526 180 Q 534 220 605 249 L 610 327 Q 360 324 217 275 L 110 254 Z"
+            fill="transparent"
+            stroke="none"
+          />
+          <path
+            {...meta('口腔 · Oral cavity')}
+            d={oralCavity}
+            fill="transparent"
+            stroke="none"
+          />
+          <path
+            {...meta('咽腔 · Pharyngeal cavity')}
+            d="M 610 260 Q 674 280 674 343 L 667 469 C 671 577 706 683 743 785 L 750 890 L 757 932 L 637 976 L 600 910 L 568 828 L 610 740 Z"
+            fill="transparent"
             stroke="none"
           />
           <path
@@ -343,6 +369,7 @@ export function VocalTract({
           />
           <g
             clipPath={'url(#' + id + 'tongueclip)'}
+            pointerEvents="none"
             fill="none"
             stroke="#9e645c"
             opacity=".22"
@@ -458,6 +485,7 @@ export function VocalTract({
         </g>
         {pressure > 0 && (
           <ellipse
+            pointerEvents="none"
             cx="441"
             cy="440"
             rx="98"
@@ -467,7 +495,14 @@ export function VocalTract({
           />
         )}
         {display.airflow && flow !== 'off' && (
-          <g fill="none" stroke="#4e91a7" strokeLinecap="round" opacity=".8">
+          <g
+            fill="none"
+            stroke="#4e91a7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity=".8"
+            pointerEvents="none"
+          >
             <path d={air} strokeWidth="3" markerEnd={'url(#' + id + 'arrow)'} />
             <path
               d={air}
@@ -494,10 +529,7 @@ export function VocalTract({
           zones
             .filter((z) => z.place !== 'retroflex')
             .map((z) => (
-              <g
-                key={z.place}
-                {...meta(placeLabels[z.place] + ' · ' + z.place)}
-              >
+              <g key={z.place} pointerEvents="none">
                 <circle
                   cx={z.point.x}
                   cy={z.point.y}
@@ -527,6 +559,7 @@ export function VocalTract({
             ))}
         {display.labels && !compact && (
           <g
+            pointerEvents="none"
             fontSize="20"
             fontFamily="Segoe UI,Microsoft YaHei,sans-serif"
             fill="#817568"
@@ -567,6 +600,7 @@ export function VocalTract({
               key={key}
               role="slider"
               aria-label={tongueLabels[key]}
+              data-anatomy-label={tongueLabels[key]}
               aria-valuemin={100}
               aria-valuemax={720}
               aria-valuenow={Math.round(pose.tongue[key].x)}
@@ -590,6 +624,7 @@ export function VocalTract({
                 const p = position(e);
                 drag.current = {
                   key,
+                  startPose: structuredClone(pose),
                   offset: {
                     x: p.x - pose.tongue[key].x,
                     y: p.y - pose.tongue[key].y,
@@ -602,7 +637,7 @@ export function VocalTract({
                 const p = position(e);
                 onEdit(
                   constrain(
-                    pose,
+                    drag.current.startPose,
                     key,
                     {
                       x: p.x - drag.current.offset.x,
@@ -652,14 +687,14 @@ export function VocalTract({
             </circle>
           ))}
       </svg>
-      <div className="tract-label">
-        {label || contact.active + ' — ' + contact.passive}
-        {label && (
+      {label && (
+        <div className="tract-label" style={{ pointerEvents: 'none' }}>
+          {label}
           <span>
             {locked ? '点击或按 Enter 解锁' : '点击或按 Enter 固定标签'}
           </span>
-        )}
-      </div>
+        </div>
+      )}
       {lateral && <div className="lateral-note">侧向通道请见俯视图</div>}
     </div>
   );

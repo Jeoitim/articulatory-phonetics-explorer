@@ -11,10 +11,17 @@ import {
   surface,
   isPlausible,
   moveJaw,
+  underside,
+  tongueArea,
+  jawPoint,
 } from '../src/engine/geometry';
 import { infer } from '../src/engine/inference';
 import { sampleAnimation } from '../src/engine/animation';
 import { readFileSync } from 'node:fs';
+import { airwayMidpoint, airflowPath, oralAirway } from '../src/engine/airflow';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { createElement } from 'react';
+import { VocalTract } from '../src/components/vocal-tract/VocalTract';
 void test('all recordings have a source, attribution and a playable media URL', () => {
   const manifest = JSON.parse(
     readFileSync('public/audio/manifest.json', 'utf8'),
@@ -194,4 +201,132 @@ void test('active and passive articulators are both reported, rather than hiding
   assert.equal(m.contact.passive, '龈后');
   assert.notEqual(m.status, 'canonical');
   assert.ok(m.contact.note);
+});
+
+void test('raised apex and blade preserve a broad belly below the free tongue', () => {
+  const poses = [
+    constrain(rest, 'tip', { x: 230, y: 490 }, false),
+    constrain(rest, 'blade', { x: 310, y: 350 }, false),
+    preset(soundBySymbol('ʈ')),
+    preset(soundBySymbol('k')),
+  ];
+  for (const p of poses) {
+    const contour = [...surface(p), ...underside(p)];
+    const y = jawPoint({ x: 235, y: 738 }, p.jaw).y + 25;
+    const crossings: number[] = [];
+    contour.forEach((a, i) => {
+      const b = contour[(i + 1) % contour.length]!;
+      if ((a.y <= y && b.y > y) || (b.y <= y && a.y > y))
+        crossings.push(a.x + ((y - a.y) * (b.x - a.x)) / (b.y - a.y));
+    });
+    assert.equal(crossings.length, 2, 'one continuous body at the attachment');
+    assert.ok(
+      Math.max(...crossings) - Math.min(...crossings) > 230,
+      'no pinched waist',
+    );
+  }
+});
+
+void test('body folding and invalid pointer coordinates cannot corrupt the tongue', () => {
+  const folded = structuredClone(rest);
+  folded.tongue.front = { x: 430, y: 390 };
+  folded.tongue.dorsum = { x: 410, y: 600 };
+  assert.equal(isPlausible(folded), false);
+  assert.deepEqual(constrain(rest, 'tip', { x: NaN, y: 400 }, false), rest);
+  assert.deepEqual(
+    constrain(rest, 'root', { x: 600, y: Infinity }, false),
+    rest,
+  );
+});
+
+void test('long mixed drag sequences retain body thickness and bounded tissue strain', () => {
+  let seed = 9137;
+  const random = () => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+  for (const symbol of ['t', 'k', 'ʈ', 'ɕ', 'ħ']) {
+    let p = preset(soundBySymbol(symbol));
+    for (let i = 0; i < 160; i++) {
+      p = constrain(
+        p,
+        tongueKeys[i % 5]!,
+        { x: 100 + random() * 650, y: 300 + random() * 550 },
+        i % 2 === 0,
+      );
+      assert.ok(isPlausible(p), symbol + ' drag ' + i);
+      const area = tongueArea(p) / tongueArea(rest);
+      assert.ok(area >= 0.82 && area <= 1.66);
+      const { front, root } = p.tongue;
+      assert.ok(Math.hypot(front.x - root.x, front.y - root.y) >= 259);
+    }
+  }
+});
+
+void test('airflow occupies open lumen and narrows with the articulatory gap', () => {
+  const open = oralAirway(rest);
+  const tongue = surface(rest).reverse();
+  assert.ok(
+    open.every(
+      (q) =>
+        Math.min(...tongue.map((t) => Math.hypot(q.x - t.x, q.y - t.y))) > 30,
+    ),
+  );
+  for (const x of [220, 410, 552]) {
+    const y = roofY(x);
+    const closed = airwayMidpoint({ x, y });
+    assert.ok(Math.hypot(closed.x - x, closed.y - y) < 0.01);
+    const narrow = airwayMidpoint({ x, y: y + 10 });
+    assert.ok(narrow.y > y && narrow.y < y + 10);
+  }
+  for (const s of consonants) {
+    const pose = preset(s);
+    const path = airflowPath(pose, { x: 110, y: 500 });
+    assert.doesNotMatch(path, /NaN|Infinity/);
+    const contour = [...surface(pose), ...underside(pose)];
+    const channel = oralAirway(pose);
+    channel.forEach((a, i) => {
+      const b = channel[i + 1];
+      if (!b) return;
+      for (let step = 1; step < 5; step++) {
+        const x = a.x + ((b.x - a.x) * step) / 5;
+        const y = a.y + ((b.y - a.y) * step) / 5 - 0.01;
+        let inside = false;
+        contour.forEach((c, j) => {
+          const d = contour[(j + 1) % contour.length]!;
+          if (
+            c.y > y !== d.y > y &&
+            x < ((d.x - c.x) * (y - c.y)) / (d.y - c.y) + c.x
+          )
+            inside = !inside;
+        });
+        assert.equal(
+          inside,
+          false,
+          s.symbol + ' airflow must remain outside tongue tissue',
+        );
+      }
+    });
+  }
+  assert.notEqual(
+    airflowPath(rest, { x: 110, y: 500 }),
+    airflowPath({ ...rest, velum: 1 }, { x: 110, y: 500 }),
+  );
+});
+
+void test('diagram starts without an unrelated tooltip and includes separate cavity hit regions', () => {
+  const markup = renderToStaticMarkup(
+    createElement(VocalTract, {
+      pose: rest,
+      place: 'alveolar',
+      display: { labels: true, zones: true, points: true, airflow: true },
+    }),
+  );
+  assert.doesNotMatch(markup, /class="tract-label"/);
+  for (const cavity of [
+    '口腔 · Oral cavity',
+    '鼻腔 · Nasal cavity',
+    '咽腔 · Pharyngeal cavity',
+  ])
+    assert.ok(markup.includes(`data-anatomy-label="${cavity}"`));
 });

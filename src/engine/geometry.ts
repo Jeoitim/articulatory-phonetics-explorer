@@ -156,7 +156,7 @@ export function surface(p: Pose): Point[] {
   out.push(pts[4]!);
   return out;
 }
-function underside(p: Pose): Point[] {
+export function underside(p: Pose): Point[] {
   const tip = p.tongue.tip,
     blade = p.tongue.blade,
     out: Point[] = [];
@@ -184,7 +184,14 @@ function underside(p: Pose): Point[] {
     curve(jawPoint(a, p.jaw), jawPoint(b, p.jaw), jawPoint(end, p.jaw));
   floorCurve({ x: 557, y: 798 }, { x: 557, y: 811 }, { x: 548, y: 812 });
   floorCurve({ x: 495, y: 850 }, { x: 428, y: 839 }, { x: 398, y: 819 });
-  floorCurve({ x: 355, y: 795 }, { x: 316, y: 766 }, { x: 300, y: 740 });
+  const attachment = jawPoint({ x: 235, y: 738 }, p.jaw);
+  // A broad mandibular attachment supports the belly. Do not route the
+  // ventral contour through an offset blade: that creates an artificial waist.
+  curve(
+    jawPoint({ x: 338, y: 782 }, p.jaw),
+    { x: attachment.x + 28, y: attachment.y + 64 },
+    attachment,
+  );
   // The free underside follows local surface normals. A rounded cap joins it
   // tangentially to the apex, rather than stretching a fixed anterior wall.
   const unit = (dx: number, dy: number) => {
@@ -193,25 +200,15 @@ function underside(p: Pose): Point[] {
   };
   const u = unit(blade.x - tip.x, blade.y - tip.y),
     n = { x: -u.y, y: u.x };
-  const mid = unit(p.tongue.front.x - tip.x, p.tongue.front.y - tip.y);
-  const underBlade = {
-    x: blade.x - mid.y * (80 - 20 * p.retroflex),
-    y: blade.y + mid.x * (80 - 20 * p.retroflex),
-  };
   const cap = {
     x: tip.x + u.x * 24 + n.x * 27,
     y: tip.y + u.y * 24 + n.y * 27,
   };
-  underBlade.y = Math.max(underBlade.y, cap.y + 30);
-  const v = unit(cap.x - underBlade.x, cap.y - underBlade.y);
+  const freeLength = Math.hypot(cap.x - attachment.x, cap.y - attachment.y);
+  const tangent = Math.min(60, freeLength * 0.28);
   curve(
-    { x: start.x + 15, y: start.y + (underBlade.y - start.y) * 0.35 },
-    { x: underBlade.x - v.x * 32, y: underBlade.y - v.y * 32 },
-    underBlade,
-  );
-  curve(
-    { x: underBlade.x + v.x * 24, y: underBlade.y + v.y * 24 },
-    { x: cap.x + u.x * 18, y: cap.y + u.y * 18 },
+    { x: attachment.x - tangent * 0.44, y: attachment.y - tangent },
+    { x: cap.x + u.x * tangent, y: cap.y + u.y * tangent },
     cap,
   );
   curve(
@@ -245,7 +242,51 @@ export function tongueArea(p: Pose) {
   );
 }
 const restArea = tongueArea(rest);
+// Regional strain envelopes in drawing coordinates, calibrated to the gesture
+// family below. These are geometric safeguards, not measured tissue moduli.
+const tissueLinks: [TongueKey, TongueKey, number, number][] = [
+  ['tip', 'blade', 30, 165],
+  ['blade', 'front', 65, 180],
+  ['front', 'dorsum', 85, 225],
+  ['dorsum', 'root', 145, 375],
+  ['front', 'root', 260, 415],
+];
+function tissueValid(p: Pose, tolerance = 1) {
+  if (
+    !tongueKeys.every(
+      (k) => Number.isFinite(p.tongue[k].x) && Number.isFinite(p.tongue[k].y),
+    )
+  )
+    return false;
+  for (const [ka, kb, min, max] of tissueLinks) {
+    const a = p.tongue[ka],
+      b = p.tongue[kb];
+    const d = Math.hypot(b.x - a.x, b.y - a.y);
+    if (d < min - tolerance || d > max + tolerance) return false;
+  }
+  // The free apex can curl; the load-bearing body cannot double back on itself.
+  const { blade, front, dorsum, root } = p.tongue;
+  if (
+    front.x < blade.x + 30 ||
+    dorsum.x < front.x + 40 ||
+    root.x < dorsum.x - 45
+  )
+    return false;
+  for (const [a, b, c] of [
+    [blade, front, dorsum],
+    [front, dorsum, root],
+  ]) {
+    const ux = b!.x - a!.x,
+      uy = b!.y - a!.y;
+    const vx = c!.x - b!.x,
+      vy = c!.y - b!.y;
+    if ((ux * vx + uy * vy) / (Math.hypot(ux, uy) * Math.hypot(vx, vy)) < -0.67)
+      return false;
+  }
+  return true;
+}
 export function isPlausible(p: Pose) {
+  if (!tissueValid(p)) return false;
   const pts = [...surface(p), ...underside(p)];
   for (let i = 0; i < pts.length; i++)
     for (let j = i + 2; j < pts.length; j++) {
@@ -261,7 +302,7 @@ export function isPlausible(p: Pose) {
         return false;
     }
   const a = tongueArea(p) / restArea;
-  if (a < 0.58 || a > 1.72) return false;
+  if (a < 0.82 || a > 1.66) return false;
   for (let i = 0; i < 4; i++) {
     const a = p.tongue[tongueKeys[i]!]!,
       b = p.tongue[tongueKeys[i + 1]!]!;
@@ -274,17 +315,13 @@ export function projectPose(input: Pose): Pose {
   const p = structuredClone(input);
   for (const k of tongueKeys) p.tongue[k] = boundPoint(p.tongue[k], k);
   // Constraint relaxation distributes stretch instead of letting one vertex form a spike.
-  for (let iteration = 0; iteration < 10; iteration++) {
-    for (let i = 0; i < 4; i++) {
-      const ka = tongueKeys[i]!,
-        kb = tongueKeys[i + 1]!,
-        a = p.tongue[ka],
+  for (let iteration = 0; iteration < 18; iteration++) {
+    for (const [ka, kb, min, max] of tissueLinks) {
+      const a = p.tongue[ka],
         b = p.tongue[kb],
         dx = b.x - a.x,
         dy = b.y - a.y,
-        d = Math.hypot(dx, dy) || 1,
-        min = [43, 56, 68, 110][i]!,
-        max = [175, 190, 263, 312][i]!;
+        d = Math.hypot(dx, dy) || 1;
       const error = d < min ? d - min : d > max ? d - max : 0;
       if (error) {
         const u = (error / d) * 0.42;
@@ -322,6 +359,8 @@ export function constrain(
   point: Point,
   snap: boolean,
 ): Pose {
+  if (!Number.isFinite(point.x) || !Number.isFinite(point.y))
+    return structuredClone(pose);
   const index = tongueKeys.indexOf(key),
     target = boundPoint(point, key),
     original = pose.tongue[key],
@@ -337,18 +376,35 @@ export function constrain(
   for (let i = 0; i < 5; i++) {
     const k = tongueKeys[i]!,
       w =
-        Math.exp(-Math.pow(Math.abs(i - index) / 1.38, 2)) *
-        (k === 'root' && key !== 'root' ? 0.3 : 1);
+        key === k
+          ? 1
+          : // Broad coherent motion in the body; more local freedom at the apex.
+            index >= 2 && i >= 2
+            ? i === 4 || index === 4
+              ? 0.38
+              : 0.78
+            : Math.exp(-Math.pow(Math.abs(i - index) / 1.38, 2));
     p.tongue[k] = {
       x: pose.tongue[k].x + dx * w,
-      y: pose.tongue[k].y + dy * w,
+      y:
+        pose.tongue[k].y +
+        dy *
+          (k === 'root' && key !== 'root'
+            ? w * 0.32
+            : key === 'dorsum' && k === 'front'
+              ? 0.4
+              : key === 'front' && k === 'dorsum'
+                ? 0.55
+                : w),
     };
   }
   // Distributed compensatory motion approximates tissue redistribution. It is not
   // a claim that sagittal area equals conserved 3D volume.
   if (dy < 0 && index >= 2) {
-    p.tongue.tip.y += Math.min(25, -dy * 0.16);
-    p.tongue.blade.y += Math.min(17, -dy * 0.11);
+    // Posterior elevation releases the anterior tongue instead of inflating
+    // the entire dorsum. The root remains supported near the hyoid.
+    p.tongue.tip.y += -dy * (index === 3 ? 0.65 : 0.16);
+    p.tongue.blade.y += -dy * (index === 3 ? 0.48 : 0.11);
   }
   if (dy < 0 && index < 2) p.tongue.dorsum.y += Math.min(18, -dy * 0.1);
   if (key === 'tip') {
