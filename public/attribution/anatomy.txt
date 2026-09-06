@@ -1,0 +1,8 @@
+Anatomical reference: Places of articulation.svg
+https://commons.wikimedia.org/wiki/File:Places_of_articulation.svg
+Original diagram: ish shwar; SVG: Rohieb. Source diagram based on Minifie et al. (1973), articulation regions from Catford (1977).
+Reference license selected: CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+This site's interactive anatomy is a simplified, redrawn pedagogical SVG with separate tongue, jaw, lip, velum and airflow layers. It is not a medical image or a subject-specific reconstruction.
+The interactive anatomical SVG adaptation is offered under CC BY-SA 3.0; changes include redrawing, recoloring, Chinese/English labels and dynamic articulators.
+
+The original static contours are retained in their native coordinate system. Movable tongue, velum, lip and mandibular surfaces replace the corresponding original structures. Bone texture, nasal conchae, muscle fibers and laryngeal inlet overlays are qualitative educational additions, not a measured anatomical reconstruction.

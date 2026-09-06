@@ -1,0 +1,6 @@
+International Phonetic Alphabet: International Phonetic Association.
+https://www.internationalphoneticassociation.org/content/ipa-chart
+The interactive pulmonic table is adapted from the official IPA consonant chart (revision 2015/2005, current annual edition).
+Chart adaptation: CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
+Changes: bilingual labels, centered coronal spanning cells, interactive selection and separate extension groups.
+Blank and shaded cells retain different meanings. This project is not endorsed by the International Phonetic Association.

@@ -1,0 +1,704 @@
+{
+  "n": {
+    "audioUrl": "/audio/6e.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Alveolar_nasal.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "s": {
+    "audioUrl": "/audio/73.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_sibilant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Pronunciation of a voiceless alveolar , [s] between two [a]s; [sa asa] by 44-year-old cis male speaker raised in Stockholm and Moscow."
+  },
+  "z": {
+    "audioUrl": "/audio/7a.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_sibilant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "l": {
+    "audioUrl": "/audio/6c.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Alveolar_lateral_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɹ": {
+    "audioUrl": "/audio/279.ogg",
+    "speaker": "Erutuon",
+    "source": "https://commons.wikimedia.org/wiki/File:Alveolar_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Erutuon",
+    "description": "An alveolar approximant: [ɹa aɹa]."
+  },
+  "ʃ": {
+    "audioUrl": "/audio/283.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_palato-alveolar_sibilant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Pronunciation of voiceless postalveolar fricative [ʃ] between two [a]s [ʃa aʃa] by 44-year-old cis male speaker raised in Stockholm and Moscow."
+  },
+  "ʒ": {
+    "audioUrl": "/audio/292.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_sibilant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Pronunciation of a voiced palato-alveolar sibilant, [ʒ] between two [a]s; [ʒa aʒa] by 44-year-old cis male speaker raised in Stockholm and Moscow."
+  },
+  "ɾ": {
+    "audioUrl": "/audio/27e.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Alveolar_tap.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "r": {
+    "audioUrl": "/audio/72.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Alveolar_trill.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ŋ": {
+    "audioUrl": "/audio/14b.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Velar_nasal.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "x": {
+    "audioUrl": "/audio/78.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_velar_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "f": {
+    "audioUrl": "/audio/66.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_labiodental_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "v": {
+    "audioUrl": "/audio/76.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_labiodental_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "θ": {
+    "audioUrl": "/audio/3b8.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_dental_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ð": {
+    "audioUrl": "/audio/f0.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_dental_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "h": {
+    "audioUrl": "/audio/68.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_glottal_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "p": {
+    "audioUrl": "/audio/70.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_bilabial_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "b": {
+    "audioUrl": "/audio/62.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_bilabial_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "m": {
+    "audioUrl": "/audio/6d.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Bilabial_nasal.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "t": {
+    "audioUrl": "/audio/74.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "d": {
+    "audioUrl": "/audio/64.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "j": {
+    "audioUrl": "/audio/6a.ogg",
+    "speaker": "karmosin",
+    "source": "https://commons.wikimedia.org/wiki/File:Palatal_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "karmosin",
+    "description": ""
+  },
+  "k": {
+    "audioUrl": "/audio/6b.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_velar_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɡ": {
+    "audioUrl": "/audio/261.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʈ": {
+    "audioUrl": "/audio/288.ogg",
+    "speaker": "Recorded by Peter Isotalo.",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_retroflex_stop.oga",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Recorded by Peter Isotalo.",
+    "description": "Pronunciation of a voiceless retroflex plosive, [ʈ] between two [a]s.[ʈa aʈa]"
+  },
+  "ɖ": {
+    "audioUrl": "/audio/256.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_retroflex_stop.oga",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɟ": {
+    "audioUrl": "/audio/25f.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_palatal_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɢ": {
+    "audioUrl": "/audio/262.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_uvular_stop.oga",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɱ": {
+    "audioUrl": "/audio/271.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Labiodental_nasal.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɲ": {
+    "audioUrl": "/audio/272.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Palatal_nasal.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɦ": {
+    "audioUrl": "/audio/266.ogg",
+    "speaker": "Karmosin",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_glottal_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Karmosin",
+    "description": "Pronunciation of a voiced glottal fricative, [ɦ] between two [a]s. [aɦa]"
+  },
+  "c": {
+    "audioUrl": "/audio/63.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_palatal_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Pronunciation of a voiceless palatal plosive, [c].\n\nRecorded by Peter Isotalo."
+  },
+  "q": {
+    "audioUrl": "/audio/71.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_uvular_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʔ": {
+    "audioUrl": "/audio/294.ogg",
+    "speaker": "No machine-readable author provided. Peter Isotalo assumed (based on copyright claims).",
+    "source": "https://commons.wikimedia.org/wiki/File:Glottal_stop.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "No machine-readable author provided. Peter Isotalo assumed (based on copyright claims).",
+    "description": "Recorded by Peter Isotalo.\nPronunciation of a glottal stop [ʔ] before an [a] and between two [a]s.\n\n[ʔaː ʔaˈʔaː]"
+  },
+  "ɳ": {
+    "audioUrl": "/audio/273.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Retroflex_nasal.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɴ": {
+    "audioUrl": "/audio/274.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Uvular_nasal.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʙ": {
+    "audioUrl": "/audio/299.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Bilabial_trill.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʀ": {
+    "audioUrl": "/audio/280.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Uvular_trill.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ⱱ": {
+    "audioUrl": "/audio/2c71.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Labiodental_flap.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɽ": {
+    "audioUrl": "/audio/27d.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Retroflex_flap.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɸ": {
+    "audioUrl": "/audio/278.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_bilabial_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "β": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/3/37/Voiced_bilabial_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_bilabial_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʂ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Voiceless_retroflex_sibilant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_retroflex_sibilant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Pronunciation of a voiceless retroflex fricative, [ʂ] between two [a]s; [ʂa aʂa] by 44-year-old cis male speaker raised in Stockholm and Moscow."
+  },
+  "ʐ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Voiced_retroflex_sibilant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_retroflex_sibilant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Pronunciation of a voiced retroflex fricative, [ʐ] between two [a]s; [ʐa aʐa] by 44-year-old cis male speaker raised in Stockholm and Moscow."
+  },
+  "ç": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ab/Voiceless_palatal_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_palatal_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʝ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ac/Voiced_palatal_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_palatal_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɣ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/4/47/Voiced_velar_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "χ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Voiceless_uvular_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_uvular_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʁ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/af/Voiced_uvular_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_uvular_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ħ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Voiceless_pharyngeal_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_pharyngeal_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʕ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/cd/Voiced_pharyngeal_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_pharyngeal_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Illustration of the sound represented by the IPA symbol ʕ. The sequence is [ʕa: ʔaʕa:]."
+  },
+  "ɬ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Voiceless_alveolar_lateral_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Recorded by tFighterPilot",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_lateral_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "attribution": "Recorded by tFighterPilot",
+    "description": "Pronunciation of a voiceless alveolar lateral fricative, [ɬ] between two [a]s. [ɬa aɬa]"
+  },
+  "ɮ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6f/Voiced_alveolar_lateral_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Adamsa123",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_lateral_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Adamsa123",
+    "description": "Pronunciation of a Voiced alveolar lateral fricative, [ɮ] between two [a]s. [ɮa aɮa]"
+  },
+  "ʋ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ee/Labiodental_approximant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Labiodental_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɻ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Retroflex_approximant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Karmosin",
+    "source": "https://commons.wikimedia.org/wiki/File:Retroflex_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Karmosin",
+    "description": "Pronunciation of a retroflex  approximant, [ɻ]: [ɻa aɻa]."
+  },
+  "ɭ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d1/Retroflex_lateral_approximant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Retroflex_lateral_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʎ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Palatal_lateral_approximant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "来源未注明录音者",
+    "source": "https://commons.wikimedia.org/wiki/File:Palatal_lateral_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo（上传者）",
+    "description": ""
+  },
+  "ʟ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Velar_lateral_approximant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Velar_lateral_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɧ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/4/42/Voiceless_dorso-palatal_velar_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_dorso-palatal_velar_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Pronunciation of a voiceless dorso-palatal velar fricative, [ɧ] between two [a]s; [ɧa aɧa] by 44-year-old cis male speaker raised in Stockholm and Moscow."
+  },
+  "ɕ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0b/Voiceless_alveolo-palatal_sibilant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolo-palatal_sibilant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʑ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/1/15/Voiced_alveolo-palatal_sibilant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolo-palatal_sibilant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": "Pronunciation of a voiced alveolo-palatal fricative, [ʑ] between two [a]s; [ʑa aʑa] by 44-year-old cis male speaker raised in Stockholm and Moscow."
+  },
+  "ɫ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Velarized_alveolar_lateral_approximant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Velarized_alveolar_lateral_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʜ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Voiceless_epiglottal_trill.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Adamsa123",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_epiglottal_trill.ogg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attribution": "Adamsa123",
+    "description": "Voiceless epiglottal trill"
+  },
+  "ʢ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/1/18/Voiced_epiglottal_trill_2.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Adamsa123",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_epiglottal_trill_2.ogg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attribution": "Adamsa123",
+    "description": "Voiced epiglottal trill 2"
+  },
+  "ɰ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/5/5c/Voiced_velar_approximant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "w": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Voiced_labio-velar_approximant.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_labio-velar_approximant.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ʍ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a7/Voiceless_labio-velar_fricative.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_labio-velar_fricative.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "ɺ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c9/Voiced_alveolar_lateral_flap.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Eshaan011",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_lateral_flap.wav",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "attribution": "Eshaan011",
+    "description": "Phoneme"
+  },
+  "ʡ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Epiglottal_stop.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Adamsa123",
+    "source": "https://commons.wikimedia.org/wiki/File:Epiglottal_stop.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "attribution": "Adamsa123",
+    "description": "Voiceless pharyngeal stop"
+  },
+  "t͡s": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Voiceless_alveolar_sibilant_affricate.oga?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolar_sibilant_affricate.oga",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "d͡z": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d8/Voiced_alveolar_sibilant_affricate.oga?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_sibilant_affricate.oga",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo",
+    "description": ""
+  },
+  "t͡ʃ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/9/97/Voiceless_palato-alveolar_affricate.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_palato-alveolar_affricate.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "attribution": "Peter Isotalo",
+    "description": "A pronunciation of a Voiceless postalveolar affricate|voiceless postalveolar affricate|Voiceless postalveolar affricate [t͡ʃ] in a context of an open front unrounded vowel [a].\ntranscription: [t͡ʃaː aˈt͡ʃaː]"
+  },
+  "d͡ʒ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Voiced_palato-alveolar_affricate.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "The original uploader was Octane at English Wikipedia.",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_palato-alveolar_affricate.ogg",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "attribution": "The original uploader was Octane at English Wikipedia.",
+    "description": "Voiced postalveolar affricate"
+  },
+  "t͡ɕ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Voiceless_alveolo-palatal_affricate.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Halibutt",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_alveolo-palatal_affricate.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Halibutt",
+    "description": "Pronunciation of Voiceless alveolo-palatal affricate consonant between two [a] vowels;"
+  },
+  "d͡ʑ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Voiced_alveolo-palatal_affricate.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Halibutt",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolo-palatal_affricate.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Halibutt",
+    "description": "Pronunciation of Voiced alveolo-palatal affricate consonant between two [a]s"
+  },
+  "ʈ͡ʂ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Voiceless_retroflex_affricate.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Halibutt",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiceless_retroflex_affricate.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Halibutt",
+    "description": "Pronunciation of Voiceless retroflex affricate consonant between two [a] vowels"
+  },
+  "ɖ͡ʐ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/5/58/Voiced_retroflex_affricate.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Halibutt",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_retroflex_affricate.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Halibutt",
+    "description": "Pronunciation of Voiced retroflex affricate consonant between two [a]s"
+  },
+  "ɥ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/3/32/LL-Q150_%28fra%29-WikiLucas00-IPA_%C9%A5.wav?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "speaker": "Speaker: WikiLucas00\nRecorder: WikiLucas00",
+    "source": "https://commons.wikimedia.org/wiki/File:LL-Q150_(fra)-WikiLucas00-IPA_%C9%A5.wav",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "attribution": "Speaker: WikiLucas00\nRecorder: WikiLucas00",
+    "description": "Audio pronunciation file from the Lingua Libre  project."
+  }
+}
