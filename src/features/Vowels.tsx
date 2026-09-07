@@ -6,7 +6,7 @@ import { useAudio } from '../engine/audio';
 import { vowelAudio } from '../data/vowel-audio';
 import { vowels, apicalVowels, vowelChartPoint } from '../data/vowels';
 import type { Vowel } from '../data/vowels';
-import { vowelPose } from '../engine/vowels';
+import { vowelPose, describeVowel } from '../engine/vowels';
 import { rest } from '../engine/geometry';
 import { useVowelMotion } from '../engine/vowel-motion';
 import { VocalTract } from '../components/vocal-tract/VocalTract';
@@ -49,6 +49,7 @@ export function Vowels() {
     move(vowelPose(next), true);
   }
   const marker = vowelChartPoint(value.height, value.backness);
+  const approximation = describeVowel(value);
   return (
     <div className="vowel-lab lab-grid">
       <section className="vocal-panel">
@@ -122,8 +123,8 @@ export function Vowels() {
               <span className="eyebrow">VOWEL SPACE</span>
               <h2>元音舌位图</h2>
             </div>
-            <span className={'vowel-symbol ' + (selected ? '' : 'custom')}>
-              {selected ? `[${selected}]` : '自由舌位'}
+            <span className="vowel-symbol" aria-live="polite">
+              [{selected ?? approximation.symbol}]
             </span>
           </div>
           <p className="chart-note">
@@ -258,12 +259,13 @@ export function Vowels() {
             )}
           </div>
           <h3 className="vowel-description">
-            {selected
-              ? value.zh
-              : value.apical
-                ? '舌尖构形 · 自定义圆唇'
-                : '连续舌位 · 自定义元音'}
+            {selected ? value.zh : `约 ${approximation.description}`}
           </h3>
+          {!selected && (
+            <p className="chart-note">
+              当前标注为舌位近似：基本元音附近保留普通符号，超出容差后标出偏高、偏低、偏前、偏后或圆唇差异。容差为教学显示范围，不是语言间通用的音位边界。
+            </p>
+          )}
           <Range
             label="舌位高低 · 闭 → 开"
             value={value.height}

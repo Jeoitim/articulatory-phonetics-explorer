@@ -1036,3 +1036,57 @@ output.lesson-feedback,
 output.notice {
   display: block;
 }
+.ipa-reference {
+  margin-top: 28px;
+}
+.ipa-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  gap: 18px;
+  align-items: start;
+}
+.ipa-reference-grid > section {
+  min-width: 0;
+  border: 1px solid light-dark(#dfe4d8, var(--night-border));
+  border-radius: 10px;
+  overflow: hidden;
+}
+.ipa-reference h4 {
+  margin: 0;
+  padding: 14px;
+  font-size: 15px;
+  background: light-dark(#f3f5ef, var(--night-raised));
+}
+.ipa-reference table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.ipa-reference th,
+.ipa-reference td {
+  padding: 10px 12px;
+  text-align: left;
+  border-top: 1px solid light-dark(#e6e9df, var(--night-border));
+  overflow-wrap: anywhere;
+}
+.ipa-reference th {
+  font-size: 14px;
+  font-weight: 500;
+}
+.ipa-reference thead th:first-child {
+  width: 27%;
+}
+.ipa-reference thead th:nth-child(2) {
+  width: 31%;
+}
+.ipa-mark,
+.ipa-example {
+  font-family: 'DejaVu Sans', 'Noto Sans', 'Arial', sans-serif;
+  line-height: 1.8;
+}
+.ipa-mark {
+  font-size: 22px;
+}
+.ipa-example {
+  font-size: 17px;
+}

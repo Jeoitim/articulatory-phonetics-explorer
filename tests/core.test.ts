@@ -24,12 +24,78 @@ import { createElement } from 'react';
 import { VocalTract } from '../src/components/vocal-tract/VocalTract';
 import { nonPulmonicConsonants } from '../src/data/non-pulmonic';
 import { vowels, apicalVowels, vowelChartPoint } from '../src/data/vowels';
-import { vowelPose, mouthGeometry } from '../src/engine/vowels';
+import { vowelPose, mouthGeometry, describeVowel } from '../src/engine/vowels';
+import { ipaMarkGroups } from '../src/data/ipa-marks';
+import { IPAMarks } from '../src/components/IPAMarks';
 import { interpolate } from '../src/engine/geometry';
 import { vowelMotionProgress } from '../src/engine/vowel-motion';
 import { UnmatchedSoundCard } from '../src/components/UnmatchedSoundCard';
 import { vowelAudio } from '../src/data/vowel-audio';
 import { onlineAudioUrl, resolveAudioUrl } from '../src/engine/audio';
+void test('free vowels preserve anchors and always label the entire chart and rounding continuum', () => {
+  for (const v of [...vowels, ...apicalVowels])
+    assert.equal(describeVowel(v).symbol, v.symbol);
+  assert.equal(
+    describeVowel({ height: 0.04, backness: 0.04, rounding: 0.1 }).symbol,
+    'i',
+  );
+  assert.equal(
+    describeVowel({ height: 0.09, backness: 0, rounding: 0 }).symbol,
+    'i̞',
+  );
+  assert.equal(
+    describeVowel({ height: 0, backness: 0.13, rounding: 0 }).symbol,
+    'i̠',
+  );
+  assert.equal(
+    describeVowel({ height: 0, backness: 0, rounding: 0.3 }).symbol,
+    'i̹',
+  );
+  assert.equal(
+    describeVowel({ height: 0, backness: 0, rounding: 0.7 }).symbol,
+    'y̜',
+  );
+  for (let h = 0; h <= 20; h++)
+    for (let b = 0; b <= 20; b++)
+      for (let r = 0; r <= 10; r++) {
+        const result = describeVowel({
+          height: h / 20,
+          backness: b / 20,
+          rounding: r / 10,
+        });
+        assert.ok(result.symbol.startsWith(result.base.symbol));
+        assert.ok(vowels.includes(result.base));
+      }
+  assert.equal(
+    describeVowel({ ...apicalVowels[1]!, rounding: 0.5 }).symbol,
+    'ʅ̹',
+  );
+});
+void test('reference chart covers all supplied mark categories and searchable examples', () => {
+  assert.equal(
+    ipaMarkGroups.slice(0, 4).reduce((n, g) => n + g.entries.length, 0),
+    31,
+  );
+  const markup = renderToStaticMarkup(createElement(IPAMarks, { query: '' }));
+  for (const symbol of [
+    'ŋ̊',
+    't͡s',
+    'k͡p',
+    'e˥',
+    'e˩˥',
+    'ꜜ',
+    '↘',
+    'dⁿ',
+    'dˡ',
+    'd̚',
+  ])
+    assert.ok(markup.includes(symbol), symbol);
+  const searched = renderToStaticMarkup(
+    createElement(IPAMarks, { query: '舌根' }),
+  );
+  assert.ok(searched.includes('舌根偏前'));
+  assert.ok(!searched.includes('主重音'));
+});
 void test('every standard vowel has a sourced recording and rounded high vowels keep a small aperture', () => {
   for (const v of vowels) {
     const a = vowelAudio[v.symbol];

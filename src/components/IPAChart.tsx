@@ -6,6 +6,7 @@ import { extendedConsonants } from '../data/additional-consonants';
 import { consonants } from '../data/consonants';
 import { airstreamLabels, nonPulmonicConsonants } from '../data/non-pulmonic';
 import { placeLabels, mannerLabels, mannerEnglish } from '../data/labels';
+import { IPAMarks } from './IPAMarks';
 export function IPAChart({
   selected,
   onSelect,
@@ -35,6 +36,7 @@ export function IPAChart({
           <kbd>IPA</kbd>
         </label>
       </div>
+      <h3>辅音（肺部气流）</h3>
       <div className="chart-scroll">
         <table className="ipa-chart">
           <caption className="sr-only">
@@ -141,13 +143,25 @@ export function IPAChart({
         </div>
       </section>
       <div className="extension-chart">
-        {['其他肺部辅音与次要调音', '常用塞擦音'].map((heading, i) => (
+        {[
+          { heading: '其他符号 · 唇与舌的双重调音', symbols: ['ʍ', 'w', 'ɥ'] },
+          { heading: '其他符号 · 会厌音', symbols: ['ʜ', 'ʢ', 'ʡ'] },
+          { heading: '其他符号 · 边闪音与同时调音', symbols: ['ɺ', 'ɧ'] },
+          { heading: '次要调音 · 软腭化边音', symbols: ['ɫ'] },
+          {
+            heading: '常用塞擦音 · 齿龈、龈后与卷舌',
+            symbols: ['t͡s', 'd͡z', 't͡ʃ', 'd͡ʒ', 'ʈ͡ʂ', 'ɖ͡ʐ'],
+          },
+        ].map(({ heading, symbols }) => (
           <section key={heading}>
             <h3>{heading}</h3>
             <div>
               {extendedConsonants
-                .filter((s) => s.place !== 'alveolo-palatal')
-                .filter((s) => (s.manner === 'affricate') === (i === 1))
+                .filter((s) => symbols.includes(s.symbol))
+                .sort(
+                  (a, b) =>
+                    symbols.indexOf(a.symbol) - symbols.indexOf(b.symbol),
+                )
                 .filter(
                   (s) =>
                     !query ||
@@ -194,6 +208,7 @@ export function IPAChart({
           </a>
         </span>
       </div>
+      <h3>辅音（非肺部气流）</h3>
       <div className="extension-chart non-pulmonic-chart">
         {(['click', 'implosive', 'ejective'] as const).map((mechanism) => (
           <section key={mechanism}>
@@ -234,6 +249,7 @@ export function IPAChart({
       <p className="chart-note">
         齿、齿龈及齿龈后部分符号在官方表中跨列表示；此处居中放置。空白不代表不可发音，塞擦音及双重调音另列扩展。
       </p>
+      <IPAMarks query={query} />
       {notice && (
         <output className="notice">
           {notice}

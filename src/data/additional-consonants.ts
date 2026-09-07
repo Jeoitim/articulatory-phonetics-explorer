@@ -343,7 +343,7 @@ export const extendedConsonants: Consonant[] = [
     ]),
     secondaryPlace: 'velar',
     variant: 'sje',
-    zh: '清双重调音擦音（高度可变）',
+    zh: '同时发 ʃ 和 x（实际构形可变）',
   },
   {
     ...make([

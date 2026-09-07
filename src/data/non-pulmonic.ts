@@ -3,9 +3,9 @@ import { placeLabels } from './labels';
 
 export const airstreamLabels: Record<Airstream, string> = {
   'pulmonic-egressive': '肺部呼气 · 向外',
-  ejective: '挤喉 · 声门外出',
-  implosive: '内爆 · 喉部下降',
-  click: '搭嘴 · 口腔局部内入',
+  ejective: '喷音（挤喉音）· 声门外出',
+  implosive: '浊内爆音 · 喉部下降',
+  click: '嗒音（搭嘴音）· 口腔局部内入',
 };
 const specs: [string, Place, Airstream, string, string][] = [
   ['ʘ', 'bilabial', 'click', 'Bilabial click', 'Bilabial click'],
@@ -90,7 +90,7 @@ export const nonPulmonicConsonants: Consonant[] = specs.map(
     airstream,
     name,
     zh:
-      placeLabels[place] +
+      (symbol === 'ǃ' ? '龈（后）' : symbol === 'ǂ' ? '腭龈' : placeLabels[place]) +
       (symbol === 'ǁ'
         ? '边搭嘴音'
         : airstream === 'click'
