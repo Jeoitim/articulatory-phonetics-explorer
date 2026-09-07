@@ -286,10 +286,15 @@ main {
   background-image: radial-gradient(#929b8220 0.7px, transparent 0.7px);
   background-size: 17px 17px;
 }
+.sagittal-stage {
+  padding-top: 56px;
+}
 .view-tag {
   position: absolute;
-  top: 19px;
+  z-index: 2;
+  top: 18px;
   left: 22px;
+  pointer-events: none;
   color: light-dark(#919988, var(--night-copy));
   font-size: 9px;
   letter-spacing: 1.1px;
@@ -303,8 +308,10 @@ main {
 }
 .orientation {
   position: absolute;
+  z-index: 2;
   right: 21px;
-  top: 21px;
+  top: 20px;
+  pointer-events: none;
   font-size: 10px;
   color: light-dark(#a2a798, var(--night-subtle));
 }
@@ -342,6 +349,40 @@ main {
   stroke: light-dark(#97752d, var(--night-gold));
 }
 .tongue-control:active {
+  cursor: grabbing;
+}
+.organ-controls {
+  pointer-events: none;
+}
+.organ-control {
+  pointer-events: auto;
+  transition:
+    r 0.12s,
+    stroke-width 0.12s,
+    opacity 0.12s;
+}
+.active-control {
+  cursor: grab;
+  fill: light-dark(#fff5dd, #443b29);
+  stroke: light-dark(#a98a47, #e3c483);
+  stroke-width: 3px;
+  filter: drop-shadow(0 1px 3px #876d4930);
+  touch-action: none;
+}
+.passive-control {
+  cursor: pointer;
+  opacity: 0.82;
+}
+.active-control:hover,
+.active-control:focus,
+.passive-control:hover,
+.passive-control:focus {
+  r: 15;
+  outline: none;
+  stroke-width: 4px;
+  opacity: 1;
+}
+.active-control:active {
   cursor: grabbing;
 }
 .tract-label {
@@ -1032,6 +1073,9 @@ footer {
   .diagram-stage {
     padding: 25px 10px 0;
   }
+  .sagittal-stage {
+    padding-top: 56px;
+  }
   .inset svg {
     width: 57px;
   }
@@ -1146,6 +1190,14 @@ footer {
   }
   .inset svg {
     width: 75px;
+  }
+  .view-tag {
+    left: 14px;
+    top: 17px;
+  }
+  .orientation {
+    right: 14px;
+    top: 19px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

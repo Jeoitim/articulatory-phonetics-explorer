@@ -13,6 +13,20 @@ export const placeLabels: Record<Place, string> = {
   pharyngeal: '咽',
   glottal: '声门',
 };
+export const placeEnglish: Record<Place, string> = {
+  bilabial: 'Bilabial',
+  labiodental: 'Labiodental',
+  dental: 'Dental',
+  alveolar: 'Alveolar',
+  postalveolar: 'Postalveolar',
+  'alveolo-palatal': 'Alveolo-palatal',
+  retroflex: 'Retroflex',
+  palatal: 'Palatal',
+  velar: 'Velar',
+  uvular: 'Uvular',
+  pharyngeal: 'Pharyngeal',
+  glottal: 'Glottal',
+};
 export const mannerLabels: Record<Manner, string> = {
   plosive: '塞音',
   nasal: '鼻音',

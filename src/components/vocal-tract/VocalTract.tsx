@@ -20,6 +20,7 @@ import {
   surface,
   jawPoint,
   jawPath,
+  moveJaw,
   roof,
 } from '../../engine/geometry';
 import { anatomyPaths as paths } from '../../data/anatomy-paths';
@@ -43,7 +44,16 @@ interface Props {
   lateral?: boolean;
   animated?: boolean;
   highlightContact?: boolean;
+  onAnatomyClick?: (name: string) => void;
 }
+
+type TractControl = TongueKey | 'jaw' | 'lowerLip';
+type DragState = {
+  key: TractControl;
+  anchor: Point;
+  offset: Point;
+  startPose: Pose;
+};
 export function VocalTract({
   airstream = 'pulmonic-egressive',
   pose,
@@ -57,16 +67,14 @@ export function VocalTract({
   lateral = false,
   animated = true,
   highlightContact = false,
+  onAnatomyClick,
 }: Props) {
   const id = useId().replaceAll(':', ''),
     ref = useRef<SVGSVGElement>(null),
     [hover, setHover] = useState(''),
     [locked, setLocked] = useState('');
-  const drag = useRef<{
-    key: TongueKey;
-    offset: Point;
-    startPose: Pose;
-  } | null>(null);
+  const drag = useRef<DragState | null>(null);
+  const clampValue = (value: number) => Math.max(0, Math.min(1, value));
   const label = locked || hover;
   const contact = articulationContact(pose, place);
   const activePoint = contact.key ? pose.tongue[contact.key] : null;
@@ -85,12 +93,14 @@ export function VocalTract({
     onClick: (e: MouseEvent<SVGElement>) => {
       e.stopPropagation();
       setLocked(locked === name ? '' : name);
+      onAnatomyClick?.(name);
     },
     onKeyDown: (e: KeyboardEvent<SVGElement>) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         e.stopPropagation();
         setLocked(locked === name ? '' : name);
+        onAnatomyClick?.(name);
       }
     },
   });
@@ -115,6 +125,19 @@ export function VocalTract({
   };
   const air = airflowPath(pose, lip, airstream);
   const mouthFloor = jawPoint({ x: 139, y: 745 }, pose.jaw);
+  const jawControl = jawPoint({ x: 116, y: 790 }, pose.jaw);
+  const upperLipPoint = { x: 116, y: 420 };
+  const upperIncisorPoint = { x: 168, y: 399 };
+  const labialActivePoint =
+    place === 'bilabial' || place === 'labiodental' ? lip : null;
+  const labialPassivePoint =
+    place === 'labiodental'
+      ? upperIncisorPoint
+      : place === 'bilabial'
+        ? upperLipPoint
+        : null;
+  const highlightActivePoint = activePoint ?? labialActivePoint;
+  const highlightPassivePoint = passivePoint ?? labialPassivePoint;
   const oralCavity =
     'M 105 443 L ' +
     roof.map((p) => `${p.x} ${p.y}`).join(' L ') +
@@ -122,6 +145,89 @@ export function VocalTract({
   const velum = nasal
     ? 'M 526 337 C 588 331 628 339 640 376 C 651 409 638 461 624 501 Q 624 535 612 536 Q 598 535 606 491 C 596 427 578 389 550 373 L 526 361 Z'
     : 'M 526 337 C 572 333 621 319 667 334 L 667 365 C 643 379 640 407 626 428 Q 622 443 614 439 Q 607 435 613 421 C 610 392 580 375 550 369 L 526 361 Z';
+  function beginDrag(
+    e: PointerEvent<SVGElement>,
+    key: TractControl,
+    anchor: Point,
+  ) {
+    if (!onEdit) return;
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const p = position(e);
+    drag.current = {
+      key,
+      anchor,
+      startPose: structuredClone(pose),
+      offset: { x: p.x - anchor.x, y: p.y - anchor.y },
+    };
+    setHover(
+      key === 'jaw'
+        ? '下颌开度 · Jaw opening'
+        : key === 'lowerLip'
+          ? '下唇闭合度 · Lower lip closure'
+          : tongueLabels[key],
+    );
+  }
+  function moveDrag(e: PointerEvent<SVGElement>, key: TractControl) {
+    const current = drag.current;
+    if (!current || current.key !== key || !onEdit) return;
+    e.preventDefault();
+    const p = position(e);
+    if (key === 'jaw') {
+      const nextJaw = clampValue(
+        current.startPose.jaw +
+          (p.y - current.offset.y - current.anchor.y) / 180,
+      );
+      onEdit(moveJaw(current.startPose, nextJaw));
+      return;
+    }
+    if (key === 'lowerLip') {
+      const nextLowerLip = clampValue(
+        current.startPose.lowerLip -
+          (p.y - current.offset.y - current.anchor.y) / 230,
+      );
+      onEdit({ ...current.startPose, lowerLip: nextLowerLip });
+      return;
+    }
+    onEdit(
+      constrain(
+        current.startPose,
+        key,
+        {
+          x: p.x - current.offset.x,
+          y: p.y - current.offset.y,
+        },
+        !e.shiftKey,
+      ),
+    );
+  }
+  function endDrag() {
+    drag.current = null;
+    setHover('');
+  }
+  function nudge(key: TractControl, delta: Point) {
+    if (!onEdit) return;
+    if (key === 'jaw') {
+      onEdit(moveJaw(pose, clampValue(pose.jaw + delta.y / 30)));
+    } else if (key === 'lowerLip') {
+      onEdit({
+        ...pose,
+        lowerLip: clampValue(pose.lowerLip - delta.y / 30),
+      });
+    } else {
+      onEdit(
+        constrain(
+          pose,
+          key,
+          {
+            x: pose.tongue[key].x + delta.x,
+            y: pose.tongue[key].y + delta.y,
+          },
+          false,
+        ),
+      );
+    }
+  }
   return (
     <div
       className={
@@ -580,30 +686,30 @@ export function VocalTract({
             )}
           </g>
         )}
-        {highlightContact && activePoint && passivePoint && (
+        {highlightContact && highlightActivePoint && highlightPassivePoint && (
           <g
             className="articulation-highlight"
             pointerEvents="none"
             aria-label={`${contact.active}接近${contact.passive}`}
           >
             <path
-              d={`M${activePoint.x} ${activePoint.y} L${passivePoint.x} ${passivePoint.y}`}
+              d={`M${highlightActivePoint.x} ${highlightActivePoint.y} L${highlightPassivePoint.x} ${highlightPassivePoint.y}`}
               stroke="var(--tract-contact)"
               strokeWidth="3"
               strokeDasharray="5 7"
               fill="none"
             />
             <circle
-              cx={passivePoint.x}
-              cy={passivePoint.y}
+              cx={highlightPassivePoint.x}
+              cy={highlightPassivePoint.y}
               r="19"
               fill="none"
               stroke="var(--tract-contact)"
               strokeWidth="6"
             />
             <circle
-              cx={activePoint.x}
-              cy={activePoint.y}
+              cx={highlightActivePoint.x}
+              cy={highlightActivePoint.y}
               r="13"
               fill="var(--tract-active)"
               stroke="var(--tract-contact)"
@@ -721,46 +827,11 @@ export function VocalTract({
               fill="light-dark(#fff5dd, #443b29)"
               stroke="light-dark(#a98a47, #e3c483)"
               strokeWidth="3"
-              onPointerDown={(e) => {
-                e.preventDefault();
-                e.currentTarget.setPointerCapture(e.pointerId);
-                const p = position(e);
-                drag.current = {
-                  key,
-                  startPose: structuredClone(pose),
-                  offset: {
-                    x: p.x - pose.tongue[key].x,
-                    y: p.y - pose.tongue[key].y,
-                  },
-                };
-                setHover(tongueLabels[key]);
-              }}
-              onPointerMove={(e) => {
-                if (!drag.current || drag.current.key !== key) return;
-                e.preventDefault();
-                const p = position(e);
-                onEdit(
-                  constrain(
-                    drag.current.startPose,
-                    key,
-                    {
-                      x: p.x - drag.current.offset.x,
-                      y: p.y - drag.current.offset.y,
-                    },
-                    !e.shiftKey,
-                  ),
-                );
-              }}
-              onPointerUp={() => {
-                drag.current = null;
-                setHover('');
-              }}
-              onPointerCancel={() => {
-                drag.current = null;
-              }}
-              onLostPointerCapture={() => {
-                drag.current = null;
-              }}
+              onPointerDown={(e) => beginDrag(e, key, pose.tongue[key])}
+              onPointerMove={(e) => moveDrag(e, key)}
+              onPointerUp={endDrag}
+              onPointerCancel={endDrag}
+              onLostPointerCapture={endDrag}
               onFocus={() => setHover(tongueLabels[key])}
               onBlur={() => setHover('')}
               onKeyDown={(e) => {
@@ -773,23 +844,103 @@ export function VocalTract({
                 const d = ds[e.key];
                 if (d) {
                   e.preventDefault();
-                  onEdit(
-                    constrain(
-                      pose,
-                      key,
-                      {
-                        x: pose.tongue[key].x + d[0]!,
-                        y: pose.tongue[key].y + d[1]!,
-                      },
-                      !e.shiftKey,
-                    ),
-                  );
+                  nudge(key, { x: d[0]!, y: d[1]! });
                 }
               }}
             >
               <title>{tongueLabels[key] + ' · 拖动时其余舌体随之联动'}</title>
             </circle>
           ))}
+        {display.points && onEdit && (
+          <g className="organ-controls">
+            <circle
+              role="slider"
+              aria-label="下唇闭合度 · Lower lip closure"
+              data-anatomy-label="下唇闭合度 · Lower lip closure"
+              aria-valuemin={0}
+              aria-valuemax={1}
+              aria-valuenow={pose.lowerLip}
+              aria-valuetext={`下唇闭合度 ${Math.round(pose.lowerLip * 100)}%`}
+              tabIndex={0}
+              className="organ-control active-control"
+              cx={lip.x}
+              cy={lip.y}
+              r="11"
+              onPointerDown={(e) => beginDrag(e, 'lowerLip', lip)}
+              onPointerMove={(e) => moveDrag(e, 'lowerLip')}
+              onPointerUp={endDrag}
+              onPointerCancel={endDrag}
+              onLostPointerCapture={endDrag}
+              onFocus={() => setHover('下唇闭合度 · Lower lip closure')}
+              onBlur={() => setHover('')}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                  e.preventDefault();
+                  nudge('lowerLip', {
+                    x: 0,
+                    y: e.key === 'ArrowUp' ? -5 : 5,
+                  });
+                }
+              }}
+            >
+              <title>下唇闭合度 · Lower lip closure</title>
+            </circle>
+            <circle
+              role="slider"
+              aria-label="下颌开度 · Jaw opening"
+              data-anatomy-label="下颌开度 · Jaw opening"
+              aria-valuemin={0}
+              aria-valuemax={1}
+              aria-valuenow={pose.jaw}
+              aria-valuetext={`下颌开度 ${Math.round(pose.jaw * 100)}%`}
+              tabIndex={0}
+              className="organ-control active-control"
+              cx={jawControl.x}
+              cy={jawControl.y}
+              r="11"
+              onPointerDown={(e) => beginDrag(e, 'jaw', jawControl)}
+              onPointerMove={(e) => moveDrag(e, 'jaw')}
+              onPointerUp={endDrag}
+              onPointerCancel={endDrag}
+              onLostPointerCapture={endDrag}
+              onFocus={() => setHover('下颌开度 · Jaw opening')}
+              onBlur={() => setHover('')}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                  e.preventDefault();
+                  nudge('jaw', {
+                    x: 0,
+                    y: e.key === 'ArrowUp' ? -5 : 5,
+                  });
+                }
+              }}
+            >
+              <title>下颌开度 · Jaw opening</title>
+            </circle>
+            <circle
+              {...meta('上唇 · Upper lip')}
+              className="organ-control passive-control"
+              cx={upperLipPoint.x}
+              cy={upperLipPoint.y}
+              r="13"
+              fill="none"
+              stroke="var(--tract-passive)"
+              strokeWidth="2.5"
+              strokeDasharray="4 4"
+            />
+            <circle
+              {...meta('上门齿 · Upper incisor')}
+              className="organ-control passive-control"
+              cx={upperIncisorPoint.x}
+              cy={upperIncisorPoint.y}
+              r="13"
+              fill="none"
+              stroke="var(--tract-passive)"
+              strokeWidth="2.5"
+              strokeDasharray="4 4"
+            />
+          </g>
+        )}
       </svg>
       {label && (
         <div className="tract-label" style={{ pointerEvents: 'none' }}>

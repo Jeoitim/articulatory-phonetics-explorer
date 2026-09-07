@@ -5,7 +5,12 @@ import { chartRows } from '../data/chart';
 import { extendedConsonants } from '../data/additional-consonants';
 import { consonants } from '../data/consonants';
 import { airstreamLabels, nonPulmonicConsonants } from '../data/non-pulmonic';
-import { placeLabels, mannerLabels, mannerEnglish } from '../data/labels';
+import {
+  placeLabels,
+  placeEnglish,
+  mannerLabels,
+  mannerEnglish,
+} from '../data/labels';
 import { IPAMarks } from './IPAMarks';
 export function IPAChart({
   selected,
@@ -48,12 +53,13 @@ export function IPAChart({
           <thead>
             <tr>
               <th scope="col">
-                调音方法 <span>↓ Manner / Place →</span>
+                调音方法
+                <small className="term-english">Manner / Place</small>
               </th>
               {places.map((p) => (
                 <th key={p} scope="col">
                   {placeLabels[p]}
-                  <span>{p}</span>
+                  <small className="term-english">{placeEnglish[p]}</small>
                 </th>
               ))}
             </tr>
@@ -63,7 +69,9 @@ export function IPAChart({
               <tr key={row.manner}>
                 <th scope="row">
                   {mannerLabels[row.manner]}
-                  <span>{mannerEnglish[row.manner]}</span>
+                  <small className="term-english">
+                    {mannerEnglish[row.manner]}
+                  </small>
                 </th>
                 {row.cells.map((cell, i) => (
                   <td key={i} className={cell === '#' ? 'impossible' : ''}>

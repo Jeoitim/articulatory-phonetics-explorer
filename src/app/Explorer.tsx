@@ -73,6 +73,12 @@ export default function Explorer() {
               : 0,
     });
   }
+  function handleAnatomyClick(name: string) {
+    if (!name.includes('软腭')) return;
+    const lowered = animation.pose.velum <= 0.5;
+    setMode('build');
+    changeFeatures({ ...features, velum: lowered ? 'lowered' : 'raised' });
+  }
   function select(symbol: string) {
     setMode('explore');
     const s = soundBySymbol(symbol);
@@ -205,7 +211,7 @@ export default function Explorer() {
                         <Toggle
                           key={key}
                           label={
-                            ['解剖标签', '气流', '调音区域', '舌头控制点'][i]!
+                            ['解剖标签', '气流', '调音区域', '器官控制点'][i]!
                           }
                           checked={display[key]}
                           onChange={(v) => setDisplay({ ...display, [key]: v })}
@@ -214,7 +220,7 @@ export default function Explorer() {
                     )}
                   </div>
                 )}
-                <div className="diagram-stage">
+                <div className="diagram-stage sagittal-stage">
                   <span className="view-tag">
                     SAGITTAL VIEW <span>矢状面</span>
                   </span>
@@ -241,10 +247,12 @@ export default function Explorer() {
                     }
                     lateral={features.airflow === 'lateral'}
                     animated={!animation.reduced}
+                    onAnatomyClick={handleAnatomyClick}
                   />
                   <div className="diagram-hint">
                     <MousePointer2 size={14} />
-                    拖动金色控制点，探索调音空间<span>Shift 关闭吸附</span>
+                    拖动金色控制点或点击软腭，探索调音空间
+                    <span>Shift 关闭吸附 · 软腭点击切换鼻咽通道</span>
                   </div>
                 </div>
                 <div className="insets">

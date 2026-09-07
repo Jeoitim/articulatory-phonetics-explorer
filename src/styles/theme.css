@@ -3,6 +3,7 @@
   color-scheme: light dark;
   --tract-contact: light-dark(#b38c3f, #e3c483);
   --tract-active: light-dark(#fff5dd, #735d3a);
+  --tract-passive: light-dark(#5898ad, #83bdd1);
   --night-surface: #1c2420;
   --night-raised: #222b25;
   --night-muted: #2b352d;

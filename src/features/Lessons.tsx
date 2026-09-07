@@ -246,6 +246,18 @@ export function Lessons() {
                         : 'smooth'
                   }
                   animated={!anim.reduced}
+                  onAnatomyClick={(name) => {
+                    if (!name.includes('软腭')) return;
+                    const lowered = anim.pose.velum <= 0.5;
+                    const next = {
+                      ...f,
+                      velum: lowered
+                        ? ('lowered' as const)
+                        : ('raised' as const),
+                    };
+                    setF(next);
+                    edit({ ...anim.pose, velum: lowered ? 1 : 0 });
+                  }}
                 />
                 <div className="lesson-actions" aria-label="课程演示控制">
                   <button

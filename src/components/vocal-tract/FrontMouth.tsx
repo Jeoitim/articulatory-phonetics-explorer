@@ -32,39 +32,51 @@ export function FrontMouth({
       <title>嘴部正面 · 唇峰、唇珠与口腔深度示意</title>
       <defs>
         <radialGradient id={`${id}-skin`}>
-          <stop stopColor="#ebd0bc" stopOpacity=".55" />
-          <stop offset=".72" stopColor="#eed9c8" stopOpacity=".2" />
-          <stop offset="1" stopColor="#eed9c8" stopOpacity="0" />
+          <stop stopColor="light-dark(#ebd0bc, #6b554a)" stopOpacity=".55" />
+          <stop
+            offset=".72"
+            stopColor="light-dark(#eed9c8, #59463e)"
+            stopOpacity=".2"
+          />
+          <stop
+            offset="1"
+            stopColor="light-dark(#eed9c8, #59463e)"
+            stopOpacity="0"
+          />
         </radialGradient>
         <radialGradient id={`${id}-lip-light`}>
-          <stop stopColor="#ffe1ca" stopOpacity=".36" />
-          <stop offset="1" stopColor="#ffe1ca" stopOpacity="0" />
+          <stop stopColor="light-dark(#ffe1ca, #80614d)" stopOpacity=".36" />
+          <stop
+            offset="1"
+            stopColor="light-dark(#ffe1ca, #80614d)"
+            stopOpacity="0"
+          />
         </radialGradient>
         <linearGradient id={`${id}-upper`} x2=".15" y2="1">
-          <stop stopColor="#d1a18e" />
-          <stop offset=".38" stopColor="#b87669" />
-          <stop offset=".88" stopColor="#99574f" />
-          <stop offset="1" stopColor="#76453f" />
+          <stop stopColor="light-dark(#d1a18e, #a16f63)" />
+          <stop offset=".38" stopColor="light-dark(#b87669, #89574f)" />
+          <stop offset=".88" stopColor="light-dark(#99574f, #71433f)" />
+          <stop offset="1" stopColor="light-dark(#76453f, #51302f)" />
         </linearGradient>
         <linearGradient id={`${id}-lower`} x2="0" y2="1">
-          <stop stopColor="#92524e" />
-          <stop offset=".36" stopColor="#c58a7e" />
-          <stop offset=".68" stopColor="#d8a798" />
-          <stop offset="1" stopColor="#b37c6d" />
+          <stop stopColor="light-dark(#92524e, #6f403e)" />
+          <stop offset=".36" stopColor="light-dark(#c58a7e, #8e5d57)" />
+          <stop offset=".68" stopColor="light-dark(#d8a798, #a9776d)" />
+          <stop offset="1" stopColor="light-dark(#b37c6d, #774b47)" />
         </linearGradient>
         <radialGradient id={`${id}-cavity`} cx="50%" cy="75%">
-          <stop stopColor="#653e3d" />
-          <stop offset=".65" stopColor="#382424" />
-          <stop offset="1" stopColor="#241b1c" />
+          <stop stopColor="light-dark(#653e3d, #3a2525)" />
+          <stop offset=".65" stopColor="light-dark(#382424, #211719)" />
+          <stop offset="1" stopColor="light-dark(#241b1c, #110f11)" />
         </radialGradient>
         <linearGradient id={`${id}-teeth`} x2="0" y2="1">
-          <stop stopColor="#bfae99" />
-          <stop offset=".5" stopColor="#ece3d2" />
-          <stop offset="1" stopColor="#d6cbbb" />
+          <stop stopColor="light-dark(#bfae99, #8e806d)" />
+          <stop offset=".5" stopColor="light-dark(#ece3d2, #d3c7ad)" />
+          <stop offset="1" stopColor="light-dark(#d6cbbb, #a99d88)" />
         </linearGradient>
         <radialGradient id={`${id}-tongue`}>
-          <stop stopColor="#b77976" />
-          <stop offset="1" stopColor="#754745" />
+          <stop stopColor="light-dark(#b77976, #8d5b59)" />
+          <stop offset="1" stopColor="light-dark(#754745, #553438)" />
         </radialGradient>
         <clipPath id={`${id}-opening`}>
           <path d={aperture} />
@@ -74,7 +86,7 @@ export function FrontMouth({
       <path
         d="M136 31Q132 39 139 40 M164 31Q168 39 161 40 M141 41Q150 44 159 41"
         fill="none"
-        stroke="#b89681"
+        stroke="light-dark(#b89681, #a8806e)"
         strokeWidth="1.3"
         opacity=".55"
         strokeLinecap="round"
@@ -82,7 +94,7 @@ export function FrontMouth({
       <path
         d={`M143 46 Q145 ${y - h - t - 14} 140 ${y - h - t - 5} M157 46 Q155 ${y - h - t - 14} 160 ${y - h - t - 5}`}
         fill="none"
-        stroke="#ba9785"
+        stroke="light-dark(#ba9785, #a87c6b)"
         strokeWidth="1"
         opacity=".22"
       />
@@ -91,7 +103,7 @@ export function FrontMouth({
         cy={y + h + t + 9}
         rx={w * 0.7}
         ry={5 + rounding * 3}
-        fill="#956f5e"
+        fill="light-dark(#956f5e, #805a4e)"
         opacity={0.07 + rounding * 0.07}
       />
       <path d={aperture} fill={url('cavity')} />
@@ -105,7 +117,7 @@ export function FrontMouth({
           <path
             key={k}
             d={`M ${150 + k * w} ${y - h} l ${k * 2} ${h * 0.65}`}
-            stroke="#9a8978"
+            stroke="light-dark(#9a8978, #958671)"
             strokeWidth=".6"
             opacity=".34"
           />
@@ -119,13 +131,23 @@ export function FrontMouth({
         />
         <path
           d={`M150 ${y + h * 0.75}v${h * 0.3}`}
-          stroke="#724946"
+          stroke="light-dark(#724946, #4e3034)"
           opacity=".35"
           fill="none"
         />
       </g>
-      <path d={upper} fill={url('upper')} stroke="#a66f61" strokeWidth=".6" />
-      <path d={lower} fill={url('lower')} stroke="#b17f70" strokeWidth=".6" />
+      <path
+        d={upper}
+        fill={url('upper')}
+        stroke="light-dark(#a66f61, #87564e)"
+        strokeWidth=".6"
+      />
+      <path
+        d={lower}
+        fill={url('lower')}
+        stroke="light-dark(#b17f70, #8e5f58)"
+        strokeWidth=".6"
+      />
       <ellipse
         cx="150"
         cy={y - h - t * 0.5}
@@ -145,7 +167,7 @@ export function FrontMouth({
       <path
         d={`M ${150 - w * 0.44} ${y + h + t * 0.61} Q150 ${y + h + t * 0.95} ${150 + w * 0.43} ${y + h + t * 0.82}`}
         fill="none"
-        stroke="#efc8b5"
+        stroke="light-dark(#efc8b5, #d3a38e)"
         strokeWidth="1.8"
         opacity=".48"
         strokeLinecap="round"
@@ -153,7 +175,7 @@ export function FrontMouth({
       <path
         d={`M ${150 - w * 0.22} ${y - h - t * 0.85} Q ${150 - w * 0.1} ${y - h - t * 0.8} 150 ${y - h - t * 0.8} Q ${150 + w * 0.1} ${y - h - t * 0.8} ${150 + w * 0.22} ${y - h - t * 0.85}`}
         fill="none"
-        stroke="#e2b5a2"
+        stroke="light-dark(#e2b5a2, #b98575)"
         strokeWidth="1"
         opacity=".55"
       />
@@ -162,7 +184,7 @@ export function FrontMouth({
           key={k}
           d={`M ${150 + k * w} ${y + h + t * 0.28} q ${k * 2} ${t * 0.28} ${k * 3} ${t * 0.47}`}
           fill="none"
-          stroke="#8f584f"
+          stroke="light-dark(#8f584f, #70413f)"
           strokeWidth=".65"
           opacity=".16"
         />
@@ -170,12 +192,18 @@ export function FrontMouth({
       <path
         d={`M ${l - 5} ${y}q3 3 7 1 M ${r + 5} ${y}q-3 3-7 1`}
         fill="none"
-        stroke="#8c6355"
+        stroke="light-dark(#8c6355, #765449)"
         strokeWidth="1.4"
         opacity=".55"
         strokeLinecap="round"
       />
-      <text x="150" y="217" textAnchor="middle" fill="#7f806f" fontSize="12">
+      <text
+        x="150"
+        y="217"
+        textAnchor="middle"
+        fill="light-dark(#7f806f, #b4c2a8)"
+        fontSize="12"
+      >
         {rounding > 0.65
           ? '收拢 · 圆唇'
           : rounding < 0.3

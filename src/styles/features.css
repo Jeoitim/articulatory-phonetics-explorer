@@ -241,7 +241,8 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
-  margin: 16px 18px 0;
+  width: min(100% - 28px, 760px);
+  margin: 16px auto 14px;
   padding-top: 16px;
   border-top: 1px solid var(--border);
 }
@@ -261,6 +262,9 @@
   margin: 10px 18px 14px;
   color: light-dark(#8a967d, var(--night-copy));
   font-size: 11px;
+}
+.lesson-audio-status:empty {
+  display: none;
 }
 .lesson-feedback {
   padding: 13px 16px;
@@ -525,6 +529,9 @@
   .lesson-actions {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+    width: calc(100% - 24px);
+    margin: 14px auto 12px;
+    padding-top: 14px;
   }
   .lesson-actions .text-button {
     min-height: 46px;
@@ -1218,6 +1225,17 @@ output.notice {
 }
 .mark-popover-positioner {
   z-index: 100;
+  position: fixed !important;
+  inset: 0 !important;
+  display: grid;
+  place-items: center;
+  width: 100vw !important;
+  height: 100dvh !important;
+  transform: none !important;
+  pointer-events: none;
+}
+.mark-popover-positioner .mark-popover {
+  pointer-events: auto;
 }
 .mark-popover {
   width: min(960px, calc(100vw - 32px));
