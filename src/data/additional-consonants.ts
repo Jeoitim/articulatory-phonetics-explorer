@@ -387,7 +387,7 @@ export const extendedConsonants: Consonant[] = [
   {
     ...make([
       'ɕ',
-      'postalveolar',
+      'alveolo-palatal',
       'fricative',
       false,
       'Voiceless alveolo-palatal sibilant',
@@ -399,7 +399,7 @@ export const extendedConsonants: Consonant[] = [
   {
     ...make([
       'ʑ',
-      'postalveolar',
+      'alveolo-palatal',
       'fricative',
       true,
       'Voiced alveolo-palatal sibilant',
@@ -474,7 +474,13 @@ export const extendedConsonants: Consonant[] = [
     (symbol, i) => ({
       ...make([
         symbol,
-        i < 2 ? 'alveolar' : i < 6 ? 'postalveolar' : 'retroflex',
+        i < 2
+          ? 'alveolar'
+          : i < 4
+            ? 'postalveolar'
+            : i < 6
+              ? 'alveolo-palatal'
+              : 'retroflex',
         'affricate',
         i % 2 === 1,
         [

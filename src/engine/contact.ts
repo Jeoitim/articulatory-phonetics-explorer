@@ -1,4 +1,10 @@
-import type { Pose, Place, Manner, TongueKey } from '../domain/phonetics';
+import type {
+  Pose,
+  Place,
+  Manner,
+  TongueKey,
+  Consonant,
+} from '../domain/phonetics';
 import { zones } from './geometry';
 export interface ArticulatoryContact {
   active: string;
@@ -28,7 +34,45 @@ export function articulationContact(
   p: Pose,
   place: Place,
   manner?: Manner,
+  sound?: Consonant,
 ): ArticulatoryContact {
+  if (sound?.airstream === 'click') {
+    const front = articulationContact(p, place, manner);
+    return {
+      ...front,
+      active: front.active + ' ＋ 舌面后部',
+      passive: front.passive + ' ＋ 软腭',
+      note: '前后两处闭塞共同建立口腔气流机制；边搭嘴音的舌侧释放需结合俯视图。',
+    };
+  }
+  if (
+    sound?.variant === 'labial-velar' ||
+    sound?.variant === 'labial-palatal'
+  ) {
+    const back = articulationContact(p, place, manner);
+    return {
+      ...back,
+      active: '双唇 ＋ ' + back.active,
+      passive: '唇间 ＋ ' + back.passive,
+      note: '唇部与舌部同时形成狭窄，不能只标为单一舌部调音。',
+    };
+  }
+  if (sound?.variant === 'dark-l') {
+    const front = articulationContact(p, place, manner);
+    return {
+      ...front,
+      active: front.active + ' ＋ 舌面后部',
+      passive: front.passive + ' ＋ 软腭区',
+      note: '保留齿龈中央接触和舌侧通道，同时加入后舌抬高。',
+    };
+  }
+  if (sound?.variant === 'sje')
+    return {
+      active: '舌叶与舌背（本示意）',
+      passive: '龈后与后部狭窄区',
+      key: 'blade',
+      note: '[ɧ] 的实际构形差异很大；此图只展示一种近似，不把它当作统一精确模板。',
+    };
   if (place === 'bilabial')
     return { active: '下唇', passive: '上唇', key: null };
   if (place === 'labiodental')
@@ -44,6 +88,13 @@ export function articulationContact(
     };
   if (place === 'uvular' && manner === 'trill')
     return { active: '小舌', passive: '舌面后部', key: null };
+  if (place === 'alveolo-palatal')
+    return {
+      active: '舌叶后部与舌面前部',
+      passive: '龈后至硬腭前部',
+      key: 'front',
+      note: '舌叶与舌面前部共同抬高，形成较长的腭化狭窄区；不能只凭一个龈后接近点判断。',
+    };
   if (place === 'retroflex')
     return {
       active: p.retroflex > 0.85 ? '反卷舌尖／舌尖下表面' : '抬起并后撤的舌尖',
@@ -65,7 +116,7 @@ export function articulationContact(
     key,
     ...(place === 'postalveolar' && key === 'tip'
       ? {
-          note: '舌尖—龈后不能独自决定 [ʃ] 或 [ʂ]；还需观察舌尖朝向、舌叶与舌面形状。',
+          note: '可形成舌尖型 [ʃ]。本项目采用舌叶型教学预设，舌尖型以星号标注；还需结合舌尖朝向与整体形状区分卷舌音。',
         }
       : {}),
   };

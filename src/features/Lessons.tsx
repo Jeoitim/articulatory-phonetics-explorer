@@ -1,20 +1,35 @@
 import { useState } from 'react';
-import { Check, ArrowRight, Play } from 'lucide-react';
+import {
+  Check,
+  ArrowRight,
+  Play,
+  Pause,
+  RotateCcw,
+  Presentation,
+  Volume2,
+} from 'lucide-react';
 import type { Features, Pose } from '../domain/phonetics';
 import { lessons } from '../data/lessons';
 import { soundBySymbol } from '../data/consonants';
 import { infer } from '../engine/inference';
 import { useArticulation } from '../engine/animation';
 import { VocalTract } from '../components/vocal-tract/VocalTract';
-import { Controls } from '../components/Controls';
+import { Controls, Range } from '../components/Controls';
+import {
+  fricativeContinuum,
+  sampleFricativeContinuum,
+} from '../engine/fricative-continuum';
+import { useAudio } from '../engine/audio';
 export function Lessons() {
   const [index, setIndex] = useState(0),
     [answer, setAnswer] = useState<number | null>(null),
     [completed, setCompleted] = useState<number[]>([]),
     [edited, setEdited] = useState(false);
   const lesson = lessons[index]!;
+  const [continuum, setContinuum] = useState(0);
   const [f, setF] = useState<Features>(soundBySymbol('t'));
   const anim = useArticulation(soundBySymbol('t'));
+  const audio = useAudio();
   const match = infer(anim.pose, f);
   const achieved =
     edited &&
@@ -26,7 +41,9 @@ export function Lessons() {
     anim.edit(p);
   }
   function change(i: number) {
+    audio.stop();
     setIndex(i);
+    setContinuum(0);
     setAnswer(null);
     setEdited(false);
     const s = soundBySymbol(lessons[i]!.start);
@@ -60,7 +77,7 @@ export function Lessons() {
       </nav>
       <div className="lesson-content">
         <span className="eyebrow">
-          LESSON {String(index + 1).padStart(2, '0')} / 10
+          LESSON {String(index + 1).padStart(2, '0')} / {lessons.length}
         </span>
         <h2>{lesson.title}</h2>
         <p>{lesson.explanation}</p>
@@ -68,6 +85,44 @@ export function Lessons() {
           <strong>动手试一试 {lesson.target && `[${lesson.target}]`}</strong>
           <p>{lesson.instruction}</p>
         </div>
+        {lesson.continuum && (
+          <div className="continuum-panel">
+            <div className="continuum-stops">
+              {fricativeContinuum.map((step, i) => (
+                <button
+                  key={step.symbol}
+                  aria-pressed={continuum === i}
+                  onClick={() => {
+                    setContinuum(i);
+                    setF(soundBySymbol(step.symbol));
+                    edit(sampleFricativeContinuum(i));
+                  }}
+                >
+                  <b>[{step.symbol}]</b>
+                  <span>{step.active}</span>
+                  <small>{step.passive}</small>
+                </button>
+              ))}
+            </div>
+            <Range
+              label="连续构形 · s → ʃ → ɕ → ç"
+              min={0}
+              max={3}
+              step={0.01}
+              value={continuum}
+              onChange={(t) => {
+                setContinuum(t);
+                setF(soundBySymbol('s'));
+                edit(sampleFricativeContinuum(t));
+              }}
+            />
+            <p>{fricativeContinuum[Math.round(continuum)]!.note}</p>
+            <p className="chart-note">
+              整数节点为教学预设；节点之间是连续过渡，不保证每个中间位置都有唯一
+              IPA 对应。
+            </p>
+          </div>
+        )}
         {lesson.target && (
           <>
             <div className="lesson-experiment">
@@ -92,24 +147,40 @@ export function Lessons() {
                   }
                   animated={!anim.reduced}
                 />
-                <button
-                  className="text-button"
-                  onClick={() => {
-                    const target = soundBySymbol(lesson.target!);
-                    setF(target);
-                    anim.select(target, true);
-                    setEdited(false);
-                  }}
-                >
-                  <Play size={14} />
-                  准备目标音演示
-                </button>
-                <button className="text-button" onClick={anim.play}>
-                  播放 / 暂停
-                </button>
-                <button className="text-button" onClick={() => change(index)}>
-                  重新练习
-                </button>
+                <div className="lesson-actions" aria-label="课程演示控制">
+                  <button
+                    className="text-button"
+                    onClick={() => {
+                      const target = soundBySymbol(lesson.target!);
+                      setF(target);
+                      anim.select(target, true);
+                      setEdited(false);
+                    }}
+                  >
+                    <Presentation size={15} />
+                    <span>演示目标音</span>
+                  </button>
+                  <button className="text-button" onClick={anim.play}>
+                    {anim.playing ? <Pause size={15} /> : <Play size={15} />}
+                    <span>{anim.playing ? '暂停动画' : '播放动画'}</span>
+                  </button>
+                  <button
+                    className="text-button"
+                    onClick={() => {
+                      void audio.play(lesson.target!);
+                    }}
+                  >
+                    <Volume2 size={15} />
+                    <span>听示例音</span>
+                  </button>
+                  <button className="text-button" onClick={() => change(index)}>
+                    <RotateCcw size={15} />
+                    <span>重新练习</span>
+                  </button>
+                </div>
+                <output className="lesson-audio-status" aria-live="polite">
+                  {audio.status}
+                </output>
               </div>
               <Controls
                 features={f}
@@ -133,7 +204,9 @@ export function Lessons() {
               {achieved
                 ? '✓ 与目标教学构形一致。请完成下面的小测试。'
                 : edited
-                  ? match.explanation
+                  ? match.status === 'none' || match.status === 'unsupported'
+                    ? match.explanation
+                    : `[${match.candidates[0]?.sound.symbol}${match.nonTypical ? '*' : ''}] ${match.explanation}`
                   : '提示：拖动控制点或调整参数，系统将根据构形与特征共同判断。'}
             </output>
           </>
@@ -170,10 +243,10 @@ export function Lessons() {
             className="next-lesson"
             onClick={() => {
               setCompleted([...new Set([...completed, index])]);
-              if (index < 9) change(index + 1);
+              if (index < lessons.length - 1) change(index + 1);
             }}
           >
-            完成本课{index < 9 ? '，继续下一课' : ''}
+            完成本课{index < lessons.length - 1 ? '，继续下一课' : ''}
             <ArrowRight size={14} />
           </button>
         </div>

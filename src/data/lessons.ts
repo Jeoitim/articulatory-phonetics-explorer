@@ -1,4 +1,16 @@
-export const lessons = [
+interface Lesson {
+  title: string;
+  en: string;
+  target: string | null;
+  start: string;
+  instruction: string;
+  explanation: string;
+  question: string;
+  options: string[];
+  answer: number;
+  continuum?: boolean;
+}
+export const lessons: Lesson[] = [
   {
     title: '声音在哪里形成？',
     en: 'Place of articulation',
@@ -80,6 +92,24 @@ export const lessons = [
       '[j] 是硬腭近音，例如英语 yes 的首音。它并不是英语字母 j 的发音。',
     question: '[j] 的典型调音方法是？',
     options: ['塞音', '近音', '鼻音'],
+    answer: 1,
+  },
+  {
+    title: '从齿龈到硬腭：四种擦音',
+    en: 's → ʃ → ɕ → ç',
+    start: 's',
+    target: 'ç',
+    continuum: true,
+    instruction:
+      '先点击四个节点比较主动器官，再拖动连续体观察联动变化。也可手动调整舌叶和舌面前部，尝试构造 [ɕ]，最后到达 [ç]。',
+    explanation:
+      '这条连续体同时改变舌叶、舌面与狭窄区，不是把一个接触点从前往后平移。中间形状仅作教学过渡，二维图不能判定真实咝声或精确音类边界。',
+    question: '区别典型 [ʃ] 与 [ɕ] 的关键是什么？',
+    options: [
+      '[ɕ] 必须由舌尖单独抬起',
+      '[ɕ] 的舌叶后部与舌面前部共同抬高，形成更广的腭化狭窄区',
+      '只看最近控制点是否在龈后',
+    ],
     answer: 1,
   },
   {

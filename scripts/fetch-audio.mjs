@@ -2,6 +2,9 @@ import { readFile, writeFile } from 'node:fs/promises';
 const manifest = JSON.parse(
   await readFile('public/audio/manifest.json', 'utf8'),
 );
+const userAgent =
+  process.env.WIKIMEDIA_USER_AGENT ||
+  'ArticulatoryPhoneticsExplorer/1.0 (local educational project; https://localhost:3000/)';
 // The checked-in manifest is the replaceable audio interface. All existing URLs
 // and licenses were verified against Commons imageinfo and source revisions.
 // Download is opt-in; honor throttling immediately rather than retrying in a loop.
@@ -16,6 +19,7 @@ for (const [symbol, item] of Object.entries(manifest)) {
   if (!item.audioUrl.startsWith('https://upload.wikimedia.org/')) continue;
   const response = await fetch(item.audioUrl, {
     signal: AbortSignal.timeout(30000),
+    headers: { 'user-agent': userAgent, accept: 'audio/ogg,audio/*;q=0.8' },
   });
   if (response.status === 429) {
     console.log(
@@ -48,5 +52,6 @@ for (const [symbol, item] of Object.entries(manifest)) {
     JSON.stringify(manifest, null, 2),
   );
   console.log(symbol + ' cached');
-  await new Promise((r) => setTimeout(r, 5000));
+  await new Promise((r) => setTimeout(r, 15000));
 }
+await import('./sync-audio-manifest.mjs');

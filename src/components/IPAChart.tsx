@@ -106,12 +106,47 @@ export function IPAChart({
           </tbody>
         </table>
       </div>
+      <section className="alveolo-palatal-chart">
+        <h3>
+          龈腭辅音 <span>Alveolo-palatal</span>
+        </h3>
+        <p className="chart-note">
+          舌叶后部与舌面前部共同抬高，狭窄区延伸至硬腭前部。与龈后 [ʃ ʒ]、硬腭
+          [ç ʝ] 分开列示；[ɕ ʑ] 在官方 IPA 表中列于“其他符号”。
+        </p>
+        <div>
+          {extendedConsonants
+            .filter(
+              (s) =>
+                s.place === 'alveolo-palatal' &&
+                (!query ||
+                  `${s.symbol} ${s.name} ${s.zh}`
+                    .toLowerCase()
+                    .includes(query.toLowerCase())),
+            )
+            .map((s) => (
+              <button
+                key={s.symbol}
+                className={
+                  'extension-key ' + (selected === s.symbol ? 'selected' : '')
+                }
+                title={s.name}
+                aria-pressed={selected === s.symbol}
+                onClick={() => onSelect(s.symbol)}
+              >
+                <b>{s.symbol}</b>
+                <span>{s.zh}</span>
+              </button>
+            ))}
+        </div>
+      </section>
       <div className="extension-chart">
         {['其他肺部辅音与次要调音', '常用塞擦音'].map((heading, i) => (
           <section key={heading}>
             <h3>{heading}</h3>
             <div>
               {extendedConsonants
+                .filter((s) => s.place !== 'alveolo-palatal')
                 .filter((s) => (s.manner === 'affricate') === (i === 1))
                 .filter(
                   (s) =>

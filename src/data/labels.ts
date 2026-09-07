@@ -5,6 +5,7 @@ export const placeLabels: Record<Place, string> = {
   dental: '齿',
   alveolar: '齿龈',
   postalveolar: '齿龈后',
+  'alveolo-palatal': '龈腭',
   retroflex: '卷舌',
   palatal: '硬腭',
   velar: '软腭',

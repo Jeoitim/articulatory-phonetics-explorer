@@ -28,5 +28,5 @@ async function emit(dir) {
 await emit('src/domain');
 await emit('src/data');
 await emit('src/engine');
-await emit('src/components/vocal-tract');
+await emit('src/components');
 await emit('tests');

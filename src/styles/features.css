@@ -216,6 +216,29 @@
   bottom: 10px;
   left: 10px;
 }
+.lesson-actions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.lesson-actions .text-button {
+  min-height: 42px;
+  justify-content: center;
+  gap: 7px;
+  white-space: nowrap;
+  padding: 9px 10px;
+}
+.lesson-actions .text-button svg {
+  flex: 0 0 auto;
+}
+.lesson-audio-status {
+  display: block;
+  min-height: 18px;
+  margin: 7px 2px 0;
+  color: #8a967d;
+  font-size: 11px;
+}
 .lesson-feedback {
   padding: 13px 16px;
   font-size: 12px;
@@ -410,6 +433,14 @@
   .lesson-content {
     padding: 0;
   }
+  .lesson-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .lesson-actions .text-button {
+    min-height: 46px;
+    font-size: 12px;
+  }
 }
 /* Atlas coordinates remain native; the interface scales the SVG as a whole. */
 .atlas-tract .tract {
@@ -449,6 +480,275 @@
 }
 .non-pulmonic-chart {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.alveolo-palatal-chart {
+  padding: 18px;
+  margin: 18px 0;
+  background: #f4f7ee;
+  border: 1px solid #dfe5d6;
+  border-radius: 10px;
+}
+.alveolo-palatal-chart h3 {
+  font-size: 14px;
+  color: #5b7051;
+}
+.alveolo-palatal-chart h3 span {
+  font-size: 11px;
+  font-weight: 400;
+  margin-left: 8px;
+}
+.alveolo-palatal-chart > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.non-typical-star {
+  font-size: 0.4em;
+  vertical-align: super;
+  color: #a28c59;
+}
+.realization-options {
+  padding: 13px 0;
+  border-top: 1px solid #e9e8df;
+  font-size: 12px;
+  color: #7e866e;
+}
+.realization-options > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+.realization-options button {
+  padding: 6px 10px;
+  border: 1px solid #dce3d3;
+  border-radius: 6px;
+  background: #f4f7ef;
+  cursor: pointer;
+}
+.realization-options p {
+  font-size: 11px;
+  line-height: 1.7;
+}
+.continuum-panel {
+  padding: 18px;
+  background: #f5f7ef;
+  border: 1px solid #dee5d5;
+  border-radius: 10px;
+  margin: 18px 0;
+}
+.continuum-stops {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.continuum-stops button {
+  display: grid;
+  gap: 8px;
+  padding: 12px 8px;
+  border: 1px solid #dce3d3;
+  background: #fffef9;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #6f7c60;
+}
+.continuum-stops button[aria-pressed='true'] {
+  background: #e7edde;
+  border-color: #98ac86;
+}
+.continuum-stops b {
+  font:
+    30px Georgia,
+    'Segoe UI',
+    sans-serif;
+}
+.continuum-stops span,
+.continuum-stops small {
+  font-size: 11px;
+}
+@media (max-width: 600px) {
+  .continuum-stops {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.vowel-lab {
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 1fr);
+}
+.vowel-controls {
+  display: grid;
+  gap: 18px;
+}
+.vowel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  height: 66px;
+}
+.vowel-symbol {
+  flex: 0 0 112px;
+  text-align: right;
+  white-space: nowrap;
+  font:
+    48px Georgia,
+    'Segoe UI',
+    sans-serif;
+  color: #596d4c;
+}
+.vowel-symbol.custom {
+  font-size: 18px;
+}
+.vowel-heading > div {
+  min-width: 0;
+}
+.vowel-heading h2 {
+  white-space: nowrap;
+}
+.vowel-chart {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 520 / 400;
+  margin: 20px 0 0;
+}
+.vowel-chart > svg {
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  user-select: none;
+}
+.vowel-key {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: #5f6858;
+  font:
+    25px Georgia,
+    'Segoe UI',
+    sans-serif;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.vowel-key:active {
+  transform: translate(-50%, -50%);
+  background: transparent;
+}
+.vowel-key:hover,
+.vowel-key.selected {
+  background: transparent;
+  color: #3e5c2e;
+  box-shadow: none;
+}
+.vowel-key.selected {
+  font-weight: 600;
+}
+.vowel-key:focus-visible {
+  outline: 2px solid #849779;
+  outline-offset: 2px;
+}
+.vowel-description {
+  font-size: 14px;
+  color: #68795b;
+  margin-bottom: 18px;
+}
+.vowel-audio {
+  margin: 0 0 18px;
+  padding: 12px 0;
+  border-top: 1px solid #e4e8dc;
+  color: #7d876f;
+  font-size: 11px;
+}
+.vowel-audio output {
+  display: block;
+  min-height: 20px;
+  margin: 8px 0;
+}
+.vowel-audio summary {
+  cursor: pointer;
+}
+.vowel-audio details p {
+  line-height: 1.6;
+  margin: 6px 0;
+}
+.vowel-audio button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.mouth-panel {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 26px;
+  background: #f7f8f1;
+  border-top: 1px solid #e2e6d8;
+}
+.mouth-panel h3 {
+  font-size: 14px;
+  font-weight: 500;
+}
+.mouth-panel h3 span {
+  display: block;
+  font-size: 11px;
+  color: #999a8a;
+}
+.mouth-panel p {
+  color: #868974;
+  font-size: 12px;
+  margin-top: 10px;
+}
+.front-mouth {
+  width: 100%;
+  max-height: 185px;
+}
+.apical-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0;
+}
+.apical-card p {
+  font-size: 12px;
+  line-height: 1.9;
+  margin: 10px 0;
+  color: #7d806f;
+}
+.vowel-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 11px;
+  color: #839376;
+}
+@media (max-width: 900px) {
+  .vowel-lab {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 420px) {
+  .mode-tabs {
+    overflow-x: auto;
+  }
+  .mode-tabs [data-slot='tabs-list'] {
+    min-width: 400px;
+  }
+  .vowel-controls .sound-card {
+    padding: 18px 12px;
+  }
+  .vowel-key {
+    font-size: 22px;
+    width: 23px;
+    height: 30px;
+  }
+  .mouth-panel {
+    padding: 10px 16px;
+  }
 }
 .extension-chart section > div {
   display: flex;
@@ -590,6 +890,59 @@
 .right-column > .build-controls {
   margin-top: 0;
   margin-bottom: 16px;
+}
+.build-lab > .right-column {
+  display: block;
+}
+.workbench {
+  min-width: 0;
+}
+.build-lab .build-controls {
+  margin: 16px 0 0;
+}
+.build-lab .sound-card {
+  display: block;
+}
+.sound-summary,
+.sound-detail {
+  min-width: 0;
+}
+.build-lab .sound-detail {
+  border-left: 0;
+  padding-left: 0;
+}
+.build-lab .sound-detail .features {
+  margin-top: 0;
+}
+.sound-extra > summary {
+  cursor: pointer;
+  padding: 12px 0;
+  color: #768465;
+  font-size: 12px;
+}
+.sound-extra[open] > summary {
+  margin-bottom: 10px;
+}
+.unmatched-card h2 {
+  margin-top: 18px;
+}
+.unmatched-card .contact-pair {
+  margin-top: 0;
+}
+@media (max-width: 720px) {
+  .build-lab > .vocal-panel,
+  .build-lab .build-controls {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .build-lab .sound-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .build-lab .sound-detail {
+    border-left: 0;
+    padding-left: 0;
+  }
 }
 output.match-explanation,
 output.lesson-feedback,

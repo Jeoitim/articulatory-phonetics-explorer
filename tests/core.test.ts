@@ -23,25 +23,222 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 import { VocalTract } from '../src/components/vocal-tract/VocalTract';
 import { nonPulmonicConsonants } from '../src/data/non-pulmonic';
-void test('all recordings have a source, attribution and a playable media URL', () => {
+import { vowels, apicalVowels, vowelChartPoint } from '../src/data/vowels';
+import { vowelPose, mouthGeometry } from '../src/engine/vowels';
+import { interpolate } from '../src/engine/geometry';
+import { vowelMotionProgress } from '../src/engine/vowel-motion';
+import { UnmatchedSoundCard } from '../src/components/UnmatchedSoundCard';
+import { vowelAudio } from '../src/data/vowel-audio';
+void test('every standard vowel has a sourced recording and rounded high vowels keep a small aperture', () => {
+  for (const v of vowels) {
+    const a = vowelAudio[v.symbol];
+    assert.ok(a?.source.startsWith('https://commons.wikimedia.org/wiki/File:'));
+    assert.ok(a?.license && a?.attribution);
+    if (a?.audioUrl.startsWith('/audio/'))
+      assert.ok(
+        ['OggS', 'RIFF'].includes(
+          readFileSync('public' + a.audioUrl)
+            .subarray(0, 4)
+            .toString(),
+        ),
+        v.symbol,
+      );
+  }
+  const u = mouthGeometry(1, 0),
+    unrounded = mouthGeometry(0, 0),
+    openRounded = mouthGeometry(1, 1);
+  assert.ok(u.width < unrounded.width * 0.65, 'u has visibly gathered corners');
+  assert.ok(
+    u.height < 15,
+    'rounding does not turn a high vowel into a wide-open mouth',
+  );
+  assert.ok(
+    openRounded.height < openRounded.width,
+    'open rounded aperture is not stretched vertically',
+  );
+  assert.ok(unrounded.width <= 60, 'neutral lips are not maximally stretched');
+});
+void test('unmatched result presents only current configuration, without a candidate symbol or recording', () => {
+  const sound = soundBySymbol('l');
+  const pose = preset(sound);
+  pose.tongue.tip.y += 60;
+  const match = infer(pose, sound);
+  assert.equal(match.status, 'none');
+  const html = renderToStaticMarkup(
+    createElement(UnmatchedSoundCard, { match, features: sound }),
+  );
+  assert.match(html, /暂无对应音标/);
+  assert.match(html, /当前主动器官/);
+  assert.doesNotMatch(
+    html,
+    /big-ipa|audio-button|audio-caption|附近候选|录音来源|语言实例/,
+  );
+  for (const c of match.candidates)
+    assert.ok(!html.includes(`[${c.sound.symbol}]`));
+});
+import { articulatoryVariants } from '../src/engine/variants';
+import {
+  fricativeContinuum,
+  sampleFricativeContinuum,
+} from '../src/engine/fricative-continuum';
+void test('fricative continuum has distinct articulators and ordered categories without folded tissue', () => {
+  let previous = 0;
+  for (let n = 0; n <= 300; n++) {
+    const pose = sampleFricativeContinuum(n / 100),
+      match = infer(pose, soundBySymbol('s'));
+    assert.ok(isPlausible(pose));
+    const rank = fricativeContinuum.findIndex(
+      (s) => s.symbol === match.candidates[0]!.sound.symbol,
+    );
+    assert.ok(rank >= previous, `${n}: category moved backwards`);
+    previous = rank;
+  }
+  for (const [symbol, place, active] of [
+    ['s', 'alveolar', '舌尖'],
+    ['ʃ', 'postalveolar', '舌叶'],
+    ['ɕ', 'alveolo-palatal', '舌叶后部与舌面前部'],
+    ['ç', 'palatal', '舌面前部'],
+  ]) {
+    const sound = soundBySymbol(symbol!),
+      m = infer(preset(sound), sound);
+    assert.equal(m.place, place);
+    assert.ok(m.contact.active.includes(active!));
+  }
+  const x = soundBySymbol('ɕ'),
+    noPalatalization = preset(x);
+  noPalatalization.tongue.front.y = 425;
+  assert.equal(
+    infer(noPalatalization, x).candidates[0]!.sound.symbol,
+    'ʃ',
+    'blade contact alone must not imply alveolo-palatal',
+  );
+});
+void test('all exposed active-articulator variants remain valid, keep their symbol, and carry an asterisk', () => {
+  let count = 0;
+  for (const sound of consonants)
+    for (const variant of articulatoryVariants(sound)) {
+      count++;
+      assert.ok(isPlausible(variant.pose), sound.symbol);
+      const m = infer(variant.pose, sound);
+      assert.equal(m.candidates[0]!.sound.symbol, sound.symbol);
+      assert.equal(m.status, 'closest');
+      assert.equal(m.nonTypical, true, sound.symbol);
+    }
+  assert.ok(count >= 24);
+  const sh = soundBySymbol('ʃ'),
+    apical = articulatoryVariants(sh)[0]!.pose;
+  assert.equal(infer(apical, sh).place, 'postalveolar');
+  assert.match(infer(apical, sh).explanation, /ʃ\*/);
+  assert.equal(infer(preset(sh), sh).nonTypical, false);
+});
+void test('inventory audit reports combined articulators and all canonical primary places consistently', () => {
+  for (const s of consonants) {
+    const m = infer(preset(s), s);
+    assert.equal(m.place, s.place, s.symbol);
+    assert.ok(m.contact.active && m.contact.passive);
+    assert.equal(m.nonTypical, false);
+    if (s.airstream === 'click') {
+      assert.match(m.contact.active, /舌面后部/);
+      assert.match(m.contact.passive, /软腭/);
+    }
+    if (s.variant === 'labial-velar' || s.variant === 'labial-palatal')
+      assert.match(m.contact.active, /双唇/);
+    if (s.variant === 'dark-l') assert.match(m.contact.active, /舌面后部/);
+    if (s.variant === 'epiglottal') assert.match(m.contact.active, /会厌/);
+  }
+});
+void test('vowel selection responds on the first frame and settles without overshoot', () => {
+  assert.equal(vowelMotionProgress(0), 0);
+  assert.ok(
+    vowelMotionProgress(16) > 0.15,
+    'visible movement within one frame',
+  );
+  assert.ok(vowelMotionProgress(100) > 0.7, 'no slow initial wait');
+  assert.equal(vowelMotionProgress(280), 1);
+  let last = 0;
+  for (let elapsed = 0; elapsed < 500; elapsed += 8) {
+    const p = vowelMotionProgress(elapsed);
+    assert.ok(p >= last && p <= 1);
+    last = p;
+  }
+});
+void test('vowel inventory, continuous space and transitions preserve tongue integrity', () => {
+  assert.equal(vowels.length, 28);
+  assert.equal(new Set(vowels.map((v) => v.symbol)).size, 28);
+  assert.deepEqual(
+    apicalVowels.map((v) => v.symbol),
+    ['ɿ', 'ʅ'],
+  );
+  for (let h = 0; h <= 10; h++)
+    for (let b = 0; b <= 10; b++) {
+      const p = vowelPose({ height: h / 10, backness: b / 10, rounding: 0.5 });
+      assert.ok(isPlausible(p), `${h} ${b}`);
+      for (const q of surface(p))
+        if (q.x < 610) assert.ok(q.y >= roofY(q.x) - 0.1);
+    }
+  const all = [...vowels, ...apicalVowels];
+  for (const a of all)
+    for (const b of all)
+      for (const t of [0, 0.1, 0.3, 0.5, 0.7, 0.9, 1])
+        assert.ok(
+          isPlausible(interpolate(vowelPose(a), vowelPose(b), t)),
+          `${a.symbol} → ${b.symbol} ${t}`,
+        );
+});
+void test('rounding narrows frontal lips independently from vowel height and tongue position', () => {
+  for (const [plain, rounded] of [
+    ['i', 'y'],
+    ['ɯ', 'u'],
+    ['ɛ', 'œ'],
+  ]) {
+    const a = vowels.find((v) => v.symbol === plain)!,
+      b = vowels.find((v) => v.symbol === rounded)!;
+    assert.deepEqual(vowelPose(a).tongue, vowelPose(b).tongue);
+    assert.deepEqual(
+      vowelChartPoint(a.height, a.backness),
+      vowelChartPoint(b.height, b.backness),
+    );
+    assert.ok(
+      mouthGeometry(b.rounding, b.height).width <
+        mouthGeometry(a.rounding, a.height).width,
+    );
+  }
+  assert.ok(mouthGeometry(0, 1).height > mouthGeometry(0, 0).height);
+  assert.notDeepEqual(
+    vowelPose(vowels[0]!).tongue,
+    vowelPose(apicalVowels[0]!).tongue,
+  );
+});
+void test('all consonant and vowel recordings are local and keep matching attribution', () => {
   const manifest = JSON.parse(
     readFileSync('public/audio/manifest.json', 'utf8'),
   ) as Record<
     string,
     { audioUrl: string; source: string; license: string; attribution: string }
   >;
-  for (const s of consonants) {
+  assert.equal(Object.keys(manifest).length, consonants.length + vowels.length);
+  assert.deepEqual(
+    manifest,
+    JSON.parse(readFileSync('public/attribution/audio.json', 'utf8')),
+  );
+  for (const v of vowels)
+    assert.deepEqual(vowelAudio[v.symbol], manifest[v.symbol]);
+  for (const s of [...consonants, ...vowels]) {
     const a = manifest[s.symbol];
     assert.ok(a?.source.startsWith('https://commons.wikimedia.org/'), s.symbol);
     assert.ok(a.license && a.attribution, s.symbol);
-    if (a.audioUrl.startsWith('/'))
-      assert.equal(
+    assert.ok(
+      a.audioUrl.startsWith('/audio/'),
+      s.symbol + ' must use a cached recording',
+    );
+    assert.ok(
+      ['OggS', 'RIFF'].includes(
         readFileSync('public' + a.audioUrl)
           .subarray(0, 4)
           .toString(),
-        'OggS',
-      );
-    else assert.ok(a.audioUrl.startsWith('https://upload.wikimedia.org/'));
+      ),
+      s.symbol,
+    );
   }
 });
 void test('dorsum exercise can reach a velar closure without requiring an exact preset copy', () => {

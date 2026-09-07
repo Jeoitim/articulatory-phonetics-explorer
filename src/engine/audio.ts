@@ -1,17 +1,21 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import type { AudioExample } from '../domain/phonetics';
-export function useAudio() {
-  const [manifest, setManifest] = useState<Record<string, AudioExample>>({});
+export function useAudio(initialManifest: Record<string, AudioExample> = {}) {
+  const [manifest, setManifest] =
+    useState<Record<string, AudioExample>>(initialManifest);
   const [status, setStatus] = useState('');
   const player = useRef<HTMLAudioElement | null>(null);
   const request = useRef(0);
-  const release=useCallback(()=>{request.current++;player.current?.pause();},[]);
+  const release = useCallback(() => {
+    request.current++;
+    player.current?.pause();
+  }, []);
   useEffect(() => {
     let active = true;
     fetch('/audio/manifest.json')
       .then((r) => (r.ok ? r.json() : {}))
       .then((data) => {
-        if (active) setManifest(data);
+        if (active) setManifest((current) => ({ ...current, ...data }));
       })
       .catch(() => {});
     return () => {
@@ -29,6 +33,10 @@ export function useAudio() {
     const item = manifest[symbol];
     if (!item) {
       setStatus('该示例录音暂不可用，请查看来源页面。');
+      return;
+    }
+    if (!item.audioUrl.startsWith('/audio/')) {
+      setStatus('该录音尚未完成本地缓存，暂不可播放。');
       return;
     }
     const token = request.current;

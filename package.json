@@ -7,6 +7,8 @@
   },
   "scripts": {
     "dev": "vinext dev",
+    "audio:check": "node scripts/check-audio-cache.mjs --require-complete",
+    "prebuild": "npm run audio:check",
     "build": "vinext build",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint src app tests scripts",

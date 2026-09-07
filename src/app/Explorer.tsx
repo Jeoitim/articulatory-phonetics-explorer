@@ -27,6 +27,7 @@ import { SoundCard } from '../components/SoundCard';
 import { Controls, Range, Toggle } from '../components/Controls';
 import { Compare } from '../features/Compare';
 import { Lessons } from '../features/Lessons';
+import { Vowels } from '../features/Vowels';
 import { useExplorerTool } from '../engine/webmcp';
 import { useAudio } from '../engine/audio';
 const initial = soundBySymbol('ʃ');
@@ -54,6 +55,7 @@ export default function Explorer() {
     animation.edit(p);
   }
   function changeFeatures(f: Features) {
+    audio.stop();
     setFeatures(f);
     animation.edit({
       ...animation.pose,
@@ -124,8 +126,8 @@ export default function Explorer() {
             </p>
           </div>
           <div className="intro-note">
-            <span className="status-dot on" /> 肺部呼气音
-            <span>78 个辅音 · 一个连续的调音空间</span>
+            <span className="status-dot on" /> 辅音与元音
+            <span>92 个辅音 · 28 个元音 · 普通话舌尖元音</span>
           </div>
         </div>
         <Tabs
@@ -146,6 +148,9 @@ export default function Explorer() {
               <SlidersHorizontal />
               构造声音 <span>Build</span>
             </TabsTrigger>
+            <TabsTrigger value="vowels">
+              <AudioLines /> 元音 <span>Vowels</span>
+            </TabsTrigger>
             <TabsTrigger value="compare">
               <GitCompareArrows />
               对比 <span>Compare</span>
@@ -156,159 +161,163 @@ export default function Explorer() {
             </TabsTrigger>
           </TabsList>
         </Tabs>
-        {mode === 'compare' ? (
+        {mode === 'vowels' ? (
+          <Vowels />
+        ) : mode === 'compare' ? (
           <Compare onAudio={audio.play} />
         ) : mode === 'lessons' ? (
           <Lessons />
         ) : (
-          <div className="lab-grid">
-            <section className="vocal-panel">
-              <div className="panel-heading">
-                <div>
-                  <span className="section-index">01</span>
-                  <h2>
-                    发音实验台 <span>Vocal tract</span>
-                  </h2>
-                </div>
-                <div className="panel-actions">
-                  <button
-                    onClick={() => select(selected.symbol)}
-                    title="恢复当前音的教学姿态"
-                    aria-label="重置姿态"
-                  >
-                    <RotateCcw size={16} />
-                  </button>
-                  <button
-                    onClick={() => setSettings(!settings)}
-                    aria-expanded={settings}
-                    aria-label="显示设置"
-                  >
-                    <Settings2 size={17} />
-                  </button>
-                </div>
-              </div>
-              {settings && (
-                <div className="display-settings">
-                  {(['labels', 'airflow', 'zones', 'points'] as const).map(
-                    (key, i) => (
-                      <Toggle
-                        key={key}
-                        label={
-                          ['解剖标签', '气流', '调音区域', '舌头控制点'][i]!
-                        }
-                        checked={display[key]}
-                        onChange={(v) => setDisplay({ ...display, [key]: v })}
-                      />
-                    ),
-                  )}
-                </div>
-              )}
-              <div className="diagram-stage">
-                <span className="view-tag">
-                  SAGITTAL VIEW <span>矢状面</span>
-                </span>
-                <span className="orientation">前 ← → 后</span>
-                <VocalTract
-                  airstream={features.airstream}
-                  pose={animation.pose}
-                  place={mode === 'build' ? match.place : selected.place}
-                  display={display}
-                  onEdit={edit}
-                  flow={
-                    animation.presentation
-                      ? animation.frame.flow
-                      : features.manner === 'nasal'
-                        ? 'nasal'
-                        : features.manner === 'fricative'
-                          ? 'turbulent'
-                          : features.manner === 'plosive'
-                            ? 'off'
-                            : 'smooth'
-                  }
-                  pressure={
-                    animation.presentation ? animation.frame.pressure : 0
-                  }
-                  lateral={features.airflow === 'lateral'}
-                  animated={!animation.reduced}
-                />
-                <div className="diagram-hint">
-                  <MousePointer2 size={14} />
-                  拖动金色控制点，探索调音空间<span>Shift 关闭吸附</span>
-                </div>
-              </div>
-              <div className="insets">
-                <Glottis
-                  openness={animation.pose.glottis}
-                  voiced={features.voiced}
-                  animated={!animation.reduced}
-                />
-                <TongueInset
-                  lateral={features.airflow === 'lateral'}
-                  airstream={features.airstream}
-                />
-              </div>
-              <div className="playback">
-                <button
-                  className="play-button"
-                  onClick={() =>
-                    mode === 'build' ? select(active.symbol) : animation.play()
-                  }
-                  aria-label={animation.playing ? '暂停动画' : '播放发音动画'}
-                >
-                  {animation.playing ? (
-                    <Pause size={16} />
-                  ) : (
-                    <Play size={16} fill="currentColor" />
-                  )}
-                </button>
-                <div className="timeline">
+          <div className={'lab-grid ' + (mode === 'build' ? 'build-lab' : '')}>
+            <div className="workbench">
+              <section className="vocal-panel">
+                <div className="panel-heading">
                   <div>
-                    <strong>
-                      {animation.playing ? animation.frame.phase : '发音过程'}
-                    </strong>
-                    <span>
-                      {animation.reduced
-                        ? '减少动态 · 单步模式'
-                        : '慢动作教学示意'}
-                    </span>
+                    <span className="section-index">01</span>
+                    <h2>
+                      发音实验台 <span>Vocal tract</span>
+                    </h2>
                   </div>
-                  <Range
-                    label="发音时间轴"
-                    value={animation.progress}
-                    onChange={animation.scrub}
+                  <div className="panel-actions">
+                    <button
+                      onClick={() => select(selected.symbol)}
+                      title="恢复当前音的教学姿态"
+                      aria-label="重置姿态"
+                    >
+                      <RotateCcw size={16} />
+                    </button>
+                    <button
+                      onClick={() => setSettings(!settings)}
+                      aria-expanded={settings}
+                      aria-label="显示设置"
+                    >
+                      <Settings2 size={17} />
+                    </button>
+                  </div>
+                </div>
+                {settings && (
+                  <div className="display-settings">
+                    {(['labels', 'airflow', 'zones', 'points'] as const).map(
+                      (key, i) => (
+                        <Toggle
+                          key={key}
+                          label={
+                            ['解剖标签', '气流', '调音区域', '舌头控制点'][i]!
+                          }
+                          checked={display[key]}
+                          onChange={(v) => setDisplay({ ...display, [key]: v })}
+                        />
+                      ),
+                    )}
+                  </div>
+                )}
+                <div className="diagram-stage">
+                  <span className="view-tag">
+                    SAGITTAL VIEW <span>矢状面</span>
+                  </span>
+                  <span className="orientation">前 ← → 后</span>
+                  <VocalTract
+                    airstream={features.airstream}
+                    pose={animation.pose}
+                    place={mode === 'build' ? match.place : selected.place}
+                    display={display}
+                    onEdit={edit}
+                    flow={
+                      animation.presentation
+                        ? animation.frame.flow
+                        : features.manner === 'nasal'
+                          ? 'nasal'
+                          : features.manner === 'fricative'
+                            ? 'turbulent'
+                            : features.manner === 'plosive'
+                              ? 'off'
+                              : 'smooth'
+                    }
+                    pressure={
+                      animation.presentation ? animation.frame.pressure : 0
+                    }
+                    lateral={features.airflow === 'lateral'}
+                    animated={!animation.reduced}
+                  />
+                  <div className="diagram-hint">
+                    <MousePointer2 size={14} />
+                    拖动金色控制点，探索调音空间<span>Shift 关闭吸附</span>
+                  </div>
+                </div>
+                <div className="insets">
+                  <Glottis
+                    openness={animation.pose.glottis}
+                    voiced={features.voiced}
+                    animated={!animation.reduced}
+                  />
+                  <TongueInset
+                    lateral={features.airflow === 'lateral'}
+                    airstream={features.airstream}
                   />
                 </div>
-                <button
-                  className="speed-button"
-                  onClick={() =>
-                    animation.setSpeed(
-                      animation.speed === 0.5
-                        ? 1
-                        : animation.speed === 1
-                          ? 0.25
-                          : 0.5,
-                    )
-                  }
-                  aria-label="切换播放速度"
-                >
-                  {animation.speed}×
-                </button>
-                <button
-                  className="icon-button"
-                  aria-label="下一发音阶段"
-                  onClick={() =>
-                    animation.scrub(
-                      animation.progress >= 0.99
-                        ? 0
-                        : Math.min(1, animation.progress + 0.2),
-                    )
-                  }
-                >
-                  <StepForward size={16} />
-                </button>
-              </div>
-            </section>
-            <div className="right-column">
+                <div className="playback">
+                  <button
+                    className="play-button"
+                    onClick={() =>
+                      mode === 'build'
+                        ? select(active.symbol)
+                        : animation.play()
+                    }
+                    aria-label={animation.playing ? '暂停动画' : '播放发音动画'}
+                  >
+                    {animation.playing ? (
+                      <Pause size={16} />
+                    ) : (
+                      <Play size={16} fill="currentColor" />
+                    )}
+                  </button>
+                  <div className="timeline">
+                    <div>
+                      <strong>
+                        {animation.playing ? animation.frame.phase : '发音过程'}
+                      </strong>
+                      <span>
+                        {animation.reduced
+                          ? '减少动态 · 单步模式'
+                          : '慢动作教学示意'}
+                      </span>
+                    </div>
+                    <Range
+                      label="发音时间轴"
+                      value={animation.progress}
+                      onChange={animation.scrub}
+                    />
+                  </div>
+                  <button
+                    className="speed-button"
+                    onClick={() =>
+                      animation.setSpeed(
+                        animation.speed === 0.5
+                          ? 1
+                          : animation.speed === 1
+                            ? 0.25
+                            : 0.5,
+                      )
+                    }
+                    aria-label="切换播放速度"
+                  >
+                    {animation.speed}×
+                  </button>
+                  <button
+                    className="icon-button"
+                    aria-label="下一发音阶段"
+                    onClick={() =>
+                      animation.scrub(
+                        animation.progress >= 0.99
+                          ? 0
+                          : Math.min(1, animation.progress + 0.2),
+                      )
+                    }
+                  >
+                    <StepForward size={16} />
+                  </button>
+                </div>
+              </section>
               {mode === 'build' && (
                 <Controls
                   features={features}
@@ -317,7 +326,13 @@ export default function Explorer() {
                   onPose={edit}
                 />
               )}
+            </div>
+            <div className="right-column">
               <SoundCard
+                onVariant={(p) => {
+                  setFeatures(active);
+                  edit(p);
+                }}
                 sound={active}
                 features={features}
                 match={mode === 'build' ? match : undefined}
@@ -328,7 +343,17 @@ export default function Explorer() {
             </div>
           </div>
         )}
-        <IPAChart selected={active.symbol} onSelect={select} />
+        {mode !== 'vowels' && (
+          <IPAChart
+            selected={
+              mode === 'build' &&
+              (match.status === 'none' || match.status === 'unsupported')
+                ? ''
+                : active.symbol
+            }
+            onSelect={select}
+          />
+        )}
         <footer>
           <span className="footer-brand">
             <AudioLines size={17} /> Articulatory Phonetics Explorer

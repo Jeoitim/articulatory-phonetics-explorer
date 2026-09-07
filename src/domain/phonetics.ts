@@ -11,7 +11,7 @@ export const places = [
   'pharyngeal',
   'glottal',
 ] as const;
-export type Place = (typeof places)[number];
+export type Place = (typeof places)[number] | 'alveolo-palatal';
 export type ExtendedPlace =
   | 'labial-velar'
   | 'labial-palatal'
@@ -81,6 +81,7 @@ export interface Consonant extends Features {
   variant?: ExtendedPlace | 'dark-l' | 'lateral-tap';
 }
 export type Match = {
+  nonTypical?: boolean;
   contact: {
     active: string;
     passive: string;
@@ -94,4 +95,4 @@ export type Match = {
   proximity: number;
   gap: number;
 };
-export type Mode = 'explore' | 'build' | 'compare' | 'lessons';
+export type Mode = 'explore' | 'build' | 'compare' | 'lessons' | 'vowels';

@@ -83,6 +83,11 @@ export const zones: { place: Place; point: Point; keys: TongueKey[] }[] = [
   { place: 'dental', point: { x: 162, y: 418 }, keys: ['tip'] },
   { place: 'alveolar', point: { x: 220, y: 385 }, keys: ['tip', 'blade'] },
   { place: 'postalveolar', point: { x: 270, y: 347 }, keys: ['blade', 'tip'] },
+  {
+    place: 'alveolo-palatal',
+    point: { x: 305, y: 354 },
+    keys: ['blade', 'front'],
+  },
   { place: 'retroflex', point: { x: 290, y: 342 }, keys: ['tip'] },
   { place: 'palatal', point: { x: 410, y: 350 }, keys: ['front', 'dorsum'] },
   { place: 'velar', point: { x: 552, y: 374 }, keys: ['dorsum'] },
@@ -501,8 +506,8 @@ export function preset(s: Consonant): Pose {
     postalveolar: [
       [218, 425],
       [270, 347 + gap],
-      [352, 399],
-      [463, 493],
+      [352, 425],
+      [463, 505],
       [543, 746],
     ],
     retroflex: [
@@ -565,6 +570,7 @@ export function preset(s: Consonant): Pose {
     p.tongue.tip = { x: 184, y: 477 };
     p.tongue.blade = { x: 290, y: 354 + gap };
     p.tongue.front = { x: 392, y: 369 };
+    p.tongue.dorsum = { x: 490, y: 470 };
   }
   if (s.variant === 'sje') {
     p.tongue.dorsum = { x: 565, y: 440 };

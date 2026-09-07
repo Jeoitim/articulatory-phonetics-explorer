@@ -8,6 +8,7 @@ import { zones, preset, tongueKeys, roofY } from './geometry';
  * Distances are drawing units, never probabilities or measured acoustic evidence. */
 export function infer(p: Pose, f: Features): Match {
   const scores = zones
+    .filter((z) => z.place !== 'alveolo-palatal')
     .filter(
       (z) =>
         f.airstream !== 'click' ||
@@ -31,12 +32,14 @@ export function infer(p: Pose, f: Features): Match {
   let place: Place = scores[0]!.place,
     gap = scores[0]!.distance;
   if (
-    p.tongue.blade.x > 282 &&
-    p.tongue.blade.x < 310 &&
-    p.tongue.blade.y < 390 &&
-    p.tongue.front.y < 405
+    p.tongue.blade.x > 278 &&
+    p.tongue.blade.x < 335 &&
+    p.tongue.blade.y - roofY(p.tongue.blade.x) < 45 &&
+    p.tongue.front.x > 365 &&
+    p.tongue.front.y - roofY(p.tongue.front.x) < 42 &&
+    p.tongue.tip.y > p.tongue.blade.y + 35
   ) {
-    place = 'postalveolar';
+    place = 'alveolo-palatal';
     gap = Math.max(0, p.tongue.blade.y - 354);
   }
   if (p.retroflex > 0.6 && p.tongue.tip.y < 430) {
@@ -149,9 +152,35 @@ export function infer(p: Pose, f: Features): Match {
     status = 'canonical';
     explanation = '接近教学预设 · 不代表唯一的真实语音实现';
   }
+  const nearest = candidates[0]!.sound;
+  const contact = articulationContact(
+    p,
+    place,
+    f.manner,
+    nearest.place === place && candidates[0]!.differences.length === 0
+      ? nearest
+      : undefined,
+  );
+  const typical = articulationContact(
+    preset(nearest),
+    nearest.place,
+    nearest.manner,
+    nearest,
+  );
+  const nonTypical =
+    status !== 'none' &&
+    nearest.place === place &&
+    (((place === 'alveolar' || place === 'postalveolar') &&
+      contact.key !== typical.key) ||
+      (place === 'retroflex' && p.retroflex < 0.85));
+  if (nonTypical) {
+    status = 'closest';
+    explanation = `[${nearest.symbol}*] ${place === 'retroflex' ? '较弱反卷' : contact.key === 'tip' ? '舌尖型' : '舌叶型'} · 非典型教学构形。星号表示偏离本项目预设，不表示这种语音实现错误。`;
+  }
   return {
+    nonTypical,
     status,
-    contact: articulationContact(p, place, f.manner),
+    contact,
     place,
     candidates,
     explanation,

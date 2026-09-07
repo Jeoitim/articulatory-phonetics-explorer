@@ -554,6 +554,16 @@ export function VocalTract({
             )}
           </g>
         )}
+        {display.zones && place === 'alveolo-palatal' && (
+          <path
+            d="M290 354 Q350 343 410 350"
+            fill="none"
+            stroke="#bc954f"
+            strokeWidth="18"
+            opacity=".16"
+            pointerEvents="none"
+          />
+        )}
         {display.zones &&
           zones
             .filter((z) => z.place !== 'retroflex')
