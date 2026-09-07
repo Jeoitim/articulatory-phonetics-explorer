@@ -55,6 +55,7 @@ export interface Pose {
   epiglottis: number;
   dentalContact: number;
   uvula: number;
+  larynx: number;
 }
 export interface AudioExample {
   audioUrl: string;

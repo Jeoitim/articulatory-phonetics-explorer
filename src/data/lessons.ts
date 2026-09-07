@@ -108,9 +108,10 @@ export const lessons = [
   {
     title: '肺部以外的机制',
     en: 'Non-pulmonic consonants',
-    target: null,
-    start: 'k',
-    instruction: '本阶段提供机制说明，不进行非肺部气流构形模拟。',
+    target: 'ǀ',
+    start: 'ǀ',
+    instruction:
+      '播放齿搭嘴音，观察前后闭塞与前部释放时的局部内入气流；再到音表比较内爆音和挤喉音。',
     explanation:
       '挤喉音使用声门闭塞及向上运动压缩空气；内爆音涉及喉部下降；搭嘴音需要前后两个闭塞以及两者之间的腔体扩张。',
     question: '搭嘴音需要什么？',

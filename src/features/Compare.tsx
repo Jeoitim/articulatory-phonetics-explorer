@@ -94,6 +94,7 @@ export function Compare({ onAudio }: { onAudio: (symbol: string) => void }) {
                 </button>
               </div>
               <VocalTract
+                airstream={s.airstream}
                 compact
                 lateral={s.airflow === 'lateral'}
                 pose={anim.presentation ? sampled.pose : preset(s)}
@@ -129,7 +130,10 @@ export function Compare({ onAudio }: { onAudio: (symbol: string) => void }) {
                   voiced={s.voiced}
                   animated={!anim.reduced}
                 />
-                <TongueInset lateral={s.airflow === 'lateral'} />
+                <TongueInset
+                  lateral={s.airflow === 'lateral'}
+                  airstream={s.airstream}
+                />
               </div>
             </article>
           );

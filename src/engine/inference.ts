@@ -8,6 +8,11 @@ import { zones, preset, tongueKeys, roofY } from './geometry';
  * Distances are drawing units, never probabilities or measured acoustic evidence. */
 export function infer(p: Pose, f: Features): Match {
   const scores = zones
+    .filter(
+      (z) =>
+        f.airstream !== 'click' ||
+        ['dental', 'alveolar', 'postalveolar'].includes(z.place),
+    )
     .filter((z) => z.place !== 'retroflex' || p.retroflex > 0.5)
     .map((z) => ({
       place: z.place,
@@ -49,7 +54,11 @@ export function infer(p: Pose, f: Features): Match {
     place = 'pharyngeal';
     gap = (1 - p.epiglottis) * 40;
   }
-  if (p.glottis < 0.05 && f.manner === 'plosive') {
+  if (
+    p.glottis < 0.05 &&
+    f.manner === 'plosive' &&
+    f.airstream === 'pulmonic-egressive'
+  ) {
     place = 'glottal';
     gap = 0;
   } else if (gap > 85 && f.manner === 'fricative' && p.lowerLip < 0.5) {
@@ -59,6 +68,7 @@ export function infer(p: Pose, f: Features): Match {
   const candidates = consonants
     .map((sound) => {
       const differences: string[] = [];
+      if (sound.airstream !== f.airstream) differences.push('气流机制不同');
       if (sound.place !== place)
         differences.push(`调音部位需接近${placeLabels[sound.place]}`);
       if (sound.manner !== f.manner) differences.push('调音方法不同');
@@ -101,9 +111,14 @@ export function infer(p: Pose, f: Features): Match {
     'tap',
     'affricate',
   ].includes(f.manner);
-  if (f.airstream !== 'pulmonic-egressive') {
-    status = 'unsupported';
-    explanation = '此机制需要额外闭塞或喉部运动，尚未实现。';
+  if (
+    (f.airstream === 'ejective' && (p.glottis > 0.05 || p.larynx > -0.3)) ||
+    (f.airstream === 'implosive' && (p.larynx < 0.3 || p.glottis > 0.4)) ||
+    (f.airstream === 'click' &&
+      Math.hypot(p.tongue.dorsum.x - 552, p.tongue.dorsum.y - 374) > 12)
+  ) {
+    status = 'none';
+    explanation = '需要相应的喉部运动、声门条件或搭嘴音后部闭塞。';
   } else if (f.manner === 'nasal' && (f.velum !== 'lowered' || p.velum < 0.5)) {
     status = 'none';
     explanation = '鼻咽通道尚未开放：降低软腭以形成鼻音。';

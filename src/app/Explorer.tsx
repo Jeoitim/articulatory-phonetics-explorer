@@ -58,7 +58,15 @@ export default function Explorer() {
     animation.edit({
       ...animation.pose,
       velum: f.velum === 'lowered' ? 1 : 0,
-      glottis: f.voiced ? 0.16 : 1,
+      glottis: f.airstream === 'ejective' ? 0 : f.voiced ? 0.16 : 1,
+      larynx:
+        f.airstream === features.airstream
+          ? animation.pose.larynx
+          : f.airstream === 'ejective'
+            ? -1
+            : f.airstream === 'implosive'
+              ? 1
+              : 0,
     });
   }
   function select(symbol: string) {
@@ -201,6 +209,7 @@ export default function Explorer() {
                 </span>
                 <span className="orientation">前 ← → 后</span>
                 <VocalTract
+                  airstream={features.airstream}
                   pose={animation.pose}
                   place={mode === 'build' ? match.place : selected.place}
                   display={display}
@@ -233,7 +242,10 @@ export default function Explorer() {
                   voiced={features.voiced}
                   animated={!animation.reduced}
                 />
-                <TongueInset lateral={features.airflow === 'lateral'} />
+                <TongueInset
+                  lateral={features.airflow === 'lateral'}
+                  airstream={features.airstream}
+                />
               </div>
               <div className="playback">
                 <button

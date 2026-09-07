@@ -4,6 +4,7 @@ import { places } from '../domain/phonetics';
 import { chartRows } from '../data/chart';
 import { extendedConsonants } from '../data/additional-consonants';
 import { consonants } from '../data/consonants';
+import { airstreamLabels, nonPulmonicConsonants } from '../data/non-pulmonic';
 import { placeLabels, mannerLabels, mannerEnglish } from '../data/labels';
 export function IPAChart({
   selected,
@@ -20,7 +21,7 @@ export function IPAChart({
         <div>
           <span className="eyebrow">THE SOUND ATLAS</span>
           <h2>
-            探索辅音 <span>Pulmonic consonants</span>
+            探索辅音 <span>IPA consonants</span>
           </h2>
         </div>
         <label className="search">
@@ -142,7 +143,9 @@ export function IPAChart({
       <div className="chart-footer">
         <span>
           <i className="legend-dot" /> 已支持 {consonants.length} 个音{' '}
-          <span className="legend-muted">59 个主表符号 + 19 个常用扩展</span>
+          <span className="legend-muted">
+            59 个肺部主表符号 + 19 个扩展 + 14 个非肺部条目
+          </span>
         </span>
         <span>
           成对符号：左清 · 右浊{' '}
@@ -156,6 +159,43 @@ export function IPAChart({
           </a>
         </span>
       </div>
+      <div className="extension-chart non-pulmonic-chart">
+        {(['click', 'implosive', 'ejective'] as const).map((mechanism) => (
+          <section key={mechanism}>
+            <h3>{airstreamLabels[mechanism]}</h3>
+            <div>
+              {nonPulmonicConsonants
+                .filter(
+                  (s) =>
+                    s.airstream === mechanism &&
+                    (!query ||
+                      `${s.symbol} ${s.zh} ${s.name}`
+                        .toLowerCase()
+                        .includes(query.toLowerCase())),
+                )
+                .map((s) => (
+                  <button
+                    key={s.symbol}
+                    className={
+                      'extension-key ' +
+                      (selected === s.symbol ? 'selected' : '')
+                    }
+                    aria-pressed={selected === s.symbol}
+                    title={s.name}
+                    onClick={() => onSelect(s.symbol)}
+                  >
+                    <b>{s.symbol}</b>
+                    <span>{s.zh}</span>
+                  </button>
+                ))}
+            </div>
+          </section>
+        ))}
+      </div>
+      <p className="chart-note">
+        非肺部辅音：覆盖官方表的搭嘴音与浊内爆音符号。ʼ
+        是挤喉附加符号，列出官方四例；不代表穷尽所有附加符号组合。内爆音箭头表示喉部下降造成的局部内入趋势。
+      </p>
       <p className="chart-note">
         齿、齿龈及齿龈后部分符号在官方表中跨列表示；此处居中放置。空白不代表不可发音，塞擦音及双重调音另列扩展。
       </p>

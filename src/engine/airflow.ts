@@ -1,4 +1,4 @@
-import type { Point, Pose } from '../domain/phonetics';
+import type { Airstream, Point, Pose } from '../domain/phonetics';
 import { roof, roofY, surface, underside, wallX } from './geometry';
 
 const boundary: Point[] = [
@@ -54,7 +54,9 @@ function airwaySamples(pose: Pose) {
   const maxX = Math.max(...front.map((p) => p.x));
   const oral = [
     ...new Set(
-      contour.filter((p) => p.x >= minX && p.x <= maxX).map((p) => p.x),
+      [...contour, ...roof]
+        .filter((p) => p.x >= minX && p.x <= maxX)
+        .map((p) => p.x),
     ),
   ]
     .sort((a, b) => b - a)
@@ -65,7 +67,10 @@ function airwaySamples(pose: Pose) {
       .reverse()
       .map((tissue) => ({ point: airwayMidpoint(tissue), tissue })),
     ...oral.map((tissue) => ({
-      point: { x: tissue.x, y: (tissue.y + roofY(tissue.x)) / 2 },
+      point: {
+        x: tissue.x,
+        y: Math.min(tissue.y, (tissue.y + roofY(tissue.x)) / 2),
+      },
       tissue,
     })),
   ];
@@ -75,7 +80,27 @@ export function oralAirway(pose: Pose): Point[] {
   return airwaySamples(pose).map((s) => s.point);
 }
 
-export function airflowPath(pose: Pose, lip: Point): string {
+export function airflowPath(
+  pose: Pose,
+  lip: Point,
+  mechanism: Airstream = 'pulmonic-egressive',
+): string {
+  if (mechanism !== 'pulmonic-egressive') {
+    const outlet = { x: 62, y: (422 + lip.y) / 2 };
+    let points = oralAirway(pose);
+    if (mechanism === 'click') {
+      // Influx ends inside the trapped oral chamber, anterior to the rear seal.
+      points = points.filter((q) => q.x < pose.tongue.dorsum.x - 55).reverse();
+      points = [outlet, ...points];
+    } else {
+      points = [{ x: 699, y: 920 + pose.larynx * 25 }, ...points, outlet];
+      if (mechanism === 'implosive') points.reverse();
+    }
+    return (
+      'M ' +
+      points.map((q) => `${q.x.toFixed(2)} ${q.y.toFixed(2)}`).join(' L ')
+    );
+  }
   if (pose.velum > 0.5)
     return 'M 699 973 C 703 821 663 705 655 560 L 650 374 Q 650 285 563 260 C 387 230 234 220 71 223';
   const samples = airwaySamples(pose);

@@ -700,5 +700,117 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "attribution": "Speaker: WikiLucas00\nRecorder: WikiLucas00",
     "description": "Audio pronunciation file from the Lingua Libre  project."
+  },
+  "ʘ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9a/Bilabial_click.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Bilabial_click.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Bilabial click.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ǀ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1f/Dental_click.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Dental_click.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Dental click.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ǃ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/3/3c/Postalveolar_click.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Postalveolar_click.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Postalveolar click.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ǂ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/8/89/Palatoalveolar_click.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Palatoalveolar_click.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Palatoalveolar click.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ǁ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f4/Alveolar_lateral_click.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Alveolar_lateral_click.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Alveolar lateral click.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ɓ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/3/31/Voiced_bilabial_implosive.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_bilabial_implosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Voiced bilabial implosive.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ɗ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Voiced_alveolar_implosive.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_alveolar_implosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Voiced alveolar implosive.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ʄ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/2/2c/Voiced_palatal_implosive.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_palatal_implosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Voiced palatal implosive.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ɠ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a8/Voiced_velar_implosive.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_velar_implosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Voiced velar implosive.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "ʛ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/0/00/Voiced_uvular_implosive.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Voiced_uvular_implosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Voiced uvular implosive.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "pʼ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/6/64/Bilabial_ejective_plosive.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Bilabial_ejective_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Bilabial ejective plosive.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "tʼ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Alveolar_ejective_plosive.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Alveolar_ejective_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Alveolar ejective plosive.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "kʼ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Velar_ejective_plosive.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Velar_ejective_plosive.ogg",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+    "attribution": "Peter Isotalo · Velar ejective plosive.ogg · Wikimedia Commons · 原录音未修改"
+  },
+  "sʼ": {
+    "audioUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7c/Alveolar_ejective_fricative.ogg",
+    "speaker": "Peter Isotalo",
+    "source": "https://commons.wikimedia.org/wiki/File:Alveolar_ejective_fricative.ogg",
+    "license": "GFDL 1.2+",
+    "licenseUrl": "https://www.gnu.org/licenses/fdl-1.2.html",
+    "attribution": "Peter Isotalo · Alveolar ejective fricative.ogg · Wikimedia Commons · 原录音未修改"
   }
 }

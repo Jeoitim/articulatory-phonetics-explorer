@@ -1,3 +1,4 @@
+import type { Airstream } from '../../domain/phonetics';
 export function Glottis({
   voiced,
   animated,
@@ -53,7 +54,14 @@ export function Glottis({
     </div>
   );
 }
-export function TongueInset({ lateral }: { lateral: boolean }) {
+export function TongueInset({
+  lateral,
+  airstream = 'pulmonic-egressive',
+}: {
+  lateral: boolean;
+  airstream?: Airstream;
+}) {
+  const inward = airstream === 'click' || airstream === 'implosive';
   return (
     <div className="inset">
       <svg
@@ -68,14 +76,22 @@ export function TongueInset({ lateral }: { lateral: boolean }) {
         <path d="M 43 52 V 28 Q 60 8 77 28 V 52" fill="#cc8e80" />
         {lateral ? (
           <path
-            d="M 36 48 V 26 l -4 6 m 4 -6 l 4 6 M 84 48 V 26 l -4 6 m 4 -6 l 4 6"
+            d={
+              inward
+                ? 'M36 18V42l-4-6m4 6l4-6 M84 18V42l-4-6m4 6l4-6'
+                : 'M 36 48 V 26 l -4 6 m 4 -6 l 4 6 M 84 48 V 26 l -4 6 m 4 -6 l 4 6'
+            }
             fill="none"
             stroke="#5898ad"
             strokeWidth="2"
           />
         ) : (
           <path
-            d="M 60 48 V 14 l -4 7 m 4 -7 l 4 7"
+            d={
+              inward
+                ? 'M60 14V43l-4-7m4 7l4-7'
+                : 'M 60 48 V 14 l -4 7 m 4 -7 l 4 7'
+            }
             fill="none"
             stroke="#5898ad"
             strokeWidth="2"
@@ -86,7 +102,9 @@ export function TongueInset({ lateral }: { lateral: boolean }) {
         <strong>
           舌面俯视 <span>Top view</span>
         </strong>
-        <p>{lateral ? '边侧气流 · Lateral' : '中央气流 · Central'}</p>
+        <p>
+          {lateral ? '边侧' : '中央'}气流 · {inward ? '局部向内' : '向外'}
+        </p>
       </div>
     </div>
   );

@@ -447,6 +447,9 @@
   color: #746e61;
   margin: 0 0 10px;
 }
+.non-pulmonic-chart {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
 .extension-chart section > div {
   display: flex;
   flex-wrap: wrap;
@@ -588,4 +591,8 @@
   margin-top: 0;
   margin-bottom: 16px;
 }
-output.match-explanation,output.lesson-feedback,output.notice{display:block}
+output.match-explanation,
+output.lesson-feedback,
+output.notice {
+  display: block;
+}

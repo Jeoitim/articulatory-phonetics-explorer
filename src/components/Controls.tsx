@@ -8,7 +8,8 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
-import type { Features, Pose, Manner } from '../domain/phonetics';
+import type { Airstream, Features, Pose, Manner } from '../domain/phonetics';
+import { airstreamLabels } from '../data/non-pulmonic';
 import { mannerLabels, mannerEnglish } from '../data/labels';
 export function Toggle({
   label,
@@ -107,6 +108,33 @@ export function Controls({
         checked={features.voiced}
         onChange={(voiced) => onFeatures({ ...features, voiced })}
       />
+      <Select
+        value={features.airstream}
+        onValueChange={(v) =>
+          v && onFeatures({ ...features, airstream: v as Airstream })
+        }
+      >
+        <SelectTrigger aria-label="气流机制">
+          <SelectValue>{airstreamLabels[features.airstream]}</SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {Object.entries(airstreamLabels).map(([value, label]) => (
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {features.airstream !== 'pulmonic-egressive' &&
+        features.airstream !== 'click' && (
+          <Range
+            label="喉部位置 · 上升 − / 下降 +"
+            min={-1}
+            max={1}
+            value={pose.larynx}
+            onChange={(larynx) => onPose({ ...pose, larynx })}
+          />
+        )}
       <Toggle
         label="鼻咽通道开放 · Nasal"
         checked={features.velum === 'lowered'}

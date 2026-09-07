@@ -1,4 +1,5 @@
 import type { Consonant, Place, Manner } from '../domain/phonetics';
+import { nonPulmonicConsonants } from './non-pulmonic';
 import { placeLabels, mannerLabels } from './labels';
 import {
   additionalConsonants,
@@ -254,6 +255,7 @@ export const consonants: Consonant[] = [
   ),
   ...additionalConsonants,
   ...extendedConsonants,
+  ...nonPulmonicConsonants,
 ];
 export const soundBySymbol = (symbol: string) =>
   consonants.find((s) => s.symbol === symbol) ?? consonants[10]!;

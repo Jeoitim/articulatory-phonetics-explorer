@@ -1,4 +1,5 @@
 import { articulationContact } from '../engine/contact';
+import { airstreamLabels } from '../data/non-pulmonic';
 import { preset } from '../engine/geometry';
 import { useState } from 'react';
 import { Volume2, ArrowUpRight, Info } from 'lucide-react';
@@ -63,9 +64,7 @@ export function SoundCard({
         <span>· 教学示意</span>
       </div>
       {match && (
-        <output className="match-explanation">
-          {match.explanation}
-        </output>
+        <output className="match-explanation">{match.explanation}</output>
       )}
       <div className="contact-pair">
         <span>
@@ -129,7 +128,7 @@ export function SoundCard({
           </dt>
           <dd>
             {features.airflow === 'central' ? '中央' : '边侧'}{' '}
-            <span>· 肺部呼气</span>
+            <span>· {airstreamLabels[features.airstream]}</span>
           </dd>
         </div>
       </dl>

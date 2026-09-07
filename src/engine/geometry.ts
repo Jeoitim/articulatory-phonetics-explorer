@@ -106,6 +106,7 @@ export const rest: Pose = {
   epiglottis: 0,
   dentalContact: 0,
   uvula: 0,
+  larynx: 0,
 };
 const bounds: Record<TongueKey, [number, number, number, number]> = {
   tip: [145, 335, 340, 600],
@@ -125,15 +126,45 @@ function boundPoint(p: Point, key: TongueKey) {
 export function surface(p: Pose): Point[] {
   const pts = tongueKeys.map((k) => p.tongue[k]),
     out: Point[] = [];
-  // Centripetal-like, limited cubic Hermite tangents retain continuous slope.
-  // A curled apex may overhang the blade; the full polygon is checked, not just x order.
+  const unit = (x: number, y: number) => {
+    const length = Math.hypot(x, y) || 1;
+    return { x: x / length, y: y / length };
+  };
+  const directions = pts.map((q, i) => {
+    if (i === 0) return unit(pts[1]!.x - q.x, pts[1]!.y - q.y);
+    if (i === 4) return unit(557 - q.x, 798 - q.y);
+    const before = pts[i - 1]!,
+      after = pts[i + 1]!;
+    // Chord-normalized directions keep a long root segment from turning a
+    // dorsal contact into a vertical spike. Elevated body contacts have a
+    // broad crown; a near-palatal crown follows the opposing palate slope.
+    const incoming = unit(q.x - before.x, q.y - before.y);
+    const outgoing = unit(after.x - q.x, after.y - q.y);
+    const base = unit(incoming.x + outgoing.x, incoming.y + outgoing.y);
+    const crownWeight =
+      i >= 2 ? clamp((Math.min(before.y, after.y) - q.y) / 45, 0, 1) : 0;
+    const proximity = clamp((40 - (q.y - roofY(q.x))) / 40, 0, 1);
+    const crown = unit(1, ((roofY(q.x + 2) - roofY(q.x - 2)) / 4) * proximity);
+    return unit(
+      base.x * (1 - crownWeight) + crown.x * crownWeight,
+      base.y * (1 - crownWeight) + crown.y * crownWeight,
+    );
+  });
+  // Arc-length-scaled Hermite handles maintain tangent direction across
+  // landmarks, with a rounded posterior shoulder returning to the hyoid.
   for (let i = 0; i < 4; i++) {
     const a = pts[i]!,
-      b = pts[i + 1]!,
-      prev = pts[Math.max(0, i - 1)]!,
-      next = pts[Math.min(4, i + 2)]!;
-    const t0 = { x: (b.x - prev.x) * 0.32, y: (b.y - prev.y) * 0.32 },
-      t1 = { x: (next.x - a.x) * 0.32, y: (next.y - a.y) * 0.32 };
+      b = pts[i + 1]!;
+    const length = Math.hypot(b.x - a.x, b.y - a.y);
+    const strength = i < 2 ? 0.65 : 0.95;
+    const t0 = {
+        x: directions[i]!.x * length * strength,
+        y: directions[i]!.y * length * strength,
+      },
+      t1 = {
+        x: directions[i + 1]!.x * length * strength,
+        y: directions[i + 1]!.y * length * strength,
+      };
     for (let j = 0; j < 16; j++) {
       const t = j / 16,
         t2 = t * t,
@@ -148,7 +179,7 @@ export function surface(p: Pose): Point[] {
         (t3 - 2 * t2 + t) * t0.y +
         (-2 * t3 + 3 * t2) * b.y +
         (t3 - t2) * t1.y;
-      if (i < 3) y = Math.max(y, roofY(x));
+      if (x <= 610) y = Math.max(y, roofY(x));
       x = Math.min(x, wallX(y) - 7);
       out.push({ x, y });
     }
@@ -349,6 +380,7 @@ export function mixPose(a: Pose, b: Pose, t: number): Pose {
     'epiglottis',
     'dentalContact',
     'uvula',
+    'larynx',
   ] as const)
     p[k] = a[k] + (b[k] - a[k]) * t;
   return p;
@@ -481,25 +513,25 @@ export function preset(s: Consonant): Pose {
       [543, 746],
     ],
     palatal: [
-      [200, 485],
-      [269, 446],
+      [185, 505],
+      [285, 420],
       [410, 350 + gap],
-      [485, 444],
-      [547, 741],
+      [520, 468],
+      [545, 725],
     ],
     velar: [
       [171, 533],
-      [272, 506],
-      [400, 462],
+      [280, 485],
+      [420, 420],
       [552, 374 + gap],
-      [565, 738],
+      [550, 725],
     ],
     uvular: [
       [173, 540],
-      [279, 514],
-      [431, 472],
+      [285, 495],
+      [435, 455],
       [608, 438 + gap + (s.manner === 'nasal' ? 60 : 0)],
-      [604, 721],
+      [575, 725],
     ],
     pharyngeal: [
       [174, 542],
@@ -543,6 +575,20 @@ export function preset(s: Consonant): Pose {
     p.tongue.root = { x: 594, y: 711 };
   }
   if (s.variant === 'epiglottal') p.epiglottis = closing ? 1 : 0.7;
+  if (s.airstream === 'ejective') {
+    p.glottis = 0;
+    p.larynx = -1;
+  }
+  if (s.airstream === 'implosive') {
+    p.glottis = 0.16;
+    p.larynx = 1;
+  }
+  if (s.airstream === 'click') {
+    p.tongue.dorsum = { x: 552, y: 374 };
+    p.tongue.root = { x: 550, y: 725 };
+    p.tongue.front =
+      s.place === 'postalveolar' ? { x: 380, y: 470 } : { x: 400, y: 485 };
+  }
   return p;
 }
 export function tonguePath(p: Pose) {

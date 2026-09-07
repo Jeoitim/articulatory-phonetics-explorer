@@ -73,6 +73,7 @@ export function Lessons() {
             <div className="lesson-experiment">
               <div className="vocal-panel">
                 <VocalTract
+                  airstream={f.airstream}
                   pose={anim.pose}
                   place={match.place}
                   display={{
@@ -128,7 +129,6 @@ export function Lessons() {
               className={
                 achieved ? 'lesson-feedback correct' : 'lesson-feedback'
               }
-             
             >
               {achieved
                 ? '✓ 与目标教学构形一致。请完成下面的小测试。'

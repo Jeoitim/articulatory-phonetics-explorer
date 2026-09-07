@@ -894,7 +894,7 @@ footer {
 }
 @keyframes air {
   to {
-    stroke-dashoffset: -92;
+    stroke-dashoffset: -84;
   }
 }
 @keyframes turb {

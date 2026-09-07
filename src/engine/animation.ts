@@ -3,6 +3,58 @@ import type { Consonant, Pose } from '../domain/phonetics';
 import { animationPresets } from '../data/animation-presets';
 import { interpolate, preset, rest } from './geometry';
 export function sampleAnimation(sound: Consonant, t: number) {
+  if (sound.airstream !== 'pulmonic-egressive') {
+    const target = preset(sound);
+    const closing = Math.min(1, t / 0.25);
+    const release = Math.max(0, Math.min(1, (t - 0.58) / 0.18));
+    const compressed = structuredClone(target);
+    if (sound.airstream === 'click') compressed.tongue.front.y -= 8;
+    let pose = interpolate(rest, compressed, closing);
+    pose.larynx = target.larynx * Math.max(0, Math.min(1, (t - 0.25) / 0.3));
+    if (sound.airstream === 'click')
+      pose.tongue.front.y += 8 * Math.max(0, Math.min(1, (t - 0.25) / 0.33));
+    if (t > 0.58 && sound.manner !== 'fricative') {
+      const opened = structuredClone(target);
+      if (sound.place === 'bilabial') opened.lowerLip = 0.55;
+      else if (sound.place === 'velar' || sound.place === 'uvular')
+        opened.tongue.dorsum.y += 45;
+      else if (sound.place === 'palatal') opened.tongue.front.y += 40;
+      else {
+        opened.tongue.tip.y += 42;
+        opened.tongue.blade.y += 30;
+      }
+      pose = interpolate(pose, opened, release);
+    }
+    if (t > 0.82) pose = interpolate(pose, rest, (t - 0.82) / 0.18);
+    if (t >= 1) pose = structuredClone(rest);
+    const active = t > 0.585 && t < 0.82;
+    return {
+      pose,
+      phase:
+        t < 0.25
+          ? '形成闭塞'
+          : t < 0.58
+            ? sound.airstream === 'click'
+              ? '扩大封闭口腔'
+              : sound.airstream === 'ejective'
+                ? '喉部上升 · 压缩空气'
+                : '喉部下降 · 扩大空间'
+            : t < 0.82
+              ? sound.airstream === 'ejective'
+                ? '向外释放'
+                : '前部释放 · 局部内入'
+              : '恢复',
+      flow: active
+        ? sound.airstream === 'ejective'
+          ? sound.manner === 'fricative'
+            ? 'turbulent'
+            : 'burst'
+          : 'ingressive'
+        : 'off',
+      pressure:
+        t < 0.25 || t > 0.82 ? 0 : t < 0.58 ? (t - 0.25) / 0.33 : 1 - release,
+    };
+  }
   const phases = animationPresets[sound.manner];
   const right = phases.findIndex((p) => p.at > t);
   const a = phases[right < 0 ? phases.length - 1 : Math.max(0, right - 1)]!;

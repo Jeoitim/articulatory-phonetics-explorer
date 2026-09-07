@@ -1,9 +1,16 @@
 'use client';
 /* oxlint-disable jsx-a11y/prefer-tag-over-role -- SVG control circles are two-dimensional sliders with keyboard handlers; HTML inputs cannot occupy an SVG path layer. */
 import { airflowPath } from '../../engine/airflow';
+import { airstreamLabels } from '../../data/non-pulmonic';
 import { useId, useRef, useState } from 'react';
 import type { PointerEvent, KeyboardEvent, MouseEvent } from 'react';
-import type { Pose, Place, TongueKey, Point } from '../../domain/phonetics';
+import type {
+  Airstream,
+  Pose,
+  Place,
+  TongueKey,
+  Point,
+} from '../../domain/phonetics';
 import {
   tonguePath,
   tongueKeys,
@@ -23,6 +30,7 @@ export interface Display {
   airflow: boolean;
 }
 interface Props {
+  airstream?: Airstream;
   pose: Pose;
   place: Place;
   display: Display;
@@ -35,6 +43,7 @@ interface Props {
   animated?: boolean;
 }
 export function VocalTract({
+  airstream = 'pulmonic-egressive',
   pose,
   place,
   display,
@@ -96,7 +105,7 @@ export function VocalTract({
     x: lipRest.x + (lipTarget.x - lipRest.x) * pose.lowerLip,
     y: lipRest.y + (lipTarget.y - lipRest.y) * pose.lowerLip,
   };
-  const air = airflowPath(pose, lip);
+  const air = airflowPath(pose, lip, airstream);
   const mouthFloor = jawPoint({ x: 139, y: 745 }, pose.jaw);
   const oralCavity =
     'M 105 443 L ' +
@@ -465,24 +474,40 @@ export function VocalTract({
             fill="#f3e6d0"
             stroke="#b7a17f"
           />
-          <path
-            {...meta('喉部 · Larynx')}
-            d={paths.posteriorLarynx}
-            fill="#dfbaa5"
-          />
-          <path
-            {...meta('声门 · Glottis')}
-            d={paths.glottis}
-            fill={pose.glottis < 0.05 ? '#c48d7c' : '#fcf8ed'}
-            stroke="#aa8c74"
-          />
-          <path
-            d="M658 959 Q706 943 740 941"
-            stroke={pose.glottis < 0.05 ? '#8c6256' : '#73a0a9'}
-            strokeWidth={pose.glottis < 0.05 ? 3 : 1.5}
-            fill="none"
-          />
+          <g transform={`translate(0 ${pose.larynx * 25})`}>
+            <path
+              {...meta('喉部 · Larynx')}
+              d={paths.posteriorLarynx}
+              fill="#dfbaa5"
+            />
+            <path
+              {...meta('声门 · Glottis')}
+              d={paths.glottis}
+              fill={pose.glottis < 0.05 ? '#c48d7c' : '#fcf8ed'}
+              stroke="#aa8c74"
+            />
+            <path
+              d="M658 959 Q706 943 740 941"
+              stroke={pose.glottis < 0.05 ? '#8c6256' : '#73a0a9'}
+              strokeWidth={pose.glottis < 0.05 ? 3 : 1.5}
+              fill="none"
+            />
+          </g>
         </g>
+        {airstream !== 'pulmonic-egressive' && (
+          <g pointerEvents="none" fill="#4e91a7" fontSize="19">
+            <text
+              x={airstream === 'click' ? 480 : 600}
+              y={airstream === 'click' ? 315 : 890}
+            >
+              {airstream === 'click'
+                ? '后部闭塞'
+                : airstream === 'ejective'
+                  ? '↑ 喉部上升'
+                  : '↓ 喉部下降'}
+            </text>
+          </g>
+        )}
         {pressure > 0 && (
           <ellipse
             pointerEvents="none"
@@ -490,7 +515,11 @@ export function VocalTract({
             cy="440"
             rx="98"
             ry="51"
-            fill="#cda759"
+            fill={
+              airstream === 'implosive' || airstream === 'click'
+                ? '#4e91a7'
+                : '#cda759'
+            }
             opacity={pressure * 0.18}
           />
         )}
@@ -510,7 +539,7 @@ export function VocalTract({
               strokeWidth={flow === 'burst' ? 7 : 4}
               strokeDasharray="3 39"
             />
-            {flow === 'turbulent' && (
+            {flow === 'turbulent' && airstream === 'pulmonic-egressive' && (
               <path
                 className="turbulence"
                 d={
@@ -588,8 +617,14 @@ export function VocalTract({
             <text x="648" y="787" stroke="none">
               会厌
             </text>
-            <text x="648" y="1025" stroke="none">
-              ↑ 肺部呼气
+            <text
+              x={airstream === 'pulmonic-egressive' ? 648 : 400}
+              y="1025"
+              stroke="none"
+            >
+              {airstream === 'pulmonic-egressive'
+                ? '↑ 肺部呼气'
+                : airstreamLabels[airstream]}
             </text>
           </g>
         )}

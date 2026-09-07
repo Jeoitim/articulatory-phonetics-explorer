@@ -22,6 +22,7 @@ import { airwayMidpoint, airflowPath, oralAirway } from '../src/engine/airflow';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { createElement } from 'react';
 import { VocalTract } from '../src/components/vocal-tract/VocalTract';
+import { nonPulmonicConsonants } from '../src/data/non-pulmonic';
 void test('all recordings have a source, attribution and a playable media URL', () => {
   const manifest = JSON.parse(
     readFileSync('public/audio/manifest.json', 'utf8'),
@@ -58,15 +59,19 @@ void test('every official pulmonic chart symbol and common extension has a uniqu
     .flatMap((r) => r.cells.flatMap((c) => c.split(' ')))
     .filter((c) => c !== '#' && c !== '-');
   assert.equal(symbols.length, 59);
-  assert.equal(consonants.length, 78);
-  assert.equal(new Set(consonants.map((s) => s.symbol)).size, 78);
+  assert.equal(
+    consonants.filter((s) => s.airstream === 'pulmonic-egressive').length,
+    78,
+  );
+  assert.equal(consonants.length, 92);
+  assert.equal(new Set(consonants.map((s) => s.symbol)).size, 92);
   for (const symbol of symbols)
     assert.ok(
       consonants.some((s) => s.symbol === symbol),
       symbol,
     );
 });
-void test('whole-configuration inference distinguishes all 78 presets', () => {
+void test('whole-configuration inference distinguishes all 92 presets', () => {
   for (const s of consonants) {
     const m = infer(preset(s), s);
     assert.equal(m.candidates[0]?.sound.symbol, s.symbol, s.symbol);
@@ -106,15 +111,12 @@ void test('lip contact target and rounding distinguish bilabial, labiodental and
     'ɰ',
   );
 });
-void test('closed fricatives, open stops, and unsupported mechanisms never yield exact matches', () => {
+void test('closed fricatives, open stops, and incomplete airstream mechanisms never yield exact matches', () => {
   const s = soundBySymbol('s'),
     t = soundBySymbol('t');
   assert.equal(infer(preset(t), s).status, 'none');
   assert.equal(infer(rest, t).status, 'none');
-  assert.equal(
-    infer(preset(t), { ...t, airstream: 'click' }).status,
-    'unsupported',
-  );
+  assert.equal(infer(preset(t), { ...t, airstream: 'click' }).status, 'none');
   assert.notEqual(
     infer(preset(soundBySymbol('h')), soundBySymbol('h')).status,
     'canonical',
@@ -329,4 +331,99 @@ void test('diagram starts without an unrelated tooltip and includes separate cav
     '咽腔 · Pharyngeal cavity',
   ])
     assert.ok(markup.includes(`data-anatomy-label="${cavity}"`));
+});
+
+void test('palatal and velar crowns spread elevation over a broad tongue surface', () => {
+  for (const symbol of ['ç', 'c', 'ɡ', 'k']) {
+    const p = preset(soundBySymbol(symbol));
+    const points = surface(p);
+    const level =
+      (symbol === 'ç' || symbol === 'c'
+        ? p.tongue.front.y
+        : p.tongue.dorsum.y) + 30;
+    const crossings: number[] = [];
+    points.forEach((a, i) => {
+      const b = points[i + 1];
+      if (b && a.y > level !== b.y > level)
+        crossings.push(a.x + ((b.x - a.x) * (level - a.y)) / (b.y - a.y));
+    });
+    assert.equal(crossings.length, 2, symbol);
+    assert.ok(
+      Math.max(...crossings) - Math.min(...crossings) > 100,
+      symbol + ' broad crown',
+    );
+  }
+});
+
+void test('posterior tongue forms a shoulder and returns smoothly toward its attachment', () => {
+  for (const symbol of ['ɡ', 'k', 'q', 'ʁ']) {
+    const p = preset(soundBySymbol(symbol));
+    const points = surface(p),
+      a = p.tongue.dorsum,
+      b = p.tongue.root;
+    const mid = points[56]!;
+    const bow =
+      Math.abs((b.x - a.x) * (mid.y - a.y) - (b.y - a.y) * (mid.x - a.x)) /
+      Math.hypot(b.x - a.x, b.y - a.y);
+    assert.ok(bow > 20, symbol + ' curved posterior shoulder');
+    const before = points[63]!,
+      after = underside(p)[0]!;
+    const ux = b.x - before.x,
+      uy = b.y - before.y;
+    const vx = after.x - b.x,
+      vy = after.y - b.y;
+    assert.ok(
+      (ux * vx + uy * vy) / (Math.hypot(ux, uy) * Math.hypot(vx, vy)) > 0.95,
+      symbol + ' smooth root attachment',
+    );
+  }
+});
+
+void test('official non-pulmonic inventory and mechanism-specific release directions are complete', () => {
+  assert.deepEqual(
+    nonPulmonicConsonants.map((s) => s.symbol),
+    ['ʘ', 'ǀ', 'ǃ', 'ǂ', 'ǁ', 'ɓ', 'ɗ', 'ʄ', 'ɠ', 'ʛ', 'pʼ', 'tʼ', 'kʼ', 'sʼ'],
+  );
+  for (const s of nonPulmonicConsonants) {
+    const held = sampleAnimation(s, 0.5),
+      released = sampleAnimation(s, 0.7);
+    assert.equal(held.flow, 'off', s.symbol);
+    assert.notEqual(released.flow, 'off', s.symbol);
+    const path = airflowPath(released.pose, { x: 100, y: 500 }, s.airstream);
+    const numbers = path.match(/-?\d+(?:\.\d+)?/g)!.map(Number);
+    const startX = numbers[0]!,
+      endX = numbers[numbers.length - 2]!;
+    if (s.airstream === 'ejective') {
+      assert.ok(startX > endX);
+      assert.equal(held.pose.glottis, 0);
+      assert.ok(held.pose.larynx < 0);
+    } else {
+      assert.ok(startX < endX);
+      if (s.airstream === 'click') {
+        assert.deepEqual(released.pose.tongue.dorsum, held.pose.tongue.dorsum);
+        assert.ok(
+          Math.max(...numbers.filter((_, i) => i % 2 === 1)) < 600,
+          'click influx stays in mouth',
+        );
+      } else assert.ok(held.pose.larynx > 0);
+    }
+    assert.equal(sampleAnimation(s, 1).flow, 'off');
+    assert.deepEqual(sampleAnimation(s, 1).pose, rest);
+  }
+});
+
+void test('new mechanism motion has no discontinuity at closure or release', () => {
+  for (const s of nonPulmonicConsonants)
+    for (const t of [0.25, 0.58, 0.82]) {
+      const a = sampleAnimation(s, t - 0.00001).pose;
+      const b = sampleAnimation(s, t + 0.00001).pose;
+      for (const key of tongueKeys)
+        assert.ok(
+          Math.hypot(
+            a.tongue[key].x - b.tongue[key].x,
+            a.tongue[key].y - b.tongue[key].y,
+          ) < 0.1,
+          s.symbol + ' ' + t,
+        );
+    }
 });
