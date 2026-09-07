@@ -130,6 +130,22 @@ export function Vowels() {
           <p className="chart-note">
             点击符号，或拖动图内位置。成对符号左为不圆唇、右为圆唇。
           </p>
+          {!selected && approximation.alternatives.length > 0 && (
+            <div className="vowel-equivalents">
+              <span>同一近似舌位也可记作</span>
+              {approximation.alternatives.map((symbol) => (
+                <b key={symbol}>[{symbol}]</b>
+              ))}
+              {approximation.traditional && (
+                <span>
+                  <b>[{approximation.traditional}]</b> 中文语言学记号
+                </span>
+              )}
+              <small>
+                不同记号强调央化或降低；[ᴀ] 不属于现行 IPA 基本元音字母。
+              </small>
+            </div>
+          )}
           <div className="vowel-chart">
             <svg
               viewBox="0 0 520 400"

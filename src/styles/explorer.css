@@ -879,6 +879,80 @@ main {
 .range [data-slot='slider'] {
   flex: 1;
 }
+/* Explicit shared geometry complements the corrected data-orientation
+   selectors. Applies to timelines, controls and lessons alike. */
+[data-slot='slider'] {
+  min-width: 60px;
+  width: 100%;
+}
+[data-slot='slider-control'] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 36px;
+  touch-action: none;
+  user-select: none;
+}
+[data-slot='slider-track'] {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 7px;
+  border-radius: 999px;
+  background: light-dark(#d7dece, #465246);
+  box-shadow: inset 0 0 0 1px light-dark(#bdc8b5, #5b6959);
+  overflow: hidden;
+}
+[data-slot='slider-range'] {
+  position: absolute;
+  height: 100%;
+  border-radius: inherit;
+  background: light-dark(#8d9e6c, #b4c78e);
+}
+[data-slot='slider-thumb'] {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: light-dark(#fffdf7, #d6dfc7);
+  border: 3px solid light-dark(#83905c, #819865);
+  box-shadow: 0 2px 5px #0003;
+  cursor: grab;
+}
+[data-slot='slider-thumb']::after {
+  content: '';
+  position: absolute;
+  inset: -10px;
+}
+[data-slot='slider-thumb']:active {
+  cursor: grabbing;
+}
+[data-slot='slider-thumb']:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 4px;
+}
+[data-slot='slider'][data-disabled] {
+  opacity: 0.5;
+}
+[data-slot='slider'][data-orientation='vertical'] {
+  min-width: 36px;
+  width: 36px;
+  height: 160px;
+}
+[data-slot='slider-control'][data-orientation='vertical'] {
+  width: 36px;
+  height: 100%;
+  min-height: 160px;
+  justify-content: center;
+}
+[data-slot='slider-track'][data-orientation='vertical'] {
+  width: 7px;
+  height: 100%;
+}
+[data-slot='slider-range'][data-orientation='vertical'] {
+  width: 100%;
+}
 footer {
   display: flex;
   align-items: center;

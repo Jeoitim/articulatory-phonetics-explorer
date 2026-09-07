@@ -1,6 +1,8 @@
 /* 将原有日间配色与统一的夜间背景表面配对。 */
 :root {
   color-scheme: light dark;
+  --tract-contact: light-dark(#b38c3f, #e3c483);
+  --tract-active: light-dark(#fff5dd, #735d3a);
   --night-surface: #1c2420;
   --night-raised: #222b25;
   --night-muted: #2b352d;
@@ -158,6 +160,9 @@
 }
 .tract-label {
   color: light-dark(#8a7039, var(--night-gold));
+}
+.atlas-tract {
+  background: light-dark(#faf8f2, #202722);
 }
 .atlas-tract .tract-label {
   background: light-dark(#fbf8f1e8, #2c3029f2);

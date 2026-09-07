@@ -241,7 +241,9 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
-  margin-top: 12px;
+  margin: 16px 18px 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 .lesson-actions .text-button {
   min-height: 42px;
@@ -256,7 +258,7 @@
 .lesson-audio-status {
   display: block;
   min-height: 18px;
-  margin: 7px 2px 0;
+  margin: 10px 18px 14px;
   color: light-dark(#8a967d, var(--night-copy));
   font-size: 11px;
 }
@@ -619,7 +621,7 @@
   line-height: 1.7;
 }
 .continuum-panel {
-  padding: 18px;
+  padding: 24px;
   background: light-dark(#f5f7ef, var(--night-surface));
   border: 1px solid light-dark(#dee5d5, var(--night-border));
   border-radius: 10px;
@@ -629,12 +631,12 @@
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
-  margin-bottom: 20px;
+  margin: 18px 0;
 }
 .continuum-stops button {
   display: grid;
   gap: 8px;
-  padding: 12px 8px;
+  padding: 16px 12px;
   border: 1px solid light-dark(#dce3d3, var(--night-border));
   background: light-dark(#fffef9, var(--night-raised));
   border-radius: 8px;
@@ -653,7 +655,94 @@
 }
 .continuum-stops span,
 .continuum-stops small {
-  font-size: 11px;
+  font-size: 13px;
+}
+.continuum-heading {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 16px;
+}
+.continuum-help {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted-foreground);
+}
+.continuum-panel .range {
+  display: block;
+  padding: 8px 6px 0;
+}
+.continuum-panel .range > label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.continuum-panel [data-slot='slider-range'] {
+  background: light-dark(#b69b57, #d9bb7c);
+}
+.continuum-panel [data-slot='slider-thumb'] {
+  border-color: light-dark(#a68948, #d9bb7c);
+}
+.continuum-scale {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 6px;
+  font-size: 19px;
+}
+.continuum-position {
+  display: block;
+  font-size: 14px;
+  color: var(--primary);
+  margin: 10px 0;
+}
+.lesson-progress {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
+}
+.lesson-progress li {
+  padding: 8px 12px;
+  background: var(--muted);
+  border-radius: 7px;
+  color: var(--muted-foreground);
+}
+.lesson-progress .current {
+  color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+.lesson-progress .done {
+  color: var(--primary);
+  background: var(--accent);
+}
+.lesson-help {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  background: var(--popover);
+}
+.lesson-help summary {
+  cursor: pointer;
+  color: var(--primary);
+  font-size: 14px;
+}
+.lesson-help summary svg {
+  display: inline;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+.lesson-help p,
+.quiz .lesson-next-hint {
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--muted-foreground);
+}
+.lesson-help button {
+  margin: 6px 8px 0 0;
 }
 @media (max-width: 600px) {
   .continuum-stops {
@@ -1089,4 +1178,316 @@ output.notice {
 }
 .ipa-example {
   font-size: 17px;
+}
+.vowel-equivalents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 12px 0;
+  align-items: baseline;
+  font-size: 14px;
+}
+.vowel-equivalents b {
+  font-size: 22px;
+  font-weight: 500;
+}
+.vowel-equivalents small {
+  width: 100%;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.mark-trigger {
+  color: inherit;
+  font: inherit;
+  border: 0;
+  border-bottom: 1px dotted var(--primary);
+  background: transparent;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.mark-trigger:hover,
+.mark-trigger[data-popup-open] {
+  color: var(--primary);
+  background: var(--accent);
+}
+.mark-trigger:focus-visible,
+.mark-recordings button:focus-visible,
+.mark-close:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.mark-popover-positioner {
+  z-index: 100;
+}
+.mark-popover {
+  width: min(960px, calc(100vw - 32px));
+  max-height: min(840px, 90dvh);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  overscroll-behavior: contain;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--popover);
+  color: var(--foreground);
+  box-shadow: 0 12px 45px #0003;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.mark-detail-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.mark-detail-heading h2 {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 600;
+}
+.mark-close {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.mark-popover p {
+  margin: 12px 0;
+}
+.mark-popover h4 {
+  margin: 14px 0 8px;
+  font-size: 16px;
+}
+.mark-popover a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+.mark-detail-example {
+  font-size: 18px;
+}
+.mark-code {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.mark-code summary {
+  cursor: pointer;
+}
+.mark-recordings > div {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 8px;
+  margin: 8px 0;
+  align-items: baseline;
+}
+.mark-recordings strong {
+  font-weight: 500;
+  font-size: 14px;
+}
+.mark-recordings > div > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.mark-recordings button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--muted);
+  color: inherit;
+  padding: 5px 9px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 17px;
+}
+.mark-recordings button[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--primary);
+}
+.mark-popover audio[hidden] {
+  display: none;
+}
+.mark-popover output,
+.mark-animation-note,
+.mark-credit {
+  display: block;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.reference-animation {
+  margin: 12px 0 0;
+}
+.reference-animation .tract {
+  display: block;
+  width: 100%;
+  height: min(400px, 43dvh);
+}
+.reference-animation figcaption {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.term-english,
+.mark-detail-heading h2 small,
+.reference-visual-heading h4 span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.chart-section .section-heading h2 > span,
+.alveolo-palatal-chart h3 > span {
+  display: block;
+  margin-top: 4px;
+}
+.chart-section .extension-key {
+  align-items: center;
+  min-height: 65px;
+  padding: 12px 14px;
+}
+.chart-section .extension-key > span {
+  text-align: left;
+  line-height: 1.5;
+}
+.chart-section .extension-key .term-english {
+  max-width: 210px;
+}
+.mark-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 0;
+}
+.mark-detail-copy,
+.mark-detail-visual {
+  min-width: 0;
+  padding: 22px 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.mark-detail-copy > h4:first-child,
+.reference-visual-heading h4 {
+  margin-top: 0;
+}
+.mark-detail-visual {
+  background: var(--muted);
+  border-left: 1px solid var(--border);
+}
+.reference-visual-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.reference-visual-heading button {
+  white-space: nowrap;
+}
+.reference-phase {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  color: var(--primary);
+  margin: 10px 0;
+}
+.reference-contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+.reference-contact span {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.reference-contact strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--foreground);
+}
+.reference-insets {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 14px;
+  margin: 0 0 14px;
+}
+.reference-insets .inset {
+  padding: 4px;
+  background: transparent;
+}
+.reference-insets .inset svg {
+  width: 80px;
+  height: 58px;
+}
+.reference-insets .front-mouth {
+  width: 100%;
+  height: 95px;
+}
+.reference-unmodeled {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 400px;
+  gap: 8px;
+  color: var(--muted-foreground);
+}
+.reference-unmodeled h4 {
+  color: var(--foreground);
+}
+.reference-audio-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 10px;
+}
+.mark-recordings > div {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.mark-recordings button {
+  min-height: 36px;
+}
+.mark-recordings button:hover {
+  border-color: var(--primary);
+  background: var(--accent);
+}
+@media (max-width: 720px) {
+  .mark-popover {
+    width: calc(100vw - 24px);
+  }
+  .mark-detail-heading {
+    padding: 16px;
+  }
+  .mark-detail-layout {
+    display: block;
+    overflow-y: auto;
+  }
+  .mark-detail-copy,
+  .mark-detail-visual {
+    padding: 18px;
+    overflow: visible;
+  }
+  .mark-detail-visual {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+  .reference-animation .tract {
+    height: 350px;
+    max-height: 50dvh;
+  }
+  .continuum-panel {
+    padding: 18px;
+  }
 }

@@ -23,6 +23,7 @@ import {
   roof,
 } from '../../engine/geometry';
 import { anatomyPaths as paths } from '../../data/anatomy-paths';
+import { articulationContact } from '../../engine/contact';
 export interface Display {
   labels: boolean;
   zones: boolean;
@@ -41,6 +42,7 @@ interface Props {
   compact?: boolean;
   lateral?: boolean;
   animated?: boolean;
+  highlightContact?: boolean;
 }
 export function VocalTract({
   airstream = 'pulmonic-egressive',
@@ -54,6 +56,7 @@ export function VocalTract({
   compact = false,
   lateral = false,
   animated = true,
+  highlightContact = false,
 }: Props) {
   const id = useId().replaceAll(':', ''),
     ref = useRef<SVGSVGElement>(null),
@@ -65,6 +68,11 @@ export function VocalTract({
     startPose: Pose;
   } | null>(null);
   const label = locked || hover;
+  const contact = articulationContact(pose, place);
+  const activePoint = contact.key ? pose.tongue[contact.key] : null;
+  const passivePoint = zones.find(
+    (z) => z.place === (place === 'retroflex' ? 'postalveolar' : place),
+  )?.point;
   const meta = (name: string) => ({
     'data-anatomy-label': name,
     pointerEvents: 'visiblePainted' as const,
@@ -141,16 +149,16 @@ export function VocalTract({
       >
         <defs>
           <linearGradient id={id + 'tissue'} x1="0" y1="0" x2="1" y2="1">
-            <stop stopColor="#eedbd0" />
-            <stop offset="1" stopColor="#d9b6a6" />
+            <stop stopColor="light-dark(#eedbd0, #68544b)" />
+            <stop offset="1" stopColor="light-dark(#d9b6a6, #493831)" />
           </linearGradient>
           <linearGradient id={id + 'muscle'} x1="0" y1="0" x2=".7" y2="1">
-            <stop stopColor="#d89888" />
-            <stop offset="1" stopColor="#bc776e" />
+            <stop stopColor="light-dark(#d89888, #a57166)" />
+            <stop offset="1" stopColor="light-dark(#bc776e, #714a46)" />
           </linearGradient>
           <linearGradient id={id + 'bone'}>
-            <stop stopColor="#faf4e7" />
-            <stop offset="1" stopColor="#e6d5bb" />
+            <stop stopColor="light-dark(#faf4e7, #a09279)" />
+            <stop offset="1" stopColor="light-dark(#e6d5bb, #77664e)" />
           </linearGradient>
           <pattern
             id={id + 'bonehatch'}
@@ -159,7 +167,12 @@ export function VocalTract({
             patternUnits="userSpaceOnUse"
             patternTransform="rotate(32)"
           >
-            <path d="M0 0V10" stroke="#bba687" strokeWidth="1" opacity=".34" />
+            <path
+              d="M0 0V10"
+              stroke="light-dark(#bba687, #b9a284)"
+              strokeWidth="1"
+              opacity=".34"
+            />
           </pattern>
           <clipPath id={id + 'bounds'}>
             <rect x="0" y="0" width="800" height="1000" rx="3" />
@@ -179,14 +192,14 @@ export function VocalTract({
             <path
               d="M1 1L9 5L1 9"
               fill="none"
-              stroke="#4e91a7"
+              stroke="light-dark(#4e91a7, #83bdd1)"
               strokeWidth="1.5"
             />
           </marker>
         </defs>
         <g
           clipPath={'url(#' + id + 'bounds)'}
-          stroke="#96776a"
+          stroke="light-dark(#96776a, #b29484)"
           strokeWidth="2.4"
           strokeLinejoin="round"
           pointerEvents="none"
@@ -196,7 +209,7 @@ export function VocalTract({
             y="0"
             width="800"
             height="1000"
-            fill="#faf8f2"
+            fill="light-dark(#faf8f2, #202722)"
             stroke="none"
           />
           {/* Cavity hit regions are beneath the anatomy: tissue, teeth and
@@ -229,27 +242,27 @@ export function VocalTract({
           <path
             d="M205 0 C253 6 300 1 345 7 Q432 48 489 40 L510 56 Q460 60 420 53 Q325 21 299 31 Q215 45 177 76 L120 135"
             fill="none"
-            stroke="#f8f0e5"
+            stroke="light-dark(#f8f0e5, #8e7b69)"
             strokeWidth="16"
             opacity=".7"
           />
           <path
             d="M702 160 C736 257 734 370 731 457 Q735 600 779 736"
             fill="none"
-            stroke="#c29e8c"
+            stroke="light-dark(#c29e8c, #a78672)"
             strokeWidth="2"
             opacity=".65"
           />
           <path
             d="M757 280 L793 277 M750 337 L793 335 M748 394 L793 391 M749 451 L793 451 M754 511 L793 513 M765 572 L796 580"
-            stroke="#bda28e"
+            stroke="light-dark(#bda28e, #927963)"
             opacity=".4"
             strokeWidth="8"
           />
           <g
             {...meta('鼻腔与鼻甲 · Nasal cavity / conchae')}
             fill="none"
-            stroke="#c6aa96"
+            stroke="light-dark(#c6aa96, #947a65)"
             strokeWidth="5"
             strokeLinecap="round"
           >
@@ -267,7 +280,7 @@ export function VocalTract({
           <path
             d="M190 299 C295 332 374 333 449 339 L526 350 L526 360 C457 347 393 350 344 341 Q291 326 265 350 L241 373 L197 382 Z"
             fill={'url(#' + id + 'bone)'}
-            stroke="#c9b89e"
+            stroke="light-dark(#c9b89e, #b4a082)"
             strokeWidth="1.6"
           />
           <path
@@ -278,14 +291,14 @@ export function VocalTract({
           <path
             {...meta('上门齿 · Upper incisor')}
             d={paths.upperTooth}
-            fill="#fffdf6"
-            stroke="#a99e8c"
+            fill="light-dark(#fffdf6, #d0c7b4)"
+            stroke="light-dark(#a99e8c, #9f9179)"
             strokeWidth="2.6"
           />
           <path
             d="M178 366 Q159 396 154 416"
             fill="none"
-            stroke="#ddd0b9"
+            stroke="light-dark(#ddd0b9, #b5a286)"
             strokeWidth="2"
           />
           <path
@@ -296,15 +309,15 @@ export function VocalTract({
                 '' + (614 + pose.uvula * 10) + ' ' + (439 - pose.uvula * 14),
               )
               .replace('613 421', '' + (613 + pose.uvula * 7) + ' 421')}
-            fill="#d59b8a"
-            stroke="#a87869"
+            fill="light-dark(#d59b8a, #a87967)"
+            stroke="light-dark(#a87869, #c1967e)"
           />
           <path
             d={
               nasal ? 'M552 349 Q619 357 623 405' : 'M552 349 Q614 343 647 348'
             }
             fill="none"
-            stroke="#ecc5b1"
+            stroke="light-dark(#ecc5b1, #ceaa90)"
             strokeWidth="3"
           />
           <g {...meta('下颌与口底 · Mandible / floor of mouth')}>
@@ -318,7 +331,7 @@ export function VocalTract({
                 pose.jaw,
               )}
               fill={'url(#' + id + 'bone)'}
-              stroke="#beaa8d"
+              stroke="light-dark(#beaa8d, #bca17d)"
             />
             <path
               d={jawPath(
@@ -331,8 +344,8 @@ export function VocalTract({
             <path
               {...meta('下门齿 · Lower incisor')}
               d={jawPath(paths.lowerTooth, pose.jaw)}
-              fill="#fffdf6"
-              stroke="#a99e8c"
+              fill="light-dark(#fffdf6, #d0c7b4)"
+              stroke="light-dark(#a99e8c, #9f9179)"
             />
             <path
               {...meta('下唇 · Lower lip')}
@@ -367,21 +380,21 @@ export function VocalTract({
                 (lipBase.y + 15) +
                 ' Z'
               }
-              fill="#c88c7e"
+              fill="light-dark(#c88c7e, #9c6c5e)"
             />
           </g>
           <path
             {...meta('舌体：内在肌与外在肌协同形变 · Tongue')}
             d={tonguePath(pose)}
             fill={'url(#' + id + 'muscle)'}
-            stroke="#a2665e"
+            stroke="light-dark(#a2665e, #ce9686)"
             strokeWidth="3"
           />
           <g
             clipPath={'url(#' + id + 'tongueclip)'}
             pointerEvents="none"
             fill="none"
-            stroke="#9e645c"
+            stroke="light-dark(#9e645c, #e3b4a4)"
             opacity=".22"
             strokeWidth="1.7"
           >
@@ -418,7 +431,7 @@ export function VocalTract({
               ' ' +
               (pose.tongue.front.y + 23)
             }
-            stroke="#edbba8"
+            stroke="light-dark(#edbba8, #e1b19a)"
             strokeWidth="2"
             opacity=".55"
             fill="none"
@@ -426,8 +439,8 @@ export function VocalTract({
           {overlay && (
             <path
               d={tonguePath(overlay)}
-              fill="#4e91a710"
-              stroke="#4e91a7"
+              fill="light-dark(#4e91a710, #83bdd120)"
+              stroke="light-dark(#4e91a7, #83bdd1)"
               strokeWidth="4"
               strokeDasharray="11 7"
             />
@@ -436,14 +449,14 @@ export function VocalTract({
             {...meta('会厌 · Epiglottis')}
             transform={'rotate(' + pose.epiglottis * 43 + ' 568 828)'}
             d="M550 732 Q566 732 568 782 L568 828 Q556 811 558 790 Q561 766 550 745 Q545 735 550 732 Z"
-            fill="#d9b99d"
-            stroke="#ab9076"
+            fill="light-dark(#d9b99d, #95816a)"
+            stroke="light-dark(#ab9076, #b99a79)"
           />
           {pose.epiglottis > 0.1 && (
             <g
               {...meta('会厌区狭窄 · Epilaryngeal constriction (schematic)')}
-              fill="#d59b8a"
-              stroke="#a87869"
+              fill="light-dark(#d59b8a, #a87967)"
+              stroke="light-dark(#a87869, #c1967e)"
             >
               <path
                 d={
@@ -472,31 +485,43 @@ export function VocalTract({
           <path
             {...meta('舌骨 · Hyoid bone')}
             d="M514 838 Q533 827 555 835 L563 844 Q542 854 521 849 Z"
-            fill="#f3e6d0"
-            stroke="#b7a17f"
+            fill="light-dark(#f3e6d0, #afa186)"
+            stroke="light-dark(#b7a17f, #c1a27b)"
           />
           <g transform={`translate(0 ${pose.larynx * 25})`}>
             <path
               {...meta('喉部 · Larynx')}
               d={paths.posteriorLarynx}
-              fill="#dfbaa5"
+              fill="light-dark(#dfbaa5, #816452)"
             />
             <path
               {...meta('声门 · Glottis')}
               d={paths.glottis}
-              fill={pose.glottis < 0.05 ? '#c48d7c' : '#fcf8ed'}
-              stroke="#aa8c74"
+              fill={
+                pose.glottis < 0.05
+                  ? 'light-dark(#c48d7c, #a97662)'
+                  : 'light-dark(#fcf8ed, #202722)'
+              }
+              stroke="light-dark(#aa8c74, #bf9c7e)"
             />
             <path
               d="M658 959 Q706 943 740 941"
-              stroke={pose.glottis < 0.05 ? '#8c6256' : '#73a0a9'}
+              stroke={
+                pose.glottis < 0.05
+                  ? 'light-dark(#8c6256, #ce9987)'
+                  : 'light-dark(#73a0a9, #91bec7)'
+              }
               strokeWidth={pose.glottis < 0.05 ? 3 : 1.5}
               fill="none"
             />
           </g>
         </g>
         {airstream !== 'pulmonic-egressive' && (
-          <g pointerEvents="none" fill="#4e91a7" fontSize="19">
+          <g
+            pointerEvents="none"
+            fill="light-dark(#4e91a7, #83bdd1)"
+            fontSize="19"
+          >
             <text
               x={airstream === 'click' ? 480 : 600}
               y={airstream === 'click' ? 315 : 890}
@@ -518,8 +543,8 @@ export function VocalTract({
             ry="51"
             fill={
               airstream === 'implosive' || airstream === 'click'
-                ? '#4e91a7'
-                : '#cda759'
+                ? 'light-dark(#4e91a7, #83bdd1)'
+                : 'light-dark(#cda759, #d5b66d)'
             }
             opacity={pressure * 0.18}
           />
@@ -527,7 +552,7 @@ export function VocalTract({
         {display.airflow && flow !== 'off' && (
           <g
             fill="none"
-            stroke="#4e91a7"
+            stroke="light-dark(#4e91a7, #83bdd1)"
             strokeLinecap="round"
             strokeLinejoin="round"
             opacity=".8"
@@ -555,11 +580,42 @@ export function VocalTract({
             )}
           </g>
         )}
+        {highlightContact && activePoint && passivePoint && (
+          <g
+            className="articulation-highlight"
+            pointerEvents="none"
+            aria-label={`${contact.active}接近${contact.passive}`}
+          >
+            <path
+              d={`M${activePoint.x} ${activePoint.y} L${passivePoint.x} ${passivePoint.y}`}
+              stroke="var(--tract-contact)"
+              strokeWidth="3"
+              strokeDasharray="5 7"
+              fill="none"
+            />
+            <circle
+              cx={passivePoint.x}
+              cy={passivePoint.y}
+              r="19"
+              fill="none"
+              stroke="var(--tract-contact)"
+              strokeWidth="6"
+            />
+            <circle
+              cx={activePoint.x}
+              cy={activePoint.y}
+              r="13"
+              fill="var(--tract-active)"
+              stroke="var(--tract-contact)"
+              strokeWidth="3"
+            />
+          </g>
+        )}
         {display.zones && place === 'alveolo-palatal' && (
           <path
             d="M290 354 Q350 343 410 350"
             fill="none"
-            stroke="#bc954f"
+            stroke="light-dark(#bc954f, #d9b975)"
             strokeWidth="18"
             opacity=".16"
             pointerEvents="none"
@@ -580,13 +636,13 @@ export function VocalTract({
                   }
                   fill={
                     (place === 'retroflex' ? 'postalveolar' : place) === z.place
-                      ? '#bc954f25'
-                      : '#bc954f08'
+                      ? 'light-dark(#bc954f25, #d9b97535)'
+                      : 'light-dark(#bc954f08, #d9b97510)'
                   }
                   stroke={
                     (place === 'retroflex' ? 'postalveolar' : place) === z.place
-                      ? '#b38c3f'
-                      : '#bda977'
+                      ? 'light-dark(#b38c3f, #e3c483)'
+                      : 'light-dark(#bda977, #a99c77)'
                   }
                   strokeWidth="1.8"
                   strokeDasharray={
@@ -603,8 +659,8 @@ export function VocalTract({
             pointerEvents="none"
             fontSize="20"
             fontFamily="Segoe UI,Microsoft YaHei,sans-serif"
-            fill="#817568"
-            stroke="#afa38d"
+            fill="light-dark(#817568, #dacbb5)"
+            stroke="light-dark(#afa38d, #ad9e87)"
             strokeWidth="1.5"
           >
             <path
@@ -662,8 +718,8 @@ export function VocalTract({
               cx={pose.tongue[key].x}
               cy={pose.tongue[key].y}
               r="10"
-              fill="#fff5dd"
-              stroke="#a98a47"
+              fill="light-dark(#fff5dd, #443b29)"
+              stroke="light-dark(#a98a47, #e3c483)"
               strokeWidth="3"
               onPointerDown={(e) => {
                 e.preventDefault();

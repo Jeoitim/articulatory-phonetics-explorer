@@ -8,6 +8,8 @@ import {
   RotateCcw,
   Presentation,
   Volume2,
+  Lightbulb,
+  MoveHorizontal,
 } from 'lucide-react';
 import type { Features, Pose } from '../domain/phonetics';
 import { lessons } from '../data/lessons';
@@ -25,7 +27,9 @@ export function Lessons() {
   const [index, setIndex] = useState(0),
     [answer, setAnswer] = useState<number | null>(null),
     [completed, setCompleted] = useState<number[]>([]),
-    [edited, setEdited] = useState(false);
+    [edited, setEdited] = useState(false),
+    [demonstrated, setDemonstrated] = useState(false),
+    [observed, setObserved] = useState(false);
   const lesson = lessons[index]!;
   const [continuum, setContinuum] = useState(0);
   const [f, setF] = useState<Features>(soundBySymbol('t'));
@@ -33,10 +37,11 @@ export function Lessons() {
   const audio = useAudio();
   const match = infer(anim.pose, f);
   const achieved =
-    edited &&
-    lesson.target !== null &&
-    match.candidates[0]?.sound.symbol === lesson.target &&
-    (match.status === 'canonical' || match.status === 'closest');
+    (lesson.start === lesson.target && observed) ||
+    (edited &&
+      lesson.target !== null &&
+      match.candidates[0]?.sound.symbol === lesson.target &&
+      (match.status === 'canonical' || match.status === 'closest'));
   function edit(p: Pose) {
     setEdited(true);
     anim.edit(p);
@@ -47,6 +52,8 @@ export function Lessons() {
     setContinuum(0);
     setAnswer(null);
     setEdited(false);
+    setDemonstrated(false);
+    setObserved(false);
     const s = soundBySymbol(lessons[i]!.start);
     setF(s);
     anim.select(s);
@@ -107,8 +114,91 @@ export function Lessons() {
           <strong>动手试一试 {lesson.target && `[${lesson.target}]`}</strong>
           <p>{lesson.instruction}</p>
         </div>
+        <ol className="lesson-progress" aria-label="本课完成步骤">
+          <li className={achieved ? 'done' : 'current'}>
+            {achieved ? '✓' : '1'}{' '}
+            {lesson.start === lesson.target ? '观察发音过程' : '完成目标构形'}
+          </li>
+          <li
+            className={
+              answer === lesson.answer ? 'done' : achieved ? 'current' : ''
+            }
+          >
+            {answer === lesson.answer ? '✓' : '2'} 回答小测试
+          </li>
+          <li className={achieved && answer === lesson.answer ? 'current' : ''}>
+            3 完成本课
+          </li>
+        </ol>
+        <details className="lesson-help" key={index}>
+          <summary>
+            <Lightbulb size={16} /> 不知道下一步？查看操作提示
+          </summary>
+          <p>{lesson.hint}</p>
+          {lesson.target && (
+            <button
+              className="text-button"
+              onClick={() => {
+                const target = soundBySymbol(lesson.target!);
+                setF(target);
+                anim.select(target, true);
+                setEdited(false);
+                setDemonstrated(true);
+                if (lesson.start === lesson.target) setObserved(true);
+              }}
+            >
+              先看一次目标演示 <Presentation size={15} />
+            </button>
+          )}
+          {demonstrated && lesson.target && (
+            <button
+              className="text-button"
+              onClick={() => {
+                const target = soundBySymbol(lesson.target!);
+                setF(target);
+                anim.select(target);
+                setEdited(true);
+                if (lesson.continuum) setContinuum(3);
+              }}
+            >
+              跟随演示练习 · 保持目标构形 <Check size={15} />
+            </button>
+          )}
+        </details>
         {lesson.continuum && (
           <div className="continuum-panel">
+            <div className="continuum-heading">
+              <MoveHorizontal size={18} />
+              <strong>拖动滑块，连续改变调音构形</strong>
+            </div>
+            <p className="continuum-help">
+              鼠标拖动或手指滑动；键盘可用方向键微调，End 到达
+              [ç]。也可点击下方音标。
+            </p>
+            <Range
+              label="连续构形 · s → ʃ → ɕ → ç"
+              min={0}
+              max={3}
+              step={0.01}
+              value={continuum}
+              onChange={(t) => {
+                setContinuum(t);
+                setF(soundBySymbol('s'));
+                edit(sampleFricativeContinuum(t));
+              }}
+            />
+            <div className="continuum-scale" aria-hidden="true">
+              <span>s</span>
+              <span>ʃ</span>
+              <span>ɕ</span>
+              <span>ç</span>
+            </div>
+            <output className="continuum-position" aria-live="polite">
+              当前位置：
+              {Number.isInteger(continuum)
+                ? `[${fricativeContinuum[continuum]!.symbol}]`
+                : `[${fricativeContinuum[Math.floor(continuum)]!.symbol}] → [${fricativeContinuum[Math.ceil(continuum)]!.symbol}]`}
+            </output>
             <div className="continuum-stops">
               {fricativeContinuum.map((step, i) => (
                 <button
@@ -126,18 +216,6 @@ export function Lessons() {
                 </button>
               ))}
             </div>
-            <Range
-              label="连续构形 · s → ʃ → ɕ → ç"
-              min={0}
-              max={3}
-              step={0.01}
-              value={continuum}
-              onChange={(t) => {
-                setContinuum(t);
-                setF(soundBySymbol('s'));
-                edit(sampleFricativeContinuum(t));
-              }}
-            />
             <p>{fricativeContinuum[Math.round(continuum)]!.note}</p>
             <p className="chart-note">
               整数节点为教学预设；节点之间是连续过渡，不保证每个中间位置都有唯一
@@ -177,12 +255,20 @@ export function Lessons() {
                       setF(target);
                       anim.select(target, true);
                       setEdited(false);
+                      setDemonstrated(true);
+                      if (lesson.start === lesson.target) setObserved(true);
                     }}
                   >
                     <Presentation size={15} />
                     <span>演示目标音</span>
                   </button>
-                  <button className="text-button" onClick={anim.play}>
+                  <button
+                    className="text-button"
+                    onClick={() => {
+                      anim.play();
+                      if (lesson.start === lesson.target) setObserved(true);
+                    }}
+                  >
                     {anim.playing ? <Pause size={15} /> : <Play size={15} />}
                     <span>{anim.playing ? '暂停动画' : '播放动画'}</span>
                   </button>
@@ -271,6 +357,15 @@ export function Lessons() {
             完成本课{index < lessons.length - 1 ? '，继续下一课' : ''}
             <ArrowRight size={14} />
           </button>
+          <p className="lesson-next-hint" aria-live="polite">
+            {completed.includes(index)
+              ? '本课已完成。可以重新练习或从课程列表选择其他课程。'
+              : !achieved && lesson.target
+                ? `下一步：先完成上方${lesson.start === lesson.target ? '动画观察' : '目标构形'}；卡住时展开操作提示。`
+                : answer !== lesson.answer
+                  ? '下一步：回答上面的小测试，答对后即可完成本课。'
+                  : '已准备好，点击“完成本课”继续。'}
+          </p>
         </div>
       </div>
     </section>

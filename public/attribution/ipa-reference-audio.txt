@@ -1,0 +1,18 @@
+Reference: International Phonetic Association, Interactive IPA Chart
+https://www.internationalphoneticassociation.org/IPAcharts/IPA_charts_TI/IPA_charts_TI.html#eng
+Accessed: 2026-09-07
+
+The added reference-symbol recordings stream from the original IPA host.
+Speakers are credited individually: J. Esling, J. House, P. Ladefoged, J. Wells.
+Recording availability and example associations come from the chart's published
+symbol data. Unnumbered recordings are not assigned to a specific example when
+the source lists several. Original audio files are not copied or modified here.
+The IPA chart's graphic license is not asserted as the license of the recordings.
+
+Chinese symbols and terminology reference:
+The chart of the International Phonetic Alphabet in Chinese (2007).
+Journal of the International Phonetic Association 41(2), 2011, p. 245.
+https://doi.org/10.1017/S0025100311000156
+
+The Chinese explanations and bounded articulatory illustrations are authored for
+this project. They are qualitative teaching aids, not measurements of a speaker.

@@ -36,7 +36,10 @@ export function IPAChart({
           <kbd>IPA</kbd>
         </label>
       </div>
-      <h3>辅音（肺部气流）</h3>
+      <h3>
+        辅音（肺部气流）
+        <small className="term-english">Consonants (pulmonic)</small>
+      </h3>
       <div className="chart-scroll">
         <table className="ipa-chart">
           <caption className="sr-only">
@@ -137,24 +140,47 @@ export function IPAChart({
                 onClick={() => onSelect(s.symbol)}
               >
                 <b>{s.symbol}</b>
-                <span>{s.zh}</span>
+                <span>
+                  {s.zh}
+                  <small className="term-english">{s.name}</small>
+                </span>
               </button>
             ))}
         </div>
       </section>
       <div className="extension-chart">
         {[
-          { heading: '其他符号 · 唇与舌的双重调音', symbols: ['ʍ', 'w', 'ɥ'] },
-          { heading: '其他符号 · 会厌音', symbols: ['ʜ', 'ʢ', 'ʡ'] },
-          { heading: '其他符号 · 边闪音与同时调音', symbols: ['ɺ', 'ɧ'] },
-          { heading: '次要调音 · 软腭化边音', symbols: ['ɫ'] },
+          {
+            heading: '其他符号 · 唇与舌的双重调音',
+            en: 'Other symbols · Labial double articulations',
+            symbols: ['ʍ', 'w', 'ɥ'],
+          },
+          {
+            heading: '其他符号 · 会厌音',
+            en: 'Other symbols · Epiglottals',
+            symbols: ['ʜ', 'ʢ', 'ʡ'],
+          },
+          {
+            heading: '其他符号 · 边闪音与同时调音',
+            en: 'Other symbols · Lateral flap & simultaneous articulation',
+            symbols: ['ɺ', 'ɧ'],
+          },
+          {
+            heading: '次要调音 · 软腭化边音',
+            en: 'Secondary articulation · Velarized lateral',
+            symbols: ['ɫ'],
+          },
           {
             heading: '常用塞擦音 · 齿龈、龈后与卷舌',
+            en: 'Affricates · Alveolar, postalveolar & retroflex',
             symbols: ['t͡s', 'd͡z', 't͡ʃ', 'd͡ʒ', 'ʈ͡ʂ', 'ɖ͡ʐ'],
           },
-        ].map(({ heading, symbols }) => (
+        ].map(({ heading, en, symbols }) => (
           <section key={heading}>
-            <h3>{heading}</h3>
+            <h3>
+              {heading}
+              <small className="term-english">{en}</small>
+            </h3>
             <div>
               {extendedConsonants
                 .filter((s) => symbols.includes(s.symbol))
@@ -182,7 +208,10 @@ export function IPAChart({
                     onClick={() => onSelect(s.symbol)}
                   >
                     <b>{s.symbol}</b>
-                    <span>{s.zh}</span>
+                    <span>
+                      {s.zh}
+                      <small className="term-english">{s.name}</small>
+                    </span>
                   </button>
                 ))}
             </div>
@@ -208,11 +237,25 @@ export function IPAChart({
           </a>
         </span>
       </div>
-      <h3>辅音（非肺部气流）</h3>
+      <h3>
+        辅音（非肺部气流）
+        <small className="term-english">Consonants (non-pulmonic)</small>
+      </h3>
       <div className="extension-chart non-pulmonic-chart">
         {(['click', 'implosive', 'ejective'] as const).map((mechanism) => (
           <section key={mechanism}>
-            <h3>{airstreamLabels[mechanism]}</h3>
+            <h3>
+              {airstreamLabels[mechanism]}
+              <small className="term-english">
+                {
+                  {
+                    click: 'Clicks',
+                    implosive: 'Voiced implosives',
+                    ejective: 'Ejectives',
+                  }[mechanism]
+                }
+              </small>
+            </h3>
             <div>
               {nonPulmonicConsonants
                 .filter(
@@ -235,7 +278,10 @@ export function IPAChart({
                     onClick={() => onSelect(s.symbol)}
                   >
                     <b>{s.symbol}</b>
-                    <span>{s.zh}</span>
+                    <span>
+                      {s.zh}
+                      <small className="term-english">{s.name}</small>
+                    </span>
                   </button>
                 ))}
             </div>

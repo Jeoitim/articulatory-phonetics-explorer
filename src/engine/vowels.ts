@@ -14,6 +14,32 @@ export function describeVowel(
   const h = clamp(value.height),
     b = clamp(value.backness),
     r = clamp(value.rounding);
+  // The IPA has no dedicated open central vowel letter. Keep its actual height
+  // in the description instead of inheriting “near-open” from the nearest ɐ.
+  if (
+    !value.apical &&
+    h >= 1 - vowelTolerance.height &&
+    Math.abs(b - 0.5) <= vowelTolerance.backness
+  ) {
+    const rounded = r > 0.5;
+    const base = vowels.find((v) => v.symbol === (rounded ? 'ɶ' : 'a'))!;
+    const roundMark =
+      Math.abs(r - base.rounding) > vowelTolerance.rounding
+        ? rounded
+          ? '̜'
+          : '̹'
+        : '';
+    const symbol = base.symbol + '̈' + roundMark;
+    return {
+      symbol,
+      base,
+      alternatives: rounded
+        ? ['ɒ̈' + roundMark]
+        : ['ɑ̈' + roundMark, 'ɐ̞' + roundMark],
+      traditional: !rounded && !roundMark ? 'ᴀ' : undefined,
+      description: `开央${rounded ? '圆唇' : '不圆唇'}元音${roundMark ? (rounded ? ' · 略展' : ' · 更圆') : ''}`,
+    };
+  }
   const candidates = value.apical
     ? apicalVowels.filter((v) => v.apical === value.apical)
     : vowels;
@@ -41,6 +67,8 @@ export function describeVowel(
   return {
     symbol: base.symbol + marks.join(''),
     base,
+    alternatives: [] as string[],
+    traditional: undefined as string | undefined,
     description: [base.zh, ...descriptions].join(' · '),
   };
 }

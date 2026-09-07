@@ -9,10 +9,12 @@ interface Lesson {
   options: string[];
   answer: number;
   continuum?: boolean;
+  hint: string;
 }
 export const lessons: Lesson[] = [
   {
     title: '声音在哪里形成？',
+    hint: '保持“塞音”和关闭声带振动。将舌面后部控制点抬向软腭；若舌尖仍顶住齿龈，先稍微放低舌尖。可先演示目标音，再点击“跟随演示练习”从目标附近尝试。',
     en: 'Place of articulation',
     target: 'k',
     start: 't',
@@ -25,6 +27,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '接触，还是接近？',
+    hint: '先把调音方法改为“擦音”，保持清音。将舌尖从齿龈稍稍放低，留下窄缝；放得太低会更像近音。',
     en: 'Manner of articulation',
     target: 's',
     start: 't',
@@ -37,6 +40,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '感受声带的振动',
+    hint: '不必移动舌头。只需打开构音参数里的“声带振动”开关，保留擦音和中央气流。',
     en: 'Voiced vs voiceless',
     target: 'z',
     start: 's',
@@ -49,6 +53,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '给气流另一条路',
+    hint: '将调音方法设为“鼻音”，打开鼻咽通道，保持声带振动。舌尖仍须接触齿龈，不能同时打开口腔闭塞。',
     en: 'Oral vs nasal',
     target: 'n',
     start: 'd',
@@ -61,6 +66,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '闭塞与释放',
+    hint: '先选“塞音”，关闭声带振动，再把舌尖向齿龈抬起到接触。动画可帮助观察闭塞之后的释放。',
     en: 'Stops',
     target: 't',
     start: 's',
@@ -73,6 +79,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '听见摩擦',
+    hint: '保持清擦音，把舌叶抬到齿龈后方，同时让舌尖稍降低。需要的是舌叶附近的窄缝，不是完全闭塞。',
     en: 'Fricatives',
     target: 'ʃ',
     start: 's',
@@ -84,6 +91,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '接近而不摩擦',
+    hint: '选择“近音”，打开声带振动；将舌面前部靠近硬腭，放低舌尖并解除软腭处闭塞。硬腭处要留出比擦音更宽的通道。',
     en: 'Approximants',
     target: 'j',
     start: 'k',
@@ -96,6 +104,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '从齿龈到硬腭：四种擦音',
+    hint: '拖动下面的金色滑块到最右端 [ç]，或直接点击 [ç] 节点。观察舌面前部靠近硬腭；构形达标后回答下方问题，就能继续。',
     en: 's → ʃ → ɕ → ç',
     start: 's',
     target: 'ç',
@@ -114,6 +123,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '一次，还是多次？',
+    hint: '将调音方法从“颤音”切换为“闪音”，保持声带振动。播放后关注单次接触，不必通过反复拖动来模拟快速闪动。',
     en: 'Trills and taps',
     target: 'ɾ',
     start: 'r',
@@ -126,6 +136,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '绕过舌头两侧',
+    hint: '将方法设为“边近音”，关闭鼻咽通道，打开边侧气流，保持声带振动和齿龈中央接触。',
     en: 'Lateral consonants',
     target: 'l',
     start: 'n',
@@ -137,6 +148,7 @@ export const lessons: Lesson[] = [
   },
   {
     title: '肺部以外的机制',
+    hint: '本课从齿嗒音开始，点击“播放动画”观察前后闭塞和向内气流，即可完成观察步骤，再回答小测试。',
     en: 'Non-pulmonic consonants',
     target: 'ǀ',
     start: 'ǀ',

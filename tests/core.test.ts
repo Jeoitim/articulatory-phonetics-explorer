@@ -32,6 +32,97 @@ import { vowelMotionProgress } from '../src/engine/vowel-motion';
 import { UnmatchedSoundCard } from '../src/components/UnmatchedSoundCard';
 import { vowelAudio } from '../src/data/vowel-audio';
 import { onlineAudioUrl, resolveAudioUrl } from '../src/engine/audio';
+import {
+  chineseIPAReference,
+  markExplanations,
+  referenceForMark,
+} from '../src/data/ipa-mark-details';
+import { ipaReferenceAudio } from '../src/data/ipa-reference-audio';
+import {
+  referencePreview,
+  referenceFrame,
+} from '../src/engine/reference-preview';
+void test('open central vowels use centralization and keep equivalent notation without relabeling near-open anchors', () => {
+  for (const height of [0.94, 1])
+    for (const backness of [0.42, 0.5, 0.58]) {
+      const result = describeVowel({ height, backness, rounding: 0 });
+      assert.equal(result.symbol, 'ä');
+      assert.deepEqual(result.alternatives, ['ɑ̈', 'ɐ̞']);
+      assert.equal(result.traditional, 'ᴀ');
+      assert.equal(result.description, '开央不圆唇元音');
+    }
+  const rounded = describeVowel({ height: 1, backness: 0.5, rounding: 1 });
+  assert.equal(rounded.symbol, 'ɶ̈');
+  assert.deepEqual(rounded.alternatives, ['ɒ̈']);
+  assert.equal(rounded.traditional, undefined);
+  const nearOpen = describeVowel(vowels.find((v) => v.symbol === 'ɐ')!);
+  assert.equal(nearOpen.symbol, 'ɐ');
+  assert.equal(nearOpen.alternatives.length, 0);
+  assert.equal(
+    describeVowel({ height: 1, backness: 0.5, rounding: 0.4 }).symbol,
+    'ä̹',
+  );
+});
+void test('every reference entry has an explanation and source audio maps diacritics to their correct Unicode identity', () => {
+  for (const group of ipaMarkGroups)
+    for (const [, name] of group.entries)
+      assert.ok(markExplanations[name], name);
+  assert.equal(referenceForMark('◌̃').clips.length, 4);
+  assert.equal(referenceForMark('◌͡◌ / ◌͜◌').clips.length, 8);
+  assert.equal(referenceForMark('◌̈').clips.length, 0);
+  assert.equal(referenceForMark('◌̩ / ◌̍').clips.length, 0);
+  assert.ok(referenceForMark('◌̥ / ◌̊').clips.some((c) => c.example === 'ŋ̊'));
+  for (const r of Object.values(ipaReferenceAudio))
+    for (const clip of r.clips) {
+      assert.equal(
+        new URL(clip.url).hostname,
+        'www.internationalphoneticassociation.org',
+      );
+      assert.ok(clip.speaker);
+      assert.ok(!clip.example.includes('<'));
+    }
+  const markup = renderToStaticMarkup(createElement(IPAMarks, { query: '' }));
+  assert.ok(markup.includes(chineseIPAReference));
+  assert.ok(!markup.includes('按所提供'));
+  assert.ok(markup.includes('查看说明与示例发音'));
+});
+void test('detail previews change the intended feature and stay bounded for supported examples', () => {
+  const nasal = referencePreview('ẽ')!;
+  assert.equal(nasal.from.velum, 0);
+  assert.equal(nasal.to.velum, 1);
+  assert.deepEqual(nasal.from.tongue, nasal.to.tongue);
+  const moreRounded = referencePreview('ɔ̹')!;
+  assert.ok(moreRounded.to.rounding > moreRounded.from.rounding);
+  const lower = referencePreview('e̞')!;
+  assert.ok(lower.to.jaw > lower.from.jaw);
+  for (const example of ['n̥', 'd̥', 'ŋ̊', 's̬', 't̪', 'tʷ', 'e̽', 'u̟', 'ɔ̜', 'ẽ']) {
+    const model = referencePreview(example)!;
+    assert.ok(model, example);
+    for (const t of [0, 0.25, 0.5, 0.75, 1])
+      assert.ok(isPlausible(interpolate(model.from, model.to, t)), example);
+  }
+  for (const example of ['ˌfoʊnəˈtɪʃən', 'e˩˥', 'dⁿ', 'b̤a̤'])
+    assert.equal(referencePreview(example), null);
+});
+void test('reference plosives retain closure, pressure and release instead of continuous airflow', () => {
+  const model = referencePreview('t̪')!;
+  assert.equal(referenceFrame(model, 0.3).flow, 'off');
+  assert.ok(referenceFrame(model, 0.6).pressure > 0);
+  assert.equal(referenceFrame(model, 0.7).flow, 'burst');
+  assert.equal(referenceFrame(model, 1).flow, 'off');
+  const markup = renderToStaticMarkup(
+    createElement(VocalTract, {
+      pose: model.to,
+      place: model.place,
+      highlightContact: true,
+      display: { labels: true, zones: true, points: false, airflow: true },
+      flow: 'off',
+    }),
+  );
+  assert.ok(markup.includes('articulation-highlight'));
+  assert.ok(!markup.includes('class="air-dashes"'));
+  assert.ok(markup.includes('light-dark(#d89888, #a57166)'));
+});
 void test('free vowels preserve anchors and always label the entire chart and rounding continuum', () => {
   for (const v of [...vowels, ...apicalVowels])
     assert.equal(describeVowel(v).symbol, v.symbol);

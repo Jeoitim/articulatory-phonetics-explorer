@@ -22,8 +22,8 @@ export function Glottis({
       >
         <path
           d="M 59 8 C 25 15 27 51 59 51 C 91 51 94 15 59 8"
-          fill="#efdad1"
-          stroke="#c89b89"
+          fill="light-dark(#efdad1, #68544b)"
+          stroke="light-dark(#c89b89, #bd9580)"
         />
         <path
           className={openness >= 0.05 && voiced && animated ? 'vocal-fold' : ''}
@@ -34,8 +34,8 @@ export function Glottis({
                 ? 'M 59 13 Q 51 29 59 46 Q 67 29 59 13'
                 : 'M 59 13 L 46 42 Q 59 51 73 42 Z'
           }
-          fill="#676256"
-          stroke="#b37366"
+          fill="light-dark(#676256, #262422)"
+          stroke="light-dark(#b37366, #c18a77)"
         />
       </svg>
       <div>
@@ -70,10 +70,13 @@ export function TongueInset({
       >
         <path
           d="M 32 51 V 27 Q 60 -8 88 27 V 51"
-          fill="#f2e8dc"
-          stroke="#c2b49a"
+          fill="light-dark(#f2e8dc, #665c4d)"
+          stroke="light-dark(#c2b49a, #b5a081)"
         />
-        <path d="M 43 52 V 28 Q 60 8 77 28 V 52" fill="#cc8e80" />
+        <path
+          d="M 43 52 V 28 Q 60 8 77 28 V 52"
+          fill="light-dark(#cc8e80, #9c6c60)"
+        />
         {lateral ? (
           <path
             d={
