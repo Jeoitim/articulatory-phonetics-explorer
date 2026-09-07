@@ -251,8 +251,8 @@ export default function Explorer() {
                   />
                   <div className="diagram-hint">
                     <MousePointer2 size={14} />
-                    拖动金色控制点或点击软腭，探索调音空间
-                    <span>Shift 关闭吸附 · 软腭点击切换鼻咽通道</span>
+                    拖动金色控制点；下唇靠近蓝色上门齿环可构成唇齿音；点击软腭
+                    <span>Shift 关闭吸附 · 打开下颌时下唇长度自动受限</span>
                   </div>
                 </div>
                 <div className="insets">

@@ -30,6 +30,67 @@ export function jawPoint(p: Point, jaw: number): Point {
     y: p.y + w * (600 + x * Math.sin(a) + y * Math.cos(a) - p.y),
   };
 }
+
+// These anchors belong to the original 800 × 1000 sagittal drawing. Keeping
+// them here makes every lower-lip interaction use the same jaw hinge as the
+// mandible and lower incisor instead of maintaining a second visual pose.
+export const lowerLipBaseAnchor: Point = { x: 90, y: 770 };
+export const lowerLipRestAnchor: Point = { x: 74, y: 682 };
+export const upperLipTarget: Point = { x: 115, y: 422 };
+export const upperIncisorContact: Point = { x: 153, y: 429 };
+
+export function lipTarget(p: Pick<Pose, 'rounding' | 'dentalContact'>): Point {
+  const dental = Math.max(0, Math.min(1, p.dentalContact));
+  const rounded = { x: 115 - p.rounding * 30, y: 422 };
+  return {
+    x: rounded.x + (upperIncisorContact.x - rounded.x) * dental,
+    y: rounded.y + (upperIncisorContact.y - rounded.y) * dental,
+  };
+}
+
+/**
+ * Maximum closure that keeps the lower-lip tissue within its SVG-scale span.
+ * The reference is the closed-jaw distance to the current target plus a small
+ * amount of slack, so canonical labiodental presets still reach the incisor
+ * while a wide jaw opening cannot pull the lip into a vertical strip.
+ */
+export function lowerLipClosureLimit(p: Pose): number {
+  const base = jawPoint(lowerLipBaseAnchor, p.jaw);
+  const restPoint = jawPoint(lowerLipRestAnchor, p.jaw);
+  const target = lipTarget(p);
+  const closedBase = jawPoint(lowerLipBaseAnchor, 0.05);
+  const referenceSpan = Math.hypot(
+    target.x - closedBase.x,
+    target.y - closedBase.y,
+  );
+  const maxSpan = referenceSpan + 16;
+  const restSpan = Math.hypot(restPoint.x - base.x, restPoint.y - base.y);
+  const fullSpan = Math.hypot(target.x - base.x, target.y - base.y);
+  if (fullSpan <= maxSpan || fullSpan <= restSpan) return 1;
+  return Math.max(0, Math.min(1, (maxSpan - restSpan) / (fullSpan - restSpan)));
+}
+
+export function limitLowerLip(p: Pose): Pose {
+  const next = structuredClone(p);
+  next.lowerLip = Math.min(
+    Math.max(0, Math.min(1, next.lowerLip)),
+    lowerLipClosureLimit(next),
+  );
+  return next;
+}
+
+export function lowerLipPoint(p: Pose): Point {
+  const restPoint = jawPoint(lowerLipRestAnchor, p.jaw);
+  const target = lipTarget(p);
+  const amount = Math.min(
+    Math.max(0, Math.min(1, p.lowerLip)),
+    lowerLipClosureLimit(p),
+  );
+  return {
+    x: restPoint.x + (target.x - restPoint.x) * amount,
+    y: restPoint.y + (target.y - restPoint.y) * amount,
+  };
+}
 export function jawPath(path: string, jaw: number) {
   return path.replace(
     /(-?\d+(?:\.\d+)?)[, ]+(-?\d+(?:\.\d+)?)/g,
@@ -47,7 +108,7 @@ export function moveJaw(p: Pose, jaw: number) {
     false,
   );
   next.jaw = jaw;
-  return isPlausible(next) ? next : { ...p, jaw: p.jaw };
+  return limitLowerLip(isPlausible(next) ? next : { ...p, jaw: p.jaw });
 }
 // All landmarks share the original Wikimedia SVG's 800 × 1000 coordinate system.
 export const roof: Point[] = [

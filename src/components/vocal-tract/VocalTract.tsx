@@ -22,6 +22,12 @@ import {
   jawPath,
   moveJaw,
   roof,
+  lowerLipBaseAnchor,
+  upperLipTarget,
+  upperIncisorContact,
+  lowerLipRestAnchor,
+  lowerLipPoint,
+  limitLowerLip,
 } from '../../engine/geometry';
 import { anatomyPaths as paths } from '../../data/anatomy-paths';
 import { articulationContact } from '../../engine/contact';
@@ -113,21 +119,17 @@ export function VocalTract({
   const top = surface(pose),
     nasal = pose.velum > 0.5,
     tip = pose.tongue.tip;
-  const lipBase = jawPoint({ x: 90, y: 770 }, pose.jaw),
-    lipRest = jawPoint({ x: 74, y: 682 }, pose.jaw),
-    lipTarget =
-      pose.dentalContact > 0.5
-        ? { x: 153, y: 429 }
-        : { x: 115 - pose.rounding * 30, y: 422 };
-  const lip = {
-    x: lipRest.x + (lipTarget.x - lipRest.x) * pose.lowerLip,
-    y: lipRest.y + (lipTarget.y - lipRest.y) * pose.lowerLip,
-  };
+  // The lip and mandible share the same hinge. The closure limit is applied
+  // along the tissue path, so opening the jaw lowers the lip instead of
+  // stretching it or leaving it behind.
+  const lipBase = jawPoint(lowerLipBaseAnchor, pose.jaw);
+  const lip = lowerLipPoint(pose);
   const air = airflowPath(pose, lip, airstream);
   const mouthFloor = jawPoint({ x: 139, y: 745 }, pose.jaw);
   const jawControl = jawPoint({ x: 116, y: 790 }, pose.jaw);
-  const upperLipPoint = { x: 116, y: 420 };
+  const upperLipPoint = upperLipTarget;
   const upperIncisorPoint = { x: 168, y: 399 };
+  const upperIncisorContactPoint = upperIncisorContact;
   const labialActivePoint =
     place === 'bilabial' || place === 'labiodental' ? lip : null;
   const labialPassivePoint =
@@ -178,15 +180,43 @@ export function VocalTract({
         current.startPose.jaw +
           (p.y - current.offset.y - current.anchor.y) / 180,
       );
-      onEdit(moveJaw(current.startPose, nextJaw));
+      onEdit(limitLowerLip(moveJaw(current.startPose, nextJaw)));
       return;
     }
     if (key === 'lowerLip') {
-      const nextLowerLip = clampValue(
-        current.startPose.lowerLip -
-          (p.y - current.offset.y - current.anchor.y) / 230,
+      const draggedPoint = {
+        x: p.x - current.offset.x,
+        y: p.y - current.offset.y,
+      };
+      const startUpperLipTarget = {
+        x: 115 - current.startPose.rounding * 30,
+        y: 422,
+      };
+      const dentalProgress = clampValue(
+        (draggedPoint.x - startUpperLipTarget.x) /
+          (upperIncisorContactPoint.x - startUpperLipTarget.x),
       );
-      onEdit({ ...current.startPose, lowerLip: nextLowerLip });
+      const startLipRest = jawPoint(lowerLipRestAnchor, current.startPose.jaw);
+      const target = {
+        x:
+          startUpperLipTarget.x +
+          (upperIncisorContactPoint.x - startUpperLipTarget.x) * dentalProgress,
+        y: 422 + 7 * dentalProgress,
+      };
+      const nextLowerLip = clampValue(
+        (startLipRest.y - draggedPoint.y) / (startLipRest.y - target.y),
+      );
+      onEdit(
+        limitLowerLip({
+          ...current.startPose,
+          // A hand-built labiodental constriction should remain a fricative-sized
+          // aperture at the tooth target; full closure is still available from
+          // the preset and the dedicated closure slider.
+          lowerLip:
+            dentalProgress > 0.5 ? Math.min(nextLowerLip, 0.89) : nextLowerLip,
+          dentalContact: dentalProgress,
+        }),
+      );
       return;
     }
     onEdit(
@@ -208,12 +238,14 @@ export function VocalTract({
   function nudge(key: TractControl, delta: Point) {
     if (!onEdit) return;
     if (key === 'jaw') {
-      onEdit(moveJaw(pose, clampValue(pose.jaw + delta.y / 30)));
+      onEdit(limitLowerLip(moveJaw(pose, clampValue(pose.jaw + delta.y / 30))));
     } else if (key === 'lowerLip') {
-      onEdit({
-        ...pose,
-        lowerLip: clampValue(pose.lowerLip - delta.y / 30),
-      });
+      onEdit(
+        limitLowerLip({
+          ...pose,
+          lowerLip: clampValue(pose.lowerLip - delta.y / 30),
+        }),
+      );
     } else {
       onEdit(
         constrain(

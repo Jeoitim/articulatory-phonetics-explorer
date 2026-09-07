@@ -14,6 +14,10 @@ import {
   underside,
   tongueArea,
   jawPoint,
+  lowerLipBaseAnchor,
+  lowerLipClosureLimit,
+  lowerLipPoint,
+  limitLowerLip,
 } from '../src/engine/geometry';
 import { infer } from '../src/engine/inference';
 import { sampleAnimation } from '../src/engine/animation';
@@ -494,6 +498,20 @@ void test('lip contact target and rounding distinguish bilabial, labiodental and
     infer({ ...w, rounding: 0 }, soundBySymbol('w')).candidates[0]?.sound
       .symbol,
     'ɰ',
+  );
+});
+void test('lower lip stays attached to the jaw and caps stretch as the jaw opens', () => {
+  const f = preset(soundBySymbol('f'));
+  assert.equal(lowerLipClosureLimit(f), 1);
+  assert.equal(infer(f, soundBySymbol('f')).place, 'labiodental');
+
+  const open = limitLowerLip({ ...f, jaw: 1 });
+  assert.ok(open.lowerLip < f.lowerLip);
+  const base = jawPoint(lowerLipBaseAnchor, open.jaw);
+  const lip = lowerLipPoint(open);
+  assert.ok(
+    Math.hypot(lip.x - base.x, lip.y - base.y) < 160,
+    'open jaw must not stretch the lip into a long strip',
   );
 });
 void test('closed fricatives, open stops, and incomplete airstream mechanisms never yield exact matches', () => {

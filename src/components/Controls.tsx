@@ -1,4 +1,4 @@
-import { moveJaw } from '../engine/geometry';
+import { limitLowerLip, moveJaw } from '../engine/geometry';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
 import {
@@ -152,7 +152,7 @@ export function Controls({
       <Range
         label="下唇闭合度"
         value={pose.lowerLip}
-        onChange={(lowerLip) => onPose({ ...pose, lowerLip })}
+        onChange={(lowerLip) => onPose(limitLowerLip({ ...pose, lowerLip }))}
       />
       <Range
         label="下颌开度"
