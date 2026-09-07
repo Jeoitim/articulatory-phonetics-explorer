@@ -14,7 +14,9 @@ import {
   ArrowUpRight,
   MousePointer2,
   Settings2,
+  Code2,
 } from 'lucide-react';
+import { ThemeSwitch } from '../components/ThemeSwitch';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Features, Mode, Pose } from '../domain/phonetics';
 import { soundBySymbol } from '../data/consonants';
@@ -103,6 +105,7 @@ export default function Explorer() {
           <span className="language">
             中文 <span>/ EN 术语</span>
           </span>
+          <ThemeSwitch />
           <a
             href="https://www.internationalphoneticassociation.org/content/ipa-chart"
             target="_blank"
@@ -354,14 +357,35 @@ export default function Explorer() {
             onSelect={select}
           />
         )}
-        <footer>
-          <span className="footer-brand">
-            <AudioLines size={17} /> Articulatory Phonetics Explorer
-          </span>
-          <span>声音是连续的，符号是理解它的起点。</span>
-          <a href="/attribution/anatomy.txt" target="_blank" rel="noreferrer">
-            解剖参考与署名 ↗
-          </a>
+        <footer className="site-footer">
+          <div className="footer-identity">
+            <span className="footer-brand">
+              <AudioLines size={18} aria-hidden="true" />
+              Articulatory Phonetics Explorer
+            </span>
+            <p>声音是连续的，符号是理解它的起点。</p>
+          </div>
+          <nav className="footer-links" aria-label="项目与参考资料">
+            <a href="attribution/anatomy.txt" target="_blank" rel="noreferrer">
+              解剖参考与署名 <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+            <a
+              className="repository-link"
+              href="https://github.com/Jeoitim/articulatory-phonetics-explorer"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Code2 size={16} aria-hidden="true" />
+              GitHub 仓库 <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
+          </nav>
+          <div className="footer-bottom">
+            <small>
+              © {new Date().getFullYear()} Jeoitim · Articulatory Phonetics
+              Explorer
+            </small>
+            <span>第三方素材版权归原作者所有</span>
+          </div>
         </footer>
       </main>
     </>

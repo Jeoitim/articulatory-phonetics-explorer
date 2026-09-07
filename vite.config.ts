@@ -9,7 +9,7 @@ const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
 
 const { d1, r2 } = hostingConfig;
 
-// macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
+// macOS Seatbelt 会阻止 FSEvents，因此 Codex 预览需要使用轮询实现热更新。
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === 'seatbelt';
 
 const localBindingConfig = {
@@ -35,13 +35,13 @@ const localBindingConfig = {
 };
 
 export default defineConfig(async () => {
-  // Keep Wrangler and Miniflare state project-local. These are non-secret tool
-  // settings; application environment belongs in ignored `.env*` files.
+  // 将 Wrangler 和 Miniflare 状态保存在项目内。这些是非敏感的工具设置；
+  // 应用环境变量应放入被忽略的 `.env*` 文件。
   process.env.WRANGLER_WRITE_LOGS ??= 'false';
   process.env.WRANGLER_LOG_PATH ??= '.wrangler/logs';
   process.env.MINIFLARE_REGISTRY_PATH ??= '.wrangler/registry';
 
-  // Wrangler snapshots its log path while the Cloudflare plugin is imported.
+  // Cloudflare 插件导入时，Wrangler 会读取当前日志路径。
   const { cloudflare } = await import('@cloudflare/vite-plugin');
 
   return {
@@ -59,4 +59,3 @@ export default defineConfig(async () => {
     ],
   };
 });
-

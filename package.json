@@ -10,6 +10,8 @@
     "audio:check": "node scripts/check-audio-cache.mjs --require-complete",
     "prebuild": "npm run audio:check",
     "build": "vinext build",
+    "build:static": "node scripts/build-static.mjs",
+    "deployment:check": "node scripts/check-static-export.mjs",
     "start": "wrangler dev --config dist/server/wrangler.json",
     "lint": "oxlint src app tests scripts",
     "format": "oxfmt",

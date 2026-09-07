@@ -1,40 +1,39 @@
-# Architecture
+# 架构说明
 
-## State and scope
+## 状态与范围
 
-78 pulmonic entries: 59 main-chart symbols plus 19 common extensions. Selected category, free geometry, requested features, and temporal presentation are separate states. Non-pulmonic mechanisms are reserved types and an explanatory lesson only.
+辅音模型包含 92 个条目：完整主表的 59 个符号、19 个常用扩展，以及 14 个非肺部示例。元音模块另有 28 个舌面元音。分类、自由构形、请求的语音特征和时间动画分别维护，非肺部机制使用专用类型并通过课程解释其气流方向。
 
-## Data flow
+## 数据流
 
-Consonant data → shared place/manner gestures → articulation parameters → one layered SVG. No symbol has a separate anatomical drawing. Secondary articulation is represented independently by rounding, dorsal shape and epiglottic constriction. The complete chart's blank cells are distinct from official shaded cells.
+辅音数据 → 共享的调音部位与方法手势 → 发音参数 → 分层 SVG。符号不会各自绑定一张解剖图。附加调音由圆唇、舌背形状和会厌收缩等独立参数表示。完整 IPA 表中的空白格与官方着色格分别处理。
 
-## Anatomy and constraints
+## 解剖图与约束
 
-All anatomy uses the supplied SVG's 800 × 1000 coordinate space. Craniofacial tissue, maxilla, mandible, teeth, velum/uvula, tongue, epiglottis, larynx and overlays are separate paths. Original static tongue and velum are removed before inserting movable structures. Nasal conchae, bone hatching and muscle fibers are explanatory additions, not measured tissue anatomy.
+所有解剖图使用参考 SVG 的 800 × 1000 坐标空间。颅面组织、上颌、下颌、牙齿、软腭与小舌、舌体、会厌、喉部和覆盖层均为独立路径。插入可移动结构前会移除原图中的静态舌体和软腭。鼻甲、骨骼纹理和肌纤维是解释性添加，不代表测量得到的组织解剖。
 
-The five tongue controls form a limited Hermite surface and rounded ventral contour. Dragging distributes displacement over neighboring regions with distance-weighted influence; root movement is attenuated when anterior controls move. Edge-length relaxation limits spikes; the palate and pharyngeal wall exclude solid tissue penetration. The full polygon is checked for intersections and excessive sagittal area change. An inadmissible move is reduced continuously using bisection. Retroflex apex overhang is allowed, so x-order is not incorrectly enforced.
+五个舌体控制区组成受限的 Hermite 曲面和圆滑舌腹轮廓。拖动会按距离加权分散到邻近区域，前部控制区移动时舌根位移会减弱。边长松弛限制尖刺，硬腭和咽壁阻止实体穿透；完整多边形会检查自交和矢状面积异常变化。不可接受的移动通过二分法连续缩小。允许卷舌舌尖向前悬垂，因此不会错误地强制所有点按 x 轴排序。
 
-Mandibular movement uses a schematic hinge and gradual posterior attenuation; the ventral tongue contour shares the jaw transform. Jaw editing also redistributes the upper tongue. This is a geometric teaching model, not an anatomical guarantee or volume-conserving muscle simulation.
+下颌使用示意铰链和逐渐减弱的后部联动，舌腹共享下颌变换；编辑下颌也会重新分配舌体上部。它是几何教学模型，不是解剖保证，也不模拟守恒体积的肌肉运动。
 
-## Inference
+## 构形推断
 
-Active articulator and passive region propose a place. Lip contact, tongue curl, rounding, glottal closure and epiglottic constriction provide separate evidence. Requested manner, voicing, velum and airflow gate candidate classes. Whole-tongue similarity ranks secondary gestures only within these phonetic constraints. A proximity number is geometric closeness, never a linguistic probability.
+主动调音器官和被动部位共同提出调音部位。唇部接触、舌尖弯曲、圆唇、声门闭合和会厌收缩分别提供证据；方法、清浊、软腭和气流闸门限制候选类别。完整舌体相似度只在这些语音约束内排序附加手势。接近度数值表示几何距离，不表示语言学概率。
 
-Closed fricatives, open stops and nasal settings without an open nasal port are rejected. A canonical label means close to this teaching preset, not a uniquely identified speech sound. Glottal fricatives and variable [ɧ] remain closest matches. Lessons accept a valid nearby configuration, rather than requiring a pixel-perfect preset copy.
+闭塞摩擦音、开放塞音以及没有开放鼻腔通道的鼻音设置会被拒绝。匹配到标准标签只表示接近当前教学预设，不表示唯一识别出某个语音。声门摩擦音和实现差异较大的 [ɧ] 会保留最近匹配。课程接受有效的邻近构形，不要求逐像素复制预设。
 
-## Animation
+## 动画
 
-Independent manner timelines control closure, pressure, release and smooth/turbulent/nasal flow. Affricates release into a fricative gesture. Trills move the appropriate lip, apex or uvula. Retroflex transitions raise the apex before retracting it to avoid flattening apex and blade together. Reduced motion disables loops and presents steps. Timing is slow-motion teaching, not measured speech or audio synchronization.
+独立的方法时间线控制闭塞、压力、释放以及平滑、湍流和鼻腔气流。塞擦音会从闭塞释放到摩擦手势。颤音会移动对应的唇、舌尖或小舌。卷舌过渡先抬高舌尖，再向后收回，避免舌尖和舌叶同时压平。减少动态效果时关闭循环并展示离散步骤。时间是慢动作教学示意，不是测量语音，也不与录音逐帧同步。
 
-## Audio and validation
+## 音频与验证
 
-The replaceable JSON audio manifest contains source, speaker/attribution, license and local or remote URL. Failures remain explicit. Thirteen automated tests cover all symbols, inference distinctions, geometry extremes, 3,198 animation samples, lesson reachability and media attribution. Static SVG contact sheets provide anatomical visual checks; browser interaction and WebMCP runtime validation are separate, currently unperformed checks.
+可替换的 JSON 音频清单包含来源、说话人或署名、许可和本地或远程地址。播放失败会明确反馈。当前自动化测试覆盖 92 个辅音、28 个元音、推断差异、极端几何、3,198 个动画采样、课程可达性和媒体署名；静态 SVG 联系表用于解剖图检查。浏览器交互和 WebMCP 运行时验证仍需单独执行。
 
-## Active versus passive articulation
+## 主动与被动调音
 
-The interface displays the active organ and passive site separately (for example, apex–postalveolar versus blade–postalveolar). Retroflex is treated as a gesture, not an extra fixed piece of palate. Its free anterior contour uses local normals and a rounded apex cap; the floor attachment moves with the mandible. Backward apex dragging lets the blade bow forward/down, so retroflex configurations are reachable manually.
+界面分别显示主动器官和被动部位，例如“舌尖—龈后”和“舌叶—龈后”。卷舌被视为手势，而不是额外的一块固定腭面。前部自由轮廓使用局部法线和圆形舌尖封口，下方附着点随下颌移动。向后拖动舌尖可以让舌叶向前下方形成弧度，使卷舌构形能够手动达到。
 
-The five editable regions distinguish the extreme apex, blade just behind it, anterior tongue body, posterior tongue body and root. Subapical contact is described separately for the illustrated curled gesture. These are pedagogical regions, not a claim of universally discrete subdivisions.
+五个可编辑区域区分最前端舌尖、其后的舌叶、舌面前部、舌面后部和舌根。对于图示的卷曲手势，舌尖下方接触另行说明。这些是教学区域，不声称在所有语言或个体中都存在同样清晰的离散分区。
 
-Coronal distinctions reference Patricia Keating's discussion of active articulators and tongue shapes: https://linguistics.ucla.edu/people/keating/coronals.pdf . The model permits an apical postalveolar closest match without treating location alone as sufficient to distinguish [ʃ] from [ʂ].
-
+冠音区别参考 [Patricia Keating 关于主动调音器官和舌形的讨论](https://linguistics.ucla.edu/people/keating/coronals.pdf)。模型允许“舌尖—龈后”成为最近匹配，但不会只凭位置把 [ʃ]、[ʂ] 和 [ɕ] 混为一类。

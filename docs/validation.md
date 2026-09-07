@@ -1,14 +1,17 @@
-# Validation
+# 验证记录
 
-- TypeScript strict: passed.
-- App-source lint: passed (`src`, `app`, `tests`, `scripts`; generated UI primitives are outside this lint command).
-- Production build: passed.
-- 13 domain/resource tests: passed. Includes 78-symbol coverage, independent phonetic features, all canonical outlines, 3,198 animation samples, 120 extreme drag steps, coupled movement, dorsal closure reachability and manual construction of retroflex stops/fricatives.
-- Active/passive articulator distinctions verified for apical and laminal postalveolar configurations.
-- All 78 audio records have a verified Commons media URL, source, attribution and license. 41 local Ogg headers verified; 37 remote streams are network-dependent and were not all played end-to-end. Commons returned HTTP 429 with a 600-second retry interval during caching.
-- Dependency audit: zero reported vulnerabilities after compatible updates.
-- Static SVG contact sheets checked for labial, coronal, retroflex, palatal, velar, uvular and pharyngeal gestures. The user-supplied screenshot guided layout and tongue refinements.
-- Browser visual/interactive QA was not performed. SVG render inspection and domain tests do not substitute for a full browser interaction test.
-- Optional WebMCP registration is feature-detected and its input is validated; runtime registration/execution remain unverified.
+以下结果对应当前工作区最近一次完整检查：
 
-Scientific limits: qualitative teaching geometry, not a biomechanical muscle or acoustic solver. Constraints reject obvious geometric problems but do not certify every posture as physiologically producible. Individual, language-specific and three-dimensional differences remain. Non-pulmonic gestures are explanations only. Audio and animation are not synchronized measurements.
+- TypeScript strict：通过。
+- 应用源代码规范检查：通过，范围为 `src`、`app`、`tests` 和 `scripts`。
+- 默认 Cloudflare Workers 构建：通过。
+- 根路径静态导出：通过，`npm run build:static` 生成 `dist/client`。
+- GitHub Pages 子路径静态导出：通过，设置 `PAGES_BASE_PATH=/articulatory-phonetics-explorer` 后生成对应嵌套目录。
+- 静态产物检查：通过，入口页、`404.html`、`favicon.svg`、署名文件、音频清单和 120 条本地录音均存在。
+- 自动化测试：31 项全部通过，覆盖 92 个辅音、28 个元音、独立语音特征、标准轮廓、3,198 个动画采样、极端拖动、联动移动、舌背闭塞可达性和卷舌构形。
+- 音频缓存：120/120 条本地录音完整；每条清单记录保留来源、署名和许可，缺失或浏览器不支持时由播放器尝试 Wikimedia Commons 在线备用。
+- 主动与被动调音器官：已验证舌尖和舌叶在龈后构形中的区别。
+
+静态 SVG 联系表和领域测试可以检查几何结构与数据一致性，但不能替代完整的浏览器视觉和交互测试。本次检查没有在所有浏览器中逐条播放录音；旧版浏览器的 Ogg 支持、网络阻断和远程 Commons 可用性仍可能影响在线备用。可按[部署指南](deployment.md)中的命令在目标托管平台继续复核。
+
+科学边界：本项目是定性教学几何，不是生物力学肌肉模型或声学求解器。约束只排除明显的几何问题，不能证明每个姿势都能由真实生理实现；个体差异、语言差异和三维结构仍未建模。非肺部手势用于解释机制，录音和动画也不是同步测量。

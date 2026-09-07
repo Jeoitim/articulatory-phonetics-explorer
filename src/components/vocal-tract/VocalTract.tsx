@@ -598,6 +598,7 @@ export function VocalTract({
             ))}
         {display.labels && !compact && (
           <g
+            className="anatomy-callouts"
             pointerEvents="none"
             fontSize="20"
             fontFamily="Segoe UI,Microsoft YaHei,sans-serif"

@@ -29,6 +29,7 @@ import { interpolate } from '../src/engine/geometry';
 import { vowelMotionProgress } from '../src/engine/vowel-motion';
 import { UnmatchedSoundCard } from '../src/components/UnmatchedSoundCard';
 import { vowelAudio } from '../src/data/vowel-audio';
+import { onlineAudioUrl, resolveAudioUrl } from '../src/engine/audio';
 void test('every standard vowel has a sourced recording and rounded high vowels keep a small aperture', () => {
   for (const v of vowels) {
     const a = vowelAudio[v.symbol];
@@ -57,6 +58,36 @@ void test('every standard vowel has a sourced recording and rounded high vowels 
     'open rounded aperture is not stretched vertically',
   );
   assert.ok(unrounded.width <= 60, 'neutral lips are not maximally stretched');
+});
+void test('audio URLs stay inside a GitHub Pages project and expose a Commons fallback', () => {
+  assert.equal(
+    resolveAudioUrl(
+      '/audio/vowel-69.ogg',
+      'https://jeoitim.github.io/articulatory-phonetics-explorer',
+    ),
+    'https://jeoitim.github.io/articulatory-phonetics-explorer/audio/vowel-69.ogg',
+  );
+  assert.equal(
+    resolveAudioUrl('/audio/manifest.json', 'http://localhost:3000/'),
+    'http://localhost:3000/audio/manifest.json',
+  );
+  assert.equal(
+    resolveAudioUrl(
+      '/audio/manifest.json',
+      'https://jeoitim.github.io/articulatory-phonetics-explorer/index.html',
+    ),
+    'https://jeoitim.github.io/articulatory-phonetics-explorer/audio/manifest.json',
+  );
+  assert.equal(
+    onlineAudioUrl(vowelAudio.i!.source),
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Close_front_unrounded_vowel.ogg',
+  );
+  for (const vowel of vowels)
+    assert.match(
+      onlineAudioUrl(vowelAudio[vowel.symbol]!.source)!,
+      /Special:FilePath\/.+\.ogg$/,
+    );
+  assert.equal(onlineAudioUrl('https://example.com/audio.ogg'), null);
 });
 void test('unmatched result presents only current configuration, without a candidate symbol or recording', () => {
   const sound = soundBySymbol('l');
