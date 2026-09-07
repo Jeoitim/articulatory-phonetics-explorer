@@ -37,24 +37,27 @@ export function Compare({ onAudio }: { onAudio: (symbol: string) => void }) {
         <Toggle label="轮廓叠加" checked={overlay} onChange={setOverlay} />
       </div>
       <div className="pair-shortcuts">
-        典型对比
-        {[
-          ['s', 'ʃ'],
-          ['t', 'ʈ'],
-          ['x', 'ç'],
-          ['t', 'd'],
-          ['n', 'ŋ'],
-          ['l', 'ɹ'],
-          ['r', 'ɾ'],
-        ].map(([x, y]) => (
-          <button
-            key={x}
-            onClick={() => pair(x!, y!)}
-            className={a === x && b === y ? 'active' : ''}
-          >
-            [{x}] <span>vs</span> [{y}]
-          </button>
-        ))}
+        <span className="pair-shortcuts-label">典型对比</span>
+        <div className="pair-shortcut-list" aria-label="典型对比选项">
+          {[
+            ['s', 'ʃ'],
+            ['t', 'ʈ'],
+            ['x', 'ç'],
+            ['t', 'd'],
+            ['n', 'ŋ'],
+            ['l', 'ɹ'],
+            ['r', 'ɾ'],
+          ].map(([x, y]) => (
+            <button
+              key={`${x}-${y}`}
+              type="button"
+              onClick={() => pair(x!, y!)}
+              className={a === x && b === y ? 'active' : ''}
+            >
+              [{x}] <span>vs</span> [{y}]
+            </button>
+          ))}
+        </div>
       </div>
       <div className="compare-grid">
         {[sa, sb].map((s, i) => {

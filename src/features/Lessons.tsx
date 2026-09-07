@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Check,
   ArrowRight,
+  ChevronDown,
   Play,
   Pause,
   RotateCcw,
@@ -53,6 +54,27 @@ export function Lessons() {
   return (
     <section className="lessons-layout">
       <nav aria-label="课程列表" className="lesson-list">
+        <div className="lesson-mobile-picker">
+          <label htmlFor="lesson-picker">选择课程</label>
+          <div className="lesson-picker-control">
+            <select
+              id="lesson-picker"
+              value={index}
+              onChange={(event) => change(Number(event.target.value))}
+            >
+              {lessons.map((lessonOption, lessonIndex) => (
+                <option key={lessonOption.en} value={lessonIndex}>
+                  {String(lessonIndex + 1).padStart(2, '0')} ·{' '}
+                  {lessonOption.title}
+                </option>
+              ))}
+            </select>
+            <ChevronDown size={16} aria-hidden="true" />
+          </div>
+          <span className="lesson-picker-count" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')} / {lessons.length}
+          </span>
+        </div>
         <span className="eyebrow">LEARN BY DOING</span>
         <h2>从观察到理解</h2>
         {lessons.map((l, i) => (

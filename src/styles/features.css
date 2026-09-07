@@ -23,13 +23,29 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: wrap;
+  overflow: hidden;
   margin: 22px 0;
   font-size: 12px;
   color: light-dark(#8c977e, var(--night-copy));
 }
+
+.pair-shortcuts-label {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.pair-shortcut-list {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .pair-shortcuts button {
   font-size: 18px;
+  flex: 0 0 auto;
+  white-space: nowrap;
   background: light-dark(#fffefa, var(--night-raised));
   border: 1px solid light-dark(#dde3d1, var(--night-border));
   padding: 4px 15px;
@@ -150,6 +166,11 @@
   border-radius: 10px;
   align-self: start;
 }
+
+.lesson-mobile-picker {
+  display: none;
+}
+
 .lesson-list h2 {
   font-size: 19px;
   font-weight: 500;
@@ -398,6 +419,29 @@
   .compare-intro h2 {
     font-size: 22px;
   }
+  .pair-shortcuts {
+    gap: 8px;
+    margin: 14px 0 16px;
+  }
+  .pair-shortcut-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 2px 1px 7px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .pair-shortcut-list::-webkit-scrollbar {
+    display: none;
+  }
+  .pair-shortcuts button {
+    font-size: 16px;
+    padding: 6px 10px;
+    scroll-snap-align: start;
+  }
+  .pair-shortcuts button span {
+    margin: 0 5px;
+  }
   .difference-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -412,17 +456,60 @@
     grid-template-columns: 1fr;
   }
   .lesson-list {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-    padding: 12px;
+    display: block;
+    padding: 10px 12px;
   }
   .lesson-list > .eyebrow,
-  .lesson-list > h2 {
+  .lesson-list > h2,
+  .lesson-list > button {
     display: none;
   }
-  .lesson-list button {
-    min-width: 180px;
+  .lesson-mobile-picker {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+  }
+  .lesson-mobile-picker label {
+    color: light-dark(#718360, var(--night-copy));
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .lesson-picker-control {
+    position: relative;
+    min-width: 0;
+  }
+  .lesson-picker-control select {
+    width: 100%;
+    min-width: 0;
+    appearance: none;
+    border: 1px solid light-dark(#d7dfc9, var(--night-border));
+    border-radius: 8px;
+    background: light-dark(#fffefa, var(--night-raised));
+    color: light-dark(#4e653d, var(--night-ink));
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.2;
+    padding: 9px 32px 9px 11px;
+  }
+  .lesson-picker-control select:focus-visible {
+    outline: 2px solid light-dark(#8ea875, var(--night-ring));
+    outline-offset: 2px;
+  }
+  .lesson-picker-control > svg {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    pointer-events: none;
+    color: light-dark(#829170, var(--night-copy));
+    transform: translateY(-50%);
+  }
+  .lesson-picker-count {
+    color: light-dark(#829170, var(--night-copy));
+    font: 11px/1 var(--font-mono);
+    white-space: nowrap;
   }
   .compare-card .insets {
     grid-template-columns: 1fr 1fr;

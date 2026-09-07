@@ -126,6 +126,7 @@ export function VocalTract({
         ref={ref}
         viewBox="-35 -18 890 1058"
         className="tract"
+        data-interactive={display.points && onEdit ? 'true' : undefined}
         aria-label="依照教材参考图分层的发音器官矢状面，面向左侧"
         onPointerMove={(e) => {
           if (drag.current) return;
@@ -680,6 +681,7 @@ export function VocalTract({
               }}
               onPointerMove={(e) => {
                 if (!drag.current || drag.current.key !== key) return;
+                e.preventDefault();
                 const p = position(e);
                 onEdit(
                   constrain(
