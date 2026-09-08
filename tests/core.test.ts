@@ -1317,4 +1317,56 @@ void test('laminal postures decouple lower tip adjustments from blade constricti
     assert.match(match.contact.active, /舌叶/);
   }
 });
+void test('pharyngeal consonants retract foretongue posteriorly with plausible area', () => {
+  for (const sym of ['ħ', 'ʕ', 'ʜ', 'ʢ', 'ʡ']) {
+    const s = soundBySymbol(sym);
+    const p = preset(s);
+    assert.ok(isPlausible(p), `preset for ${sym} is plausible`);
+    assert.ok(p.tongue.tip.x >= 240, `tip for ${sym} is retracted posteriorly (x >= 240)`);
+    assert.ok(p.tongue.blade.x >= 320, `blade for ${sym} is retracted posteriorly (x >= 320)`);
+    assert.ok(p.tongue.front.x >= 420, `front for ${sym} is retracted posteriorly (x >= 420)`);
+    const match = infer(p, s);
+    assert.equal(match.place, s.place, `infer recognizes ${sym} place`);
+  }
+});
 
+void test('click consonants conform to literature geometry without cliff deformation or area violation', () => {
+  for (const sym of ['ʘ', 'ǀ', 'ǃ', 'ǂ', 'ǁ']) {
+    const s = soundBySymbol(sym);
+    const p = preset(s);
+    assert.ok(isPlausible(p), `click ${sym} is plausible`);
+    const match = infer(p, s);
+    assert.equal(match.place, s.place, `click ${sym} matches place`);
+    assert.equal(match.nonTypical, false, `click ${sym} is not nonTypical`);
+    // Velar posterior closure present
+    assert.match(match.contact.active, /舌面后部/);
+    assert.match(match.contact.passive, /软腭/);
+
+    // Front pocket should be a shallow cavity (y <= 465), not a deep cliff deformation (480+)
+    assert.ok(p.tongue.front.y <= 465, `click ${sym} front.y is not an extreme cliff`);
+    assert.ok(p.tongue.front.y >= 440, `click ${sym} front.y has sufficient rarefaction pocket`);
+  }
+
+  // Palatoalveolar click ǂ specific laminal anterior closure
+  const palatoalveolarClick = preset(soundBySymbol('ǂ'));
+  assert.equal(palatoalveolarClick.tongue.blade.y, 347);
+  assert.equal(palatoalveolarClick.tongue.dorsum.y, 374);
+  assert.ok(isPlausible(palatoalveolarClick));
+
+  // Dragging blade maintains plausible geometry and valid area without destroying posterior velar closure
+  const draggedBlade = constrain(palatoalveolarClick, 'blade', { x: 260, y: 347 }, false);
+  assert.ok(isPlausible(draggedBlade));
+  assert.ok(draggedBlade.tongue.dorsum.y <= 376, 'dorsum velar closure remains near roof on blade drag');
+
+  // Dragging dorsum maintains anterior postalveolar closure
+  const draggedDorsum = constrain(palatoalveolarClick, 'dorsum', { x: 550, y: 374 }, false);
+  assert.ok(isPlausible(draggedDorsum));
+  assert.ok(draggedDorsum.tongue.blade.y <= 350, 'blade anterior closure remains near roof on dorsum drag');
+
+  // Dragging front downward carves cavity without pulling down blade or dorsum closures
+  const draggedFront = constrain(palatoalveolarClick, 'front', { x: 390, y: 460 }, false);
+  assert.ok(isPlausible(draggedFront));
+  assert.ok(draggedFront.tongue.blade.y <= 350, 'blade remains closed when carving cavity');
+  assert.ok(draggedFront.tongue.dorsum.y <= 376, 'dorsum remains closed when carving cavity');
+  assert.equal(Math.round(draggedFront.tongue.front.y), 460);
+});

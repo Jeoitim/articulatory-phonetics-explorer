@@ -532,6 +532,13 @@ export function VocalTract({
             />
           </g>
           <path
+            {...meta('会厌 · Epiglottis')}
+            transform={'rotate(' + pose.epiglottis * 70 + ' 568 828)'}
+            d="M550 732 Q566 732 568 782 L568 828 Q556 811 558 790 Q561 766 550 745 Q545 735 550 732 Z"
+            fill="light-dark(#d9b99d, #95816a)"
+            stroke="light-dark(#ab9076, #b99a79)"
+          />
+          <path
             {...meta('舌体：内在肌与外在肌协同形变 · Tongue')}
             d={tonguePath(pose)}
             fill={'url(#' + id + 'muscle)'}
@@ -593,13 +600,6 @@ export function VocalTract({
               strokeDasharray="11 7"
             />
           )}
-          <path
-            {...meta('会厌 · Epiglottis')}
-            transform={'rotate(' + pose.epiglottis * 70 + ' 568 828)'}
-            d="M550 732 Q566 732 568 782 L568 828 Q556 811 558 790 Q561 766 550 745 Q545 735 550 732 Z"
-            fill="light-dark(#d9b99d, #95816a)"
-            stroke="light-dark(#ab9076, #b99a79)"
-          />
           <path
             {...meta('杓会厌区 · Aryepiglottic region（侧向结构投影）')}
             d={`M751 891 Q${718 - pose.epiglottis * 48} 865 ${716 - pose.epiglottis * 59} ${813 - pose.epiglottis * 33} Q${725 - pose.epiglottis * 55} ${798 - pose.epiglottis * 25} 743 785 Q759 840 773 879 Z`}

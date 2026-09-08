@@ -628,12 +628,51 @@ export function constrain(
       wy = 0;
     }
 
+    // Dual-closure decoupling for clicks / rarefaction chambers:
+    // When lowering front (dy > 0) to carve the central pocket, anchored roof closures
+    // (blade, tip, or dorsum) must not be pulled away vertically or horizontally.
+    const dorsumAtRoof =
+      pose.tongue.dorsum.y - roofY(pose.tongue.dorsum.x) < 22;
+    const bladeAtRoof =
+      pose.tongue.blade.y - roofY(pose.tongue.blade.x) < 25;
+    const tipAtRoof =
+      pose.tongue.tip.y - roofY(pose.tongue.tip.x) < 25;
+    const hasLoweredPocket = pose.tongue.front.y >= 430;
+
+    if (key === 'front' && dy > 0) {
+      if (k === 'dorsum' && dorsumAtRoof) {
+        wx = 0;
+        wy = 0;
+      }
+      if (k === 'blade' && bladeAtRoof) {
+        wx = 0;
+        wy = 0;
+      }
+      if (k === 'tip' && tipAtRoof) {
+        wx = 0;
+        wy = 0;
+      }
+    }
+
+    // When an anterior articulator is dragged in a click configuration (lowered pocket
+    // and velar closure already established), preserve the posterior closure.
+    if (index < 2 && hasLoweredPocket && dorsumAtRoof && k === 'dorsum') {
+      wx = 0;
+      wy = 0;
+    }
+
+    // When dorsum is dragged in a click configuration, preserve established anterior closure.
+    if (index >= 3 && hasLoweredPocket && (k === 'blade' && bladeAtRoof || k === 'tip' && tipAtRoof)) {
+      wx = 0;
+      wy = 0;
+    }
+
     let nextX = pose.tongue[k].x + dx * wx;
     let nextY = pose.tongue[k].y + dy * wy;
 
     // Posterior elevation releases prior high coronal constrictions toward
     // neutral dorsal height instead of pinning them to the roof or floor.
-    if (index >= 3 && (dy < 0 || uvularBlend > 0)) {
+    if (index >= 3 && (dy < 0 || uvularBlend > 0) && !hasLoweredPocket) {
       const targetBladeY = 440 * (1 - uvularBlend) + 470 * uvularBlend;
       const targetFrontY = 410 * (1 - uvularBlend) + 450 * uvularBlend;
       const targetTipY = 470 * (1 - uvularBlend) + 490 * uvularBlend;
@@ -658,8 +697,9 @@ export function constrain(
       }
     }
 
-    // Advancing anterior articulators forward relaxes prior dorsal elevation.
-    if (index < 2 && dx < 0 && k === 'dorsum' && pose.tongue.dorsum.y < 500) {
+    // Advancing anterior articulators forward relaxes prior dorsal elevation
+    // UNLESS in a click configuration with an established lowered suction pocket.
+    if (index < 2 && dx < 0 && k === 'dorsum' && pose.tongue.dorsum.y < 500 && !(hasLoweredPocket && dorsumAtRoof)) {
       nextY = Math.min(520, pose.tongue.dorsum.y + -dx * 0.7);
     }
     if (
@@ -779,9 +819,9 @@ export function preset(s: Consonant): Pose {
       [575, 725],
     ],
     pharyngeal: [
-      [185, 530],
-      [280, 500],
-      [410, 490],
+      [255, 520],
+      [330, 495],
+      [430, 485],
       [550, 535],
       [wallX(645) - gap - 7, 645],
     ],
@@ -838,11 +878,24 @@ export function preset(s: Consonant): Pose {
     p.larynx = 1;
   }
   if (s.airstream === 'click') {
-    p.jaw = 0.22;
+    // Calibrated against phonetic literature (Ladefoged & Maddieson 1996, Thomas 2008, Sands 1991):
+    // Clicks produce suction via a rarefaction chamber formed between an anterior closure
+    // (lips, teeth, alveolar, or broad postalveolar/laminal) and a posterior velar/uvular closure.
+    // The central tongue body is lowered into a shallow saucer (not a sharp vertical cliff),
+    // maintaining natural tissue continuity without excessive jaw stretch or area violation.
+    p.jaw = 0.12;
     p.tongue.dorsum = { x: 552, y: 374 };
     p.tongue.root = { x: 550, y: 725 };
-    p.tongue.front =
-      s.place === 'postalveolar' ? { x: 380, y: 480 } : { x: 400, y: 485 };
+    if (s.place === 'postalveolar') {
+      // Palatoalveolar click [ǂ]: broad laminal-palatal anterior closure
+      p.tongue.tip = { x: 205, y: 415 };
+      p.tongue.blade = { x: 275, y: 347 };
+      p.tongue.front = { x: 390, y: 450 };
+    } else if (s.place === 'bilabial') {
+      p.tongue.front = { x: 400, y: 460 };
+    } else {
+      p.tongue.front = { x: 395, y: 460 };
+    }
   }
   return p;
 }
