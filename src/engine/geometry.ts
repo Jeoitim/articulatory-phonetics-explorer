@@ -109,16 +109,24 @@ export function moveJaw(p: Pose, jaw: number) {
   // existing primary constriction away from its target.
   for (const [i, key] of tongueKeys.entries()) {
     const point = p.tongue[key];
-    const before = jawPoint(point, p.jaw), after = jawPoint(point, next.jaw);
-    const freedom = Math.max(0, Math.min(1, (point.y - roofY(point.x) - 15) / 70));
+    const before = jawPoint(point, p.jaw),
+      after = jawPoint(point, next.jaw);
+    const freedom = Math.max(
+      0,
+      Math.min(1, (point.y - roofY(point.x) - 15) / 70),
+    );
     const weight = [0.55, 0.5, 0.4, 0.18, 0][i]! * freedom;
-    next.tongue[key] = boundPoint({
-      x: point.x + (after.x - before.x) * weight,
-      y: point.y + (after.y - before.y) * weight,
-    }, key);
+    next.tongue[key] = boundPoint(
+      {
+        x: point.x + (after.x - before.x) * weight,
+        y: point.y + (after.y - before.y) * weight,
+      },
+      key,
+    );
   }
   if (isPlausible(next)) return limitLowerLip(next);
-  let lo = 0, hi = 1;
+  let lo = 0,
+    hi = 1;
   for (let i = 0; i < 12; i++) {
     const mid = (lo + hi) / 2;
     if (isPlausible(mixPose(p, next, mid))) lo = mid;
@@ -205,7 +213,10 @@ const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 function boundPoint(p: Point, key: TongueKey) {
   const [x0, x1, y0, y1] = bounds[key];
   let y = clamp(p.y, y0, y1);
-  const x = clamp(p.x, x0, Math.min(x1, wallX(y) - 10));
+  // The lower root shares space with epiglottic cartilage and the laryngeal
+  // inlet. Reserve tissue room instead of allowing a drag to occupy that space.
+  const inletReserve = key === 'root' ? 36 * clamp((y - 650) / 70, 0, 1) : 0;
+  const x = clamp(p.x, x0, Math.min(x1, wallX(y) - 10 - inletReserve));
   if (key !== 'root') {
     // The apex can leave the palate boundary while it is dragged to the
     // upper lip. Keep that escape limited to the same anterior span used by
@@ -216,8 +227,7 @@ function boundPoint(p: Point, key: TongueKey) {
     // Reject out-of-bounds vertical drags at the palate boundary. A genuine
     // upper-lip drag is close to the target and explicitly enters this small
     // anterior window; an extreme pointer jump must remain palate-safe.
-    const allowAnteriorEscape =
-      anteriorEscape > 0 && p.y >= roofFloor - 0.001;
+    const allowAnteriorEscape = anteriorEscape > 0 && p.y >= roofFloor - 0.001;
     y = Math.max(y, allowAnteriorEscape ? roofFloor : roofY(x));
   }
   return { x, y };
@@ -232,6 +242,12 @@ export function surface(p: Pose): Point[] {
     tipReach = clamp((220 - tip.x) / 102, 0, 1),
     tipEscape = tipReach * clamp((roofY(tip.x) - tip.y) / 28, 0, 1),
     out: Point[] = [];
+  // A laminal seal has a contact interval, not a single peaked vertex.
+  // Blend its posterior shoulder continuously as both closures approach.
+  const seal =
+    clamp(1 - (p.tongue.blade.y - roofY(p.tongue.blade.x)) / 24, 0, 1) *
+    clamp(1 - (p.tongue.dorsum.y - roofY(p.tongue.dorsum.x)) / 24, 0, 1) *
+    clamp((p.tongue.front.y - p.tongue.blade.y - 35) / 50, 0, 1);
   const unit = (x: number, y: number) => {
     const length = Math.hypot(x, y) || 1;
     return { x: x / length, y: y / length };
@@ -291,6 +307,16 @@ export function surface(p: Pose): Point[] {
         (t3 - 2 * t2 + t) * t0.y +
         (-2 * t3 + 3 * t2) * b.y +
         (t3 - t2) * t1.y;
+      if (i === 1 && tip.x < p.tongue.blade.x) {
+        const width = Math.min(40, (b.x - a.x) * 0.32);
+        const u = clamp(
+          (x - a.x - width) / Math.max(1, b.x - a.x - width),
+          0,
+          1,
+        );
+        const weight = seal * (1 - u * u * (3 - 2 * u));
+        y += (roofY(x) - y) * weight;
+      }
       // The anterior tip can pass in front of the palate while it approaches
       // the upper lip. Fade that exclusion floor in continuously with the
       // apex position; ordinary poses keep the full palate boundary.
@@ -318,6 +344,13 @@ function rootTangent(p: Pose): Point {
   const dy = 798 - root.y;
   const length = Math.hypot(dx, dy) || 1;
   return { x: dx / length, y: dy / length };
+}
+export function hyoidOffset(p: Pose): Point {
+  const retraction = clamp((p.tongue.root.x - 543) / 150, 0, 1);
+  return {
+    x: 35 * retraction,
+    y: p.larynx * 25 - 18 * clamp(p.epiglottis, 0, 1) - 10 * retraction,
+  };
 }
 export function underside(p: Pose): Point[] {
   const tip = p.tongue.tip,
@@ -348,12 +381,18 @@ export function underside(p: Pose): Point[] {
   const floorCurve = (a: Point, b: Point, end: Point) =>
     curve(jawPoint(a, p.jaw), jawPoint(b, p.jaw), jawPoint(end, p.jaw));
   const rootDirection = rootTangent(p);
-  const rootHandle = Math.hypot(557 - start.x, 798 - start.y);
+  const offset = hyoidOffset(p);
+  const rootHandle = Math.hypot(
+    557 + offset.x - start.x,
+    798 + offset.y - start.y,
+  );
   curve(
-    { x: start.x + rootDirection.x * rootHandle,
-      y: start.y + rootDirection.y * rootHandle },
-    jawPoint({ x: 557, y: 811 }, p.jaw),
-    jawPoint({ x: 548, y: 812 }, p.jaw),
+    {
+      x: start.x + rootDirection.x * rootHandle,
+      y: start.y + rootDirection.y * rootHandle,
+    },
+    jawPoint({ x: 557 + offset.x, y: 811 + offset.y }, p.jaw),
+    jawPoint({ x: 548 + offset.x, y: 812 + offset.y }, p.jaw),
   );
   floorCurve({ x: 495, y: 850 }, { x: 428, y: 839 }, { x: 398, y: 819 });
   const attachment = jawPoint({ x: 235, y: 738 }, p.jaw);
@@ -633,10 +672,8 @@ export function constrain(
     // (blade, tip, or dorsum) must not be pulled away vertically or horizontally.
     const dorsumAtRoof =
       pose.tongue.dorsum.y - roofY(pose.tongue.dorsum.x) < 22;
-    const bladeAtRoof =
-      pose.tongue.blade.y - roofY(pose.tongue.blade.x) < 25;
-    const tipAtRoof =
-      pose.tongue.tip.y - roofY(pose.tongue.tip.x) < 25;
+    const bladeAtRoof = pose.tongue.blade.y - roofY(pose.tongue.blade.x) < 25;
+    const tipAtRoof = pose.tongue.tip.y - roofY(pose.tongue.tip.x) < 25;
     const hasLoweredPocket = pose.tongue.front.y >= 430;
 
     if (key === 'front' && dy > 0) {
@@ -662,7 +699,11 @@ export function constrain(
     }
 
     // When dorsum is dragged in a click configuration, preserve established anterior closure.
-    if (index >= 3 && hasLoweredPocket && (k === 'blade' && bladeAtRoof || k === 'tip' && tipAtRoof)) {
+    if (
+      index >= 3 &&
+      hasLoweredPocket &&
+      ((k === 'blade' && bladeAtRoof) || (k === 'tip' && tipAtRoof))
+    ) {
       wx = 0;
       wy = 0;
     }
@@ -699,7 +740,13 @@ export function constrain(
 
     // Advancing anterior articulators forward relaxes prior dorsal elevation
     // UNLESS in a click configuration with an established lowered suction pocket.
-    if (index < 2 && dx < 0 && k === 'dorsum' && pose.tongue.dorsum.y < 500 && !(hasLoweredPocket && dorsumAtRoof)) {
+    if (
+      index < 2 &&
+      dx < 0 &&
+      k === 'dorsum' &&
+      pose.tongue.dorsum.y < 500 &&
+      !(hasLoweredPocket && dorsumAtRoof)
+    ) {
       nextY = Math.min(520, pose.tongue.dorsum.y + -dx * 0.7);
     }
     if (
@@ -830,7 +877,8 @@ export function preset(s: Consonant): Pose {
   // The jaw contributes to dorsal closure; these are neutral-context drawing
   // presets, not phoneme-specific measured jaw angles. Leave pharyngeals more
   // open and do not confuse mandibular elevation with closing the lips.
-  if (s.place === 'velar' || s.place === 'uvular') p.jaw = closing ? 0.16 : 0.22;
+  if (s.place === 'velar' || s.place === 'uvular')
+    p.jaw = closing ? 0.16 : 0.22;
   if (s.place === 'pharyngeal') p.jaw = 0.28;
   if (shape)
     tongueKeys.forEach(
@@ -868,7 +916,12 @@ export function preset(s: Consonant): Pose {
     p.tongue.dorsum = { x: 522, y: 510 };
     p.tongue.root = { x: 594, y: 711 };
   }
-  if (s.variant === 'epiglottal') p.epiglottis = closing ? 1 : 0.7;
+  if (s.place === 'pharyngeal') {
+    // Lower-pharyngeal narrowing co-occurs with epilaryngeal activity.
+    // Keep the root short of a wall seal, including for the epiglottal stop.
+    p.epiglottis = s.variant === 'epiglottal' ? (closing ? 1 : 0.7) : 0.58;
+    if (s.variant === 'epiglottal') p.tongue.root.x = wallX(645) - 24;
+  }
   if (s.airstream === 'ejective') {
     p.glottis = 0;
     p.larynx = -1;
@@ -888,16 +941,41 @@ export function preset(s: Consonant): Pose {
     p.tongue.root = { x: 550, y: 725 };
     if (s.place === 'postalveolar') {
       // Palatoalveolar click [ǂ]: broad laminal-palatal anterior closure
-      p.tongue.tip = { x: 205, y: 415 };
+      p.tongue.tip = { x: 210, y: 390 };
       p.tongue.blade = { x: 275, y: 347 };
-      p.tongue.front = { x: 390, y: 450 };
+      p.tongue.front = { x: 410, y: 440 };
+      // A raised, less retracted root supports this broad palatal realization.
+      // This is a qualitative gesture choice, not a universal click position.
+      p.tongue.root = { x: 543, y: 705 };
     } else if (s.place === 'bilabial') {
       p.tongue.front = { x: 400, y: 460 };
     } else {
-      p.tongue.front = { x: 395, y: 460 };
+      p.tongue.front = { x: 395, y: 440 };
+      if (s.place === 'dental') p.tongue.blade = { x: 240, y: 432 };
     }
   }
   return p;
+}
+
+/** Secondary backing preserves the anterior primary constriction. Unlike the
+ * strong lower-pharyngeal presets this uses a higher, moderate narrowing.
+ * Degrees are schematic; Arabic emphatics vary across speakers and dialects.
+ */
+export function pharyngealize(pose: Pose): Pose {
+  const target = structuredClone(pose);
+  target.tongue.root = { x: Math.max(pose.tongue.root.x, 638), y: 620 };
+  target.tongue.dorsum.x = Math.min(610, pose.tongue.dorsum.x + 35);
+  target.epiglottis = Math.max(pose.epiglottis, 0.3);
+  // Do not use generic root dragging: its foretongue coupling releases /t s/.
+  if (isPlausible(target)) return target;
+  let lo = 0,
+    hi = 1;
+  for (let i = 0; i < 12; i++) {
+    const mid = (lo + hi) / 2;
+    if (isPlausible(mixPose(pose, target, mid))) lo = mid;
+    else hi = mid;
+  }
+  return mixPose(pose, target, lo);
 }
 export function tonguePath(p: Pose) {
   return (

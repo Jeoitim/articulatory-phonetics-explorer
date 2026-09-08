@@ -180,7 +180,10 @@ export function Controls({
         onChange={(epiglottis) => onPose({ ...pose, epiglottis })}
       />
       <p className="chart-note">
-        会厌后移与杓会厌区靠拢，使喉入口变窄；不是吞咽时会厌翻下盖住喉口，也不要求会厌贴住咽后壁。二维图为教学简化。
+        会厌下部有组织附着，上部为游离缘，与舌根之间留有会厌谷；并非整片贴在舌面，也不是悬空的软骨。
+      </p>
+      <p className="chart-note">
+        杓会厌区向前上方收拢，接近会厌喉面；会厌随舌根及喉部位移，并非主动翻盖。咽化保留前部主调音，后部狭窄位置因语言和说话者而异。二维图为教学简化。
       </p>
       <a
         className="chart-note"
@@ -189,6 +192,22 @@ export function Controls({
         rel="noreferrer"
       >
         会厌区调音研究 ↗
+      </a>
+      <a
+        className="chart-note"
+        href="https://www.phonetik.uni-muenchen.de/~hoole/kurse/movies/eslingmovies/esling_demomovie.html"
+        target="_blank"
+        rel="noreferrer"
+      >
+        杓会厌机制喉镜示例 ↗
+      </a>
+      <a
+        className="chart-note"
+        href="https://www.isca-archive.org/interspeech_2017/hermes17_interspeech.html"
+        target="_blank"
+        rel="noreferrer"
+      >
+        咽音与咽化的实时 MRI 对照 ↗
       </a>
     </div>
   );

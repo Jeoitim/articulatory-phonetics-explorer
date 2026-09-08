@@ -51,7 +51,7 @@ GitHub Pages 的项目站点运行在 `/articulatory-phonetics-explorer/` 子路
 
 默认软腭／小舌构形采用适度后收的前舌，不要求舌尖上翘或反卷；这是可编辑的展示姿态，不是脱离元音语境的唯一发音标准。
 
-咽部形状参照 [Hermes 等（2017）的实时 MRI 与轮廓图，PDF 第 3 页](https://www.isca-archive.org/interspeech_2017/hermes17_interspeech.pdf#page=3)，以及 [Shar 与 Ingram（2011）的 MRI 测量图，PDF 第 2 页](https://www.internationalphoneticassociation.org/icphs-proceedings/ICPhS2011/OnlineProceedings/RegularSession/Shar/Shar.pdf#page=2)。参考文献与 SVG 许可列于 [anatomy.txt](public/attribution/anatomy.txt)，具体用途、修改依据和限制见[舌形校准记录](docs/laminal-shape-review.md)。文献图像未作为网站素材分发，也未进行影像轮廓配准。
+咽部形状参照 [Hermes 等（2017）的实时 MRI 与轮廓图，PDF 第 3 页](https://www.isca-archive.org/interspeech_2017/hermes17_interspeech.pdf#page=3)，以及 [Shar 与 Ingram（2011）的 MRI 测量图，PDF 第 2 页](https://www.internationalphoneticassociation.org/icphs-proceedings/ICPhS2011/OnlineProceedings/RegularSession/Shar/Shar.pdf#page=2)。参考文献与 SVG 许可列于 [anatomy.txt](public/attribution/anatomy.txt)，具体用途、修改依据和限制见[舌形校准记录](docs/tongue-shape-review.md)。文献图像未作为网站素材分发，也未进行影像轮廓配准。
 
 生物力学依据：舌组织的近不可压缩性、非线性弹性及下颌/舌骨附着关系，参见 [Kajee 等，2013](https://doi.org/10.1002/cnm.2531) 和 [Subject-Specific Biomechanical Modelling of the Oropharynx](https://pmc.ncbi.nlm.nih.gov/articles/PMC5699225/)。本实现借鉴这些原则，不复现论文中的三维有限元求解器。
 

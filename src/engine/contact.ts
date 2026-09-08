@@ -79,9 +79,7 @@ export function articulationContact(
   const linguolabialKey: TongueKey | null =
     p.variantMark === '̼'
       ? 'tip'
-      : p.tongue.tip.x <= 135 &&
-          p.tongue.tip.y >= 390 &&
-          p.tongue.tip.y <= 475
+      : p.tongue.tip.x <= 135 && p.tongue.tip.y >= 390 && p.tongue.tip.y <= 475
         ? 'tip'
         : p.tongue.blade.x <= 145
           ? 'blade'
@@ -101,10 +99,10 @@ export function articulationContact(
     return { active: '声带', passive: '对侧声带／声门', key: null };
   if (place === 'pharyngeal' && p.epiglottis > 0.5)
     return {
-      active: '会厌与杓会厌区',
-      passive: '喉入口',
+      active: '杓会厌区（协同舌根后缩）',
+      passive: '会厌喉面',
       key: null,
-      note: '喉入口狭窄示意，不能仅由舌根位置解释。',
+      note: '杓会厌区向前上方收拢，接近会厌喉面；会厌随周围组织位移，不是吞咽式翻盖。侧向结构以二维投影示意。',
     };
   if (place === 'uvular' && manner === 'trill')
     return { active: '小舌', passive: '舌面后部', key: null };

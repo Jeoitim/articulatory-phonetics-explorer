@@ -31,6 +31,7 @@ import {
 } from '../../engine/geometry';
 import { anatomyPaths as paths } from '../../data/anatomy-paths';
 import { articulationContact } from '../../engine/contact';
+import { laryngealGeometry } from '../../engine/laryngeal';
 export interface Display {
   labels: boolean;
   zones: boolean;
@@ -83,6 +84,7 @@ export function VocalTract({
   const clampValue = (value: number) => Math.max(0, Math.min(1, value));
   const label = locked || hover;
   const contact = articulationContact(pose, place);
+  const laryngeal = laryngealGeometry(pose);
   const selectedPlace = place === 'retroflex' ? 'postalveolar' : place;
   const lipTargetContact = contact.passive === '上唇';
   const activePoint = contact.key ? pose.tongue[contact.key] : null;
@@ -532,9 +534,14 @@ export function VocalTract({
             />
           </g>
           <path
+            {...meta('会厌前间隙与附着组织 · Pre-epiglottic tissue')}
+            d={laryngeal.preEpiglotticPath}
+            fill="light-dark(#e8d5b6, #83755e)"
+            stroke="light-dark(#ab9076, #b99a79)"
+          />
+          <path
             {...meta('会厌 · Epiglottis')}
-            transform={'rotate(' + pose.epiglottis * 70 + ' 568 828)'}
-            d="M550 732 Q566 732 568 782 L568 828 Q556 811 558 790 Q561 766 550 745 Q545 735 550 732 Z"
+            d={laryngeal.epiglottisPath}
             fill="light-dark(#d9b99d, #95816a)"
             stroke="light-dark(#ab9076, #b99a79)"
           />
@@ -602,17 +609,18 @@ export function VocalTract({
           )}
           <path
             {...meta('杓会厌区 · Aryepiglottic region（侧向结构投影）')}
-            d={`M751 891 Q${718 - pose.epiglottis * 48} 865 ${716 - pose.epiglottis * 59} ${813 - pose.epiglottis * 33} Q${725 - pose.epiglottis * 55} ${798 - pose.epiglottis * 25} 743 785 Q759 840 773 879 Z`}
+            d={laryngeal.foldPath}
             fill="light-dark(#d59b8a, #a87967)"
             stroke="light-dark(#a87869, #c1967e)"
           />
           <path
             {...meta('舌骨 · Hyoid bone')}
+            transform={`translate(${laryngeal.offsetX} ${laryngeal.offsetY})`}
             d="M514 838 Q533 827 555 835 L563 844 Q542 854 521 849 Z"
             fill="light-dark(#f3e6d0, #afa186)"
             stroke="light-dark(#b7a17f, #c1a27b)"
           />
-          <g transform={`translate(0 ${pose.larynx * 25})`}>
+          <g transform={`translate(0 ${laryngeal.offsetY})`}>
             <path
               {...meta('喉部 · Larynx')}
               d={paths.posteriorLarynx}
@@ -812,7 +820,7 @@ export function VocalTract({
               咽腔
             </text>
             <path
-              d={`M${568 - 8 * Math.cos((pose.epiglottis * 70 * Math.PI) / 180) + 50 * Math.sin((pose.epiglottis * 70 * Math.PI) / 180)} ${828 - 8 * Math.sin((pose.epiglottis * 70 * Math.PI) / 180) - 50 * Math.cos((pose.epiglottis * 70 * Math.PI) / 180)}L650 748H710`}
+              d={`M${laryngeal.label.x} ${laryngeal.label.y}L650 748H710`}
               fill="none"
             />
             <text x="651" y="739" stroke="none">

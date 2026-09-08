@@ -1,7 +1,13 @@
 import { vowels } from '../data/vowels';
 import { consonants } from '../data/consonants';
 import { vowelPose } from './vowels';
-import { constrain, isPlausible, preset, rest } from './geometry';
+import {
+  constrain,
+  isPlausible,
+  preset,
+  rest,
+  pharyngealize,
+} from './geometry';
 import type { Consonant, Place, Pose } from '../domain/phonetics';
 import { sampleAnimation } from './animation';
 import { interpolate } from './geometry';
@@ -215,9 +221,7 @@ export function referencePreview(
       if (isPlausible(candidate)) to = candidate;
     }
     if (mark === 'ˤ') {
-      const candidate = constrain(to, 'root', { x: 638, y: 650 }, false);
-      if (isPlausible(candidate)) to = candidate;
-      to.epiglottis = Math.max(to.epiglottis, 0.72);
+      to = pharyngealize(to);
     }
     if (mark === '̴') {
       const dark = consonants.find((s) => s.symbol === 'ɫ');

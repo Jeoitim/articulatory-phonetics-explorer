@@ -29,9 +29,7 @@ export function infer(p: Pose, f: Features, hint?: VariantHint): Match {
     p.rounding < 0.7;
   const linguolabialGesture =
     p.variantMark === '̼' ||
-    (p.tongue.tip.x <= 135 &&
-      p.tongue.tip.y >= 390 &&
-      p.tongue.tip.y <= 475);
+    (p.tongue.tip.x <= 135 && p.tongue.tip.y >= 390 && p.tongue.tip.y <= 475);
   const scores = zones
     .filter((z) => z.place !== 'alveolo-palatal')
     .filter(
@@ -197,8 +195,16 @@ export function infer(p: Pose, f: Features, hint?: VariantHint): Match {
       (requested?.mark === '̪' && place === 'dental'));
   const nearest = candidates[0]!.sound;
   const target = preset(nearest);
+  // A stronger primary pharyngeal constriction is not evidence of an added
+  // pharyngeal secondary articulation. Apply the same exclusions as presets.
+  const allowsPharyngealization = !['uvular', 'pharyngeal', 'glottal'].includes(
+    nearest.place,
+  );
   const hintedMark =
-    requested?.symbol === nearest.symbol ? requested.mark : undefined;
+    requested?.symbol === nearest.symbol &&
+    !(requested.mark === 'ˤ' && !allowsPharyngealization)
+      ? requested.mark
+      : undefined;
   const primaryMarks: VariantMark[] = ['̪', '̺', '̻', '̼'];
   const primaryMark = primaryMarks.includes(hintedMark as VariantMark)
     ? hintedMark
@@ -216,7 +222,9 @@ export function infer(p: Pose, f: Features, hint?: VariantHint): Match {
         : '̬'
       : undefined;
   const geometricSecondaryMark: VariantMark | undefined = !nearest.variant
-    ? p.epiglottis > target.epiglottis + 0.35
+    ? allowsPharyngealization &&
+      p.tongue.root.x > target.tongue.root.x + 40 &&
+      p.epiglottis > target.epiglottis + 0.15
       ? 'ˤ'
       : p.rounding > target.rounding + 0.35
         ? 'ʷ'

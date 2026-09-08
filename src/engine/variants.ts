@@ -1,6 +1,6 @@
 import type { Consonant, Pose, VariantMark } from '../domain/phonetics';
 import { consonants } from '../data/consonants';
-import { constrain, preset, isPlausible } from './geometry';
+import { constrain, preset, isPlausible, pharyngealize } from './geometry';
 export interface ArticulatoryVariant {
   label: string;
   /** IPA secondary articulation mark for the displayed realization. */
@@ -132,11 +132,7 @@ export function articulatoryVariants(sound: Consonant): ArticulatoryVariant[] {
     !sound.variant &&
     !['uvular', 'pharyngeal', 'glottal'].includes(sound.place)
   )
-    addSecondary('咽化', 'ˤ', (pose) => {
-      const moved = constrain(pose, 'root', { x: 638, y: 650 }, false);
-      moved.epiglottis = Math.max(moved.epiglottis, 0.72);
-      return moved;
-    });
+    addSecondary('咽化', 'ˤ', pharyngealize);
   if (!sound.variant) {
     const phonation = structuredClone(base);
     if (sound.voiced) {
