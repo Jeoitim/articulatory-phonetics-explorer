@@ -45,7 +45,7 @@ export function SibilantInfo() {
             <a
               href="https://sail.usc.edu/~lgoldste/General_Phonetics/Constriction_Location/fricatives.html"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               南加州大学：擦音的气流与障碍物 ↗
             </a>

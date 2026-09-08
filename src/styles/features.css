@@ -1281,6 +1281,9 @@ output.notice {
 .mark-popover-positioner .mark-popover {
   pointer-events: auto;
 }
+.mark-popover-positioner .sibilant-popover {
+  pointer-events: auto;
+}
 .mark-popover {
   width: min(960px, calc(100vw - 32px));
   max-height: min(840px, 90dvh);
