@@ -12,6 +12,7 @@ import {
   mannerEnglish,
 } from '../data/labels';
 import { IPAMarks } from './IPAMarks';
+import { SibilantInfo } from './SibilantInfo';
 export function IPAChart({
   selected,
   onSelect,
@@ -68,7 +69,13 @@ export function IPAChart({
             {chartRows.map((row) => (
               <tr key={row.manner}>
                 <th scope="row">
-                  {mannerLabels[row.manner]}
+                  {row.manner === 'fricative' ? (
+                    <>
+                      擦音/咝音 <SibilantInfo />
+                    </>
+                  ) : (
+                    mannerLabels[row.manner]
+                  )}
                   <small className="term-english">
                     {mannerEnglish[row.manner]}
                   </small>

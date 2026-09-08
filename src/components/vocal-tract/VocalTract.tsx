@@ -595,41 +595,17 @@ export function VocalTract({
           )}
           <path
             {...meta('会厌 · Epiglottis')}
-            transform={'rotate(' + pose.epiglottis * 43 + ' 568 828)'}
+            transform={'rotate(' + pose.epiglottis * 70 + ' 568 828)'}
             d="M550 732 Q566 732 568 782 L568 828 Q556 811 558 790 Q561 766 550 745 Q545 735 550 732 Z"
             fill="light-dark(#d9b99d, #95816a)"
             stroke="light-dark(#ab9076, #b99a79)"
           />
-          {pose.epiglottis > 0.1 && (
-            <g
-              {...meta('会厌区狭窄 · Epilaryngeal constriction (schematic)')}
-              fill="light-dark(#d59b8a, #a87967)"
-              stroke="light-dark(#a87869, #c1967e)"
-            >
-              <path
-                d={
-                  'M 622 837 Q ' +
-                  (640 + pose.epiglottis * 35) +
-                  ' 795 ' +
-                  (649 + pose.epiglottis * 48) +
-                  ' 799 L ' +
-                  (645 + pose.epiglottis * 48) +
-                  ' 815 Q 642 824 640 851 Z'
-                }
-              />
-              <path
-                d={
-                  'M 740 787 Q ' +
-                  (721 - pose.epiglottis * 25) +
-                  ' 790 ' +
-                  (711 - pose.epiglottis * 15) +
-                  ' 803 L ' +
-                  (714 - pose.epiglottis * 15) +
-                  ' 816 Q 743 821 751 837 Z'
-                }
-              />
-            </g>
-          )}
+          <path
+            {...meta('杓会厌区 · Aryepiglottic region（侧向结构投影）')}
+            d={`M751 891 Q${718 - pose.epiglottis * 48} 865 ${716 - pose.epiglottis * 59} ${813 - pose.epiglottis * 33} Q${725 - pose.epiglottis * 55} ${798 - pose.epiglottis * 25} 743 785 Q759 840 773 879 Z`}
+            fill="light-dark(#d59b8a, #a87967)"
+            stroke="light-dark(#a87869, #c1967e)"
+          />
           <path
             {...meta('舌骨 · Hyoid bone')}
             d="M514 838 Q533 827 555 835 L563 844 Q542 854 521 849 Z"
@@ -817,7 +793,7 @@ export function VocalTract({
             strokeWidth="1.5"
           >
             <path
-              d="M335 197L385 144H490 M360 335L397 280H480 M642 380L713 344H786 M421 648L356 684H279 M693 647L741 615H796 M564 799L647 794"
+              d="M335 197L385 144H490 M360 335L397 280H480 M642 380L713 344H786 M421 648L356 684H279 M693 647L741 615H796"
               fill="none"
             />
             <text x="385" y="133" stroke="none">
@@ -835,7 +811,11 @@ export function VocalTract({
             <text x="746" y="605" stroke="none">
               咽腔
             </text>
-            <text x="648" y="787" stroke="none">
+            <path
+              d={`M${568 - 8 * Math.cos((pose.epiglottis * 70 * Math.PI) / 180) + 50 * Math.sin((pose.epiglottis * 70 * Math.PI) / 180)} ${828 - 8 * Math.sin((pose.epiglottis * 70 * Math.PI) / 180) - 50 * Math.cos((pose.epiglottis * 70 * Math.PI) / 180)}L650 748H710`}
+              fill="none"
+            />
+            <text x="651" y="739" stroke="none">
               会厌
             </text>
             <text

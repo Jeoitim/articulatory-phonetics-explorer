@@ -175,10 +175,21 @@ export function Controls({
         onChange={(glottis) => onPose({ ...pose, glottis })}
       />
       <Range
-        label="会厌区狭窄"
+        label="会厌区狭窄 · 喉入口"
         value={pose.epiglottis}
         onChange={(epiglottis) => onPose({ ...pose, epiglottis })}
       />
+      <p className="chart-note">
+        会厌后移与杓会厌区靠拢，使喉入口变窄；不是吞咽时会厌翻下盖住喉口，也不要求会厌贴住咽后壁。二维图为教学简化。
+      </p>
+      <a
+        className="chart-note"
+        href="https://www.mcgill.ca/mcgwpl/files/mcgwpl/moisik2012.pdf"
+        target="_blank"
+        rel="noreferrer"
+      >
+        会厌区调音研究 ↗
+      </a>
     </div>
   );
 }

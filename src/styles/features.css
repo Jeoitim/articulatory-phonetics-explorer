@@ -1523,3 +1523,571 @@ output.notice {
     padding: 18px;
   }
 }
+
+/* Phonation and articulatory explanations share the existing lab palette. */
+.sibilant-info {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  vertical-align: middle;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+.sibilant-info:focus-visible,
+.phonation-options button:focus-visible {
+  outline: 2px solid #c39b48;
+  outline-offset: 3px;
+}
+.sibilant-popover {
+  width: min(490px, calc(100vw - 28px));
+  max-height: min(640px, 80vh);
+  overflow-y: auto;
+  padding: 22px;
+  border: 1px solid light-dark(#c4ccb8, #56614e);
+  border-radius: 14px;
+  background: light-dark(#fcfaf3, #242c25);
+  color: light-dark(#384431, #e0e3d6);
+  box-shadow: 0 18px 65px #0004;
+  font-size: 16px;
+  line-height: 1.8;
+}
+.sibilant-popover p {
+  margin: 12px 0;
+}
+.sibilant-popover a,
+.continuum-examples a,
+.phonation-recording a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.continuum-examples {
+  border-left: 2px solid #b89954;
+  padding: 2px 16px;
+  margin: 18px 0;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.continuum-examples p {
+  margin: 10px 0;
+}
+.continuum-examples b {
+  display: inline-block;
+  min-width: 32px;
+  font-size: 20px;
+}
+.phonation-lab {
+  min-width: 0;
+}
+.phonation-heading {
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
+}
+.phonation-heading h2 {
+  margin: 8px 0 18px;
+  font-size: 22px;
+}
+.phonation-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.phonation-options button {
+  flex: 1 1 95px;
+  min-height: 42px;
+  border: 1px solid light-dark(#c5cebb, #65715b);
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.phonation-options button[aria-pressed='true'] {
+  background: light-dark(#e6ecd9, #46563d);
+  border-color: light-dark(#697d50, #a8bb8b);
+}
+.vocal-folds-large {
+  display: block;
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  margin: 14px auto;
+  color: light-dark(#546048, #d3dcc6);
+}
+.inset .vocal-folds-small {
+  width: 110px;
+  height: 74px;
+  flex-shrink: 0;
+}
+.phonation-lab > p {
+  font-size: 16px;
+  line-height: 1.8;
+}
+.phonation-lab > .chart-note {
+  font-size: 14px;
+}
+.phonation-recording {
+  padding-top: 16px;
+  border-top: 1px solid light-dark(#dce2d2, #4b5745);
+  font-size: 14px;
+  line-height: 1.8;
+}
+.phonation-recording h3 {
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+.phonation-recording audio {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+}
+.phonation-recording select {
+  padding: 6px 10px;
+  border: 1px solid light-dark(#c5cebb, #65715b);
+  border-radius: 6px;
+  background: light-dark(#fcfaf3, #242c25);
+  color: inherit;
+}
+.phonation-recording output {
+  display: block;
+}
+.phonation-recording summary {
+  cursor: pointer;
+  margin-top: 12px;
+}
+.reference-animation > .vocal-folds-large {
+  max-width: 360px;
+}
+
+.vowel-anatomy-column {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+}
+.phonation-composites,
+.phonation-scope {
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.phonation-composites summary,
+.phonation-scope summary {
+  cursor: pointer;
+  padding: 8px 0;
+}
+.phonation-composites .phonation-options {
+  margin-top: 8px;
+}
+.phonation-current {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 18px 0 0;
+}
+.phonation-current strong {
+  font-size: 18px;
+}
+.phonation-current span {
+  font-size: 14px;
+  opacity: 0.8;
+}
+.phonation-continuum {
+  border-block: 1px solid light-dark(#dce2d2, #4b5745);
+  padding: 12px 0;
+  margin: 16px 0;
+}
+.phonation-lab .range {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 13px;
+  margin: 12px 0;
+}
+.phonation-lab .range label {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.phonation-path-stops {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+.phonation-path-stops button {
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.phonation-path-stops button[aria-pressed='true'] {
+  background: light-dark(#e6ecd9, #46563d);
+}
+.phonation-path-stops button:focus-visible {
+  outline: 2px solid #ba9951;
+  outline-offset: 2px;
+}
+.phonation-dimensions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 24px;
+}
+.phonation-dimensions small,
+.phonation-trace small {
+  font-size: 14px;
+  line-height: 1.7;
+  opacity: 0.8;
+}
+.phonation-trace {
+  margin: 20px 0;
+  padding: 14px;
+  background: light-dark(#f0f3e8, #283126);
+  border-radius: 8px;
+}
+.phonation-trace > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 14px;
+}
+.phonation-trace svg {
+  width: 100%;
+  height: 85px;
+}
+.phonation-scope a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+@media (max-width: 540px) {
+  .phonation-dimensions {
+    grid-template-columns: 1fr;
+  }
+  .phonation-heading {
+    align-items: flex-start;
+  }
+  .phonation-heading .text-button {
+    flex-shrink: 0;
+  }
+}
+
+/* Full-width phonation workbench below the two-column vowel explorer. */
+.vowel-lab > .phonation-lab {
+  grid-column: 1 / -1;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  border-color: light-dark(#ccd5bf, #55614d);
+  box-shadow: 0 8px 28px light-dark(#303b2010, #00000016);
+}
+.phonation-lab .phonation-heading {
+  padding: 24px 28px;
+  border-bottom: 1px solid light-dark(#dce2d2, #4b5745);
+  background: linear-gradient(
+    110deg,
+    light-dark(#eaf0df, #303d2b),
+    transparent 75%
+  );
+}
+.phonation-lab .phonation-heading h2 {
+  margin: 6px 0 0;
+  font-size: 24px;
+}
+.phonation-workspace {
+  display: grid;
+  grid-template-columns: minmax(290px, 0.85fr) minmax(0, 1.4fr);
+  gap: 28px;
+  padding: 26px 28px;
+  align-items: start;
+}
+.phonation-observation,
+.phonation-settings {
+  min-width: 0;
+}
+.phonation-figure {
+  padding: 20px 20px 16px;
+  border: 1px solid light-dark(#dce2d2, #43503d);
+  border-radius: 12px;
+  background: light-dark(#f4f6ee, #252f24);
+}
+.phonation-figure .phonation-current {
+  margin: 0;
+  padding-left: 12px;
+  border-left: 3px solid #ba9951;
+}
+.phonation-figure .vocal-folds-large {
+  max-width: 350px;
+  margin: 4px auto;
+}
+.phonation-figure > p {
+  font-size: 14px;
+  line-height: 1.8;
+  margin: 8px 0 0;
+}
+.phonation-section-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 14px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.phonation-section-title span {
+  font-size: 14px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+.phonation-settings .phonation-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.phonation-settings .phonation-options button {
+  padding: 8px 6px;
+  line-height: 1.5;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+.phonation-settings .phonation-options button:hover {
+  border-color: #ba9951;
+  background: light-dark(#edf1e3, #34432e);
+}
+.phonation-settings .phonation-options button[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 1px light-dark(#829664, #a8bb8b);
+}
+.phonation-settings .phonation-composites {
+  margin: 8px 0 16px;
+}
+.phonation-settings .phonation-continuum {
+  margin: 0 0 18px;
+  padding: 12px 16px;
+  border: 1px solid light-dark(#d8dfc9, #505d43);
+  border-radius: 10px;
+  background: light-dark(#f5f5e9, #2e3527);
+}
+.phonation-settings .phonation-continuum .chart-note {
+  margin: 8px 0 0;
+  line-height: 1.75;
+}
+.phonation-settings .phonation-dimensions {
+  gap: 16px 24px;
+}
+.phonation-settings .phonation-dimensions > div {
+  padding-bottom: 10px;
+  border-bottom: 1px solid light-dark(#e0e5d7, #424e3c);
+}
+.phonation-settings .phonation-dimensions .range {
+  margin-top: 0;
+}
+.phonation-observation .phonation-trace {
+  margin: 14px 0;
+  padding: 12px 14px;
+}
+.phonation-observation .phonation-trace svg {
+  height: 65px;
+}
+.phonation-observation .phonation-trace > div {
+  gap: 4px;
+  flex-direction: column;
+}
+.phonation-observation .phonation-recording {
+  padding: 14px 0 0;
+}
+.phonation-observation .phonation-recording p {
+  margin: 8px 0;
+}
+.phonation-footer {
+  padding: 14px 28px;
+  border-top: 1px solid light-dark(#dce2d2, #4b5745);
+}
+.phonation-footer > .chart-note {
+  margin: 0;
+}
+.phonation-footer .phonation-scope {
+  margin: 4px 0 0;
+}
+.phonation-footer .phonation-scope > p,
+.phonation-footer .phonation-scope > ul {
+  max-width: 100ch;
+}
+@media (max-width: 900px) {
+  .phonation-workspace {
+    grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+  .phonation-settings .phonation-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .phonation-settings .phonation-dimensions {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 680px) {
+  .phonation-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+  }
+  .phonation-lab .phonation-heading {
+    padding: 18px 16px;
+  }
+  .phonation-lab .phonation-heading h2 {
+    font-size: 21px;
+  }
+  .phonation-footer {
+    padding: 14px 16px;
+  }
+  .phonation-figure .vocal-folds-large {
+    max-width: 310px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .phonation-settings .phonation-options button {
+    transition: none;
+  }
+}
+
+/* Keep the anatomy card aligned with the combined vowel controls. */
+.vowel-anatomy-column {
+  align-self: stretch;
+}
+.vowel-anatomy-column > .vocal-panel {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.vowel-anatomy-column .diagram-stage {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 22px 8px;
+}
+.vowel-anatomy-column .diagram-stage .tract-wrap {
+  flex: 1;
+  width: 100%;
+  max-width: none;
+  min-height: 550px;
+}
+.vowel-anatomy-column .diagram-stage .tract {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+}
+.vowel-anatomy-column .mouth-panel {
+  grid-template-columns: minmax(130px, 0.65fr) minmax(0, 1.35fr);
+  min-height: 280px;
+  padding: 18px 24px;
+}
+.vowel-anatomy-column .mouth-panel .front-mouth {
+  max-height: none;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  justify-self: center;
+}
+.vowel-anatomy-column .mouth-panel h3 {
+  font-size: 16px;
+}
+.vowel-anatomy-column .mouth-panel h3 span,
+.vowel-anatomy-column .mouth-panel p {
+  font-size: 14px;
+  line-height: 1.7;
+}
+.phonation-recording audio[hidden] {
+  display: none;
+}
+.phonation-play-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0;
+}
+.phonation-play-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 140px;
+  padding: 11px 14px;
+  border: 1px solid light-dark(#c5cebb, #65715b);
+  border-radius: 8px;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.phonation-play-buttons button:hover,
+.phonation-play-buttons button[aria-pressed='true'] {
+  background: light-dark(#e6ecd9, #46563d);
+  border-color: #a1b47c;
+}
+.phonation-play-buttons button:focus-visible {
+  outline: 2px solid #ba9951;
+  outline-offset: 3px;
+}
+.phonation-play-buttons button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+.phonation-play-buttons button > svg {
+  flex-shrink: 0;
+}
+.phonation-play-buttons span {
+  display: grid;
+  gap: 2px;
+}
+.phonation-play-buttons strong {
+  font-size: 16px;
+  font-weight: 500;
+}
+.phonation-play-buttons small {
+  font-size: 14px;
+  opacity: 0.75;
+}
+.recording-loading {
+  animation: recording-spin 1s linear infinite;
+}
+@keyframes recording-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 900px) {
+  .vowel-anatomy-column .diagram-stage .tract-wrap {
+    min-height: 480px;
+  }
+  .vowel-anatomy-column .mouth-panel {
+    min-height: 230px;
+  }
+}
+@media (max-width: 720px) {
+  .vowel-anatomy-column .diagram-stage .tract-wrap {
+    min-height: 0;
+    height: clamp(370px, 95vw, 560px);
+    flex: none;
+  }
+  .vowel-anatomy-column .mouth-panel {
+    min-height: 0;
+    padding: 16px 20px;
+  }
+}
+@media (max-width: 420px) {
+  .vowel-anatomy-column .mouth-panel {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .vowel-anatomy-column .mouth-panel .front-mouth {
+    max-width: 280px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .recording-loading {
+    animation: none;
+  }
+}

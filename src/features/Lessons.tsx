@@ -217,6 +217,20 @@ export function Lessons() {
               ))}
             </div>
             <p>{fricativeContinuum[Math.round(continuum)]!.note}</p>
+            <div className="continuum-examples" aria-label="四种擦音的语言例子">
+              {fricativeContinuum.map((step) => (
+                <p key={step.symbol}>
+                  <b>[{step.symbol}]</b> {step.example}
+                </p>
+              ))}
+              <a
+                href="https://ling.cuhk.edu.hk/files/seminar/1st_2324/Poster_20231114.pdf"
+                target="_blank"
+                rel="noreferrer"
+              >
+                粤语咝音变体：香港中文大学研究介绍 ↗
+              </a>
+            </div>
             <p className="chart-note">
               整数节点为教学预设；节点之间是连续过渡，不保证每个中间位置都有唯一
               IPA 对应。

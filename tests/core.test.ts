@@ -1,3 +1,12 @@
+import {
+  phonationFrame,
+  phonationControlFrame,
+  phonationPresets,
+  phonationContinuum,
+  phonationControlKeys,
+  samplePhonationContinuum,
+} from '../src/engine/phonation';
+import { VocalFolds } from '../src/components/vocal-tract/VocalFolds';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { consonants, soundBySymbol } from '../src/data/consonants';
@@ -150,7 +159,7 @@ void test('detail previews change the intended feature and stay bounded for supp
   }
   assert.equal(referenceFrame(referencePreview('dⁿ')!, 0.7).flow, 'nasal');
   assert.equal(referenceFrame(referencePreview('dˡ')!, 0.7).flow, 'lateral');
-  for (const example of ['ˌfoʊnəˈtɪʃən', 'e˩˥', 'b̤a̤'])
+  for (const example of ['ˌfoʊnəˈtɪʃən', 'e˩˥'])
     assert.equal(referencePreview(example), null);
 });
 void test('reference plosives retain closure, pressure and release instead of continuous airflow', () => {
@@ -682,7 +691,10 @@ void test('voiceless bilabial fricative remains reachable from h and near closur
   assert.equal(nearClosed.candidates[0]?.sound.symbol, 'ɸ');
   assert.equal(nearClosed.place, 'bilabial');
   assert.notEqual(nearClosed.status, 'none');
-  assert.equal(infer({ ...preset(target), lowerLip: 1 }, target).status, 'none');
+  assert.equal(
+    infer({ ...preset(target), lowerLip: 1 }, target).status,
+    'none',
+  );
 });
 void test('lower lip stays attached to the jaw and caps stretch as the jaw opens', () => {
   const f = preset(soundBySymbol('f'));
@@ -1013,4 +1025,159 @@ void test('new mechanism motion has no discontinuity at closure or release', () 
           s.symbol + ' ' + t,
         );
     }
+});
+
+void test('phonation previews support vowels and voiced labial sequences without changing oral geometry', () => {
+  for (const mark of ['̤', '̰']) {
+    for (const example of [`a${mark}`, `b${mark}`, `b${mark}a${mark}`]) {
+      const model = referencePreview(example)!;
+      assert.ok(model, example);
+      assert.equal(model.phonation, mark === '̤' ? 'breathy' : 'creaky');
+      assert.ok(isPlausible(model.from));
+      assert.ok(isPlausible(model.to));
+    }
+  }
+  assert.deepEqual(
+    referencePreview('a̤')!.to.tongue,
+    referencePreview('a̰')!.to.tongue,
+  );
+  assert.equal(referencePreview('a̤˥'), null);
+});
+
+void test('breathy cycles never seal, creaky cycles close longer and tension is independent', () => {
+  const phases = Array.from({ length: 100 }, (_, i) => i / 100);
+  assert.ok(
+    phases.every(
+      (t) =>
+        phonationFrame('breathy', t).gap > 0 &&
+        phonationFrame('breathy', t).posteriorGap > 0,
+    ),
+  );
+  const closures = (mode: 'modal' | 'creaky') =>
+    phases.filter((t) => phonationFrame(mode, t).gap === 0).length;
+  assert.ok(closures('creaky') > closures('modal'));
+  assert.equal(phonationFrame('creaky', 0.4).gap, 0);
+  assert.ok(
+    phonationFrame('creaky', 0.63).gap > phonationFrame('creaky', 0.16).gap,
+  );
+  assert.ok(
+    phonationFrame('modal', 0.25, 1).length >
+      phonationFrame('modal', 0.25, 0).length,
+  );
+  assert.ok(
+    phonationFrame('modal', 0.25, 1).thickness <
+      phonationFrame('modal', 0.25, 0).thickness,
+  );
+});
+void test('epilaryngeal narrowing keeps one epiglottis and a persistent attached posterior region', () => {
+  for (const epiglottis of [0, 0.05, 0.1, 0.5, 1]) {
+    const html = renderToStaticMarkup(
+      createElement(VocalTract, {
+        pose: { ...rest, epiglottis },
+        place: 'pharyngeal',
+        display: { labels: true, points: false, zones: false, airflow: false },
+      }),
+    );
+    assert.equal(
+      (html.match(/data-anatomy-label="会厌 · Epiglottis"/g) ?? []).length,
+      1,
+    );
+    assert.equal((html.match(/data-anatomy-label="杓会厌区/g) ?? []).length, 1);
+    assert.ok(!html.includes('M 622 837'));
+  }
+});
+
+void test('phonation continuum is continuous through all landmarks and does not equate adduction with longitudinal tension', () => {
+  phonationContinuum.forEach((mode, i) => {
+    assert.deepEqual(
+      samplePhonationContinuum(i),
+      phonationPresets[mode].controls,
+    );
+    if (i > 0 && i < 4) {
+      const left = samplePhonationContinuum(i - 1e-6);
+      const right = samplePhonationContinuum(i + 1e-6);
+      for (const k of phonationControlKeys)
+        assert.ok(Math.abs(left[k] - right[k]) < 1e-5, k);
+      for (const phase of [0.16, 0.25, 0.4, 0.63, 0.9]) {
+        const a = phonationControlFrame(left, phase),
+          b = phonationControlFrame(right, phase);
+        assert.ok(Math.abs(a.gap - b.gap) < 0.001);
+        assert.ok(Math.abs(a.posteriorGap - b.posteriorGap) < 0.001);
+      }
+    }
+  });
+  assert.ok(
+    samplePhonationContinuum(4).adduction >
+      samplePhonationContinuum(2).adduction,
+  );
+  assert.ok(
+    samplePhonationContinuum(4).tension < samplePhonationContinuum(2).tension,
+  );
+  assert.deepEqual(
+    samplePhonationContinuum(NaN),
+    phonationPresets.modal.controls,
+  );
+});
+void test('whisper, breath, closure and composite phonation preserve independent posterior and vibratory behavior', () => {
+  for (const mode of ['silent', 'voiceless', 'whisper', 'closure'] as const) {
+    const frames = [0, 0.16, 0.25, 0.4, 0.63, 0.9].map((t) =>
+      phonationFrame(mode, t),
+    );
+    assert.ok(
+      frames.every((f) => f.vibration === 0),
+      mode,
+    );
+    assert.ok(
+      frames.every((f) => f.gap === frames[0]!.gap),
+      mode,
+    );
+  }
+  assert.equal(phonationFrame('silent', 0.25).turbulence, 0);
+  assert.ok(phonationFrame('whisper', 0.25).turbulence > 0);
+  assert.equal(phonationFrame('whisper', 0.25).gap, 0);
+  assert.ok(phonationFrame('whisper', 0.25).posteriorGap > 0);
+  assert.equal(phonationFrame('closure', 0.25).gap, 0);
+  assert.equal(phonationFrame('closure', 0.25).posteriorGap, 0);
+  assert.equal(phonationFrame('closure', 0.25).turbulence, 0);
+  for (const mode of [
+    'whispery',
+    'whispery-creaky',
+    'whispery-falsetto',
+    'whispery-creaky-falsetto',
+  ] as const) {
+    assert.ok(phonationFrame(mode, 0.25).vibration > 0);
+    assert.ok(phonationFrame(mode, 0.25).posteriorGap > 0);
+  }
+  const base = phonationPresets.modal.controls;
+  const highTension = phonationControlFrame({ ...base, tension: 1 }, 0.25);
+  assert.equal(highTension.posteriorGap, 0);
+  assert.ok(highTension.length > phonationControlFrame(base, 0.25).length);
+});
+void test('all phonation presets and extreme controls render bounded geometry', () => {
+  for (const preset of Object.values(phonationPresets)) {
+    for (const t of [0, 0.16, 0.25, 0.4, 0.63, 1]) {
+      const frame = phonationControlFrame(preset.controls, t);
+      assert.ok(Object.values(frame).every(Number.isFinite));
+      assert.ok(frame.gap >= 0 && frame.gap < 60);
+      assert.ok(frame.posteriorGap >= 0 && frame.posteriorGap <= 24);
+    }
+    const html = renderToStaticMarkup(
+      createElement(VocalFolds, {
+        controls: preset.controls,
+        animated: false,
+        detailed: true,
+      }),
+    );
+    assert.ok(!/NaN|Infinity/.test(html));
+    assert.ok(html.includes('软骨声门'));
+  }
+  for (let mask = 0; mask < 64; mask++) {
+    const p = { ...phonationPresets.modal.controls };
+    phonationControlKeys.forEach((k, i) => {
+      p[k] = (mask >> i) & 1;
+    });
+    assert.ok(
+      Object.values(phonationControlFrame(p, 0.25)).every(Number.isFinite),
+    );
+  }
 });

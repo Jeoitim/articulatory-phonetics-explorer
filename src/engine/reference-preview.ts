@@ -6,6 +6,7 @@ import type { Consonant, Place, Pose } from '../domain/phonetics';
 import { sampleAnimation } from './animation';
 import { interpolate } from './geometry';
 import { articulatoryVariants } from './variants';
+import type { Phonation } from './phonation';
 
 export interface ReferencePreviewModel {
   from: Pose;
@@ -16,6 +17,7 @@ export interface ReferencePreviewModel {
   flow?: string;
   /** Show a separate side channel in the tract instead of the lip inset. */
   lateral?: boolean;
+  phonation?: Phonation;
   /** Optional release gesture for secondary release diacritics. */
   release?: Pose;
   releaseFlow?: string;
@@ -69,6 +71,20 @@ export function referencePreview(
   const chars = Array.from(example.normalize('NFD'));
   const first = chars.shift();
   const vowel = vowels.find((v) => v.symbol === first);
+  if (/^(?:[ab]̤|b̤a̤|[ab]̰|b̰a̰)$/.test(example.normalize('NFD'))) {
+    const phonation = chars.includes('̤') ? 'breathy' : 'creaky';
+    const a = vowelPose(vowels.find((v) => v.symbol === 'a')!);
+    const b = preset(consonants.find((s) => s.symbol === 'b')!);
+    const sequence = example.includes('a');
+    return {
+      from: first === 'b' ? b : a,
+      to: sequence ? a : b,
+      place: first === 'b' && !sequence ? 'bilabial' : 'palatal',
+      phonation,
+      flow: first === 'b' && !sequence ? 'off' : 'smooth',
+      description: `[${example}]：声带俯视图演示${phonation === 'breathy' ? '振动伴随漏气与不完全闭合' : '较长闭合期与不规则开放脉冲'}，不表示吞咽或持续声门闭塞。`,
+    };
+  }
   if (
     vowel &&
     chars.length &&

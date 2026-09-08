@@ -12,6 +12,7 @@ import type { ReferencePreviewModel } from '../engine/reference-preview';
 import { VocalTract } from './vocal-tract/VocalTract';
 import { Glottis, TongueInset } from './vocal-tract/Insets';
 import { FrontMouth } from './vocal-tract/FrontMouth';
+import { VocalFolds } from './vocal-tract/VocalFolds';
 import { articulationContact } from '../engine/contact';
 import { markEnglish } from '../data/ipa-mark-details';
 import { resolveAudioUrl } from '../engine/audio';
@@ -51,6 +52,14 @@ function DetailAnimation({
   );
   return (
     <figure className="reference-animation">
+      {model.phonation && (
+        <VocalFolds
+          mode={model.phonation}
+          tension={model.phonation === 'creaky' ? 0.2 : 0.5}
+          animated={animate && !paused}
+          detailed
+        />
+      )}
       <VocalTract
         pose={frame.pose}
         place={model.place}
@@ -75,6 +84,7 @@ function DetailAnimation({
       </div>
       <div className="reference-insets">
         <Glottis
+          phonation={model.phonation}
           voiced={model.sound?.voiced ?? true}
           openness={frame.pose.glottis}
           animated={animate && !paused && progress < 1}

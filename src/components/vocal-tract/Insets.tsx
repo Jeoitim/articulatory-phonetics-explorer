@@ -1,43 +1,27 @@
+import { VocalFolds } from './VocalFolds';
+import { phonationLabels } from '../../engine/phonation';
+import type { Phonation } from '../../engine/phonation';
 import type { Airstream } from '../../domain/phonetics';
 export function Glottis({
   voiced,
   animated,
   openness = 1,
+  phonation = 'modal',
 }: {
   voiced: boolean;
   openness?: number;
+  phonation?: Phonation;
   animated: boolean;
 }) {
   return (
     <div className="inset">
-      <svg
-        viewBox="0 0 120 58"
-        aria-label={
-          openness < 0.05
-            ? '声门闭塞'
-            : voiced
-              ? '声带周期性开闭示意'
-              : '声门相对开放'
-        }
-      >
-        <path
-          d="M 59 8 C 25 15 27 51 59 51 C 91 51 94 15 59 8"
-          fill="light-dark(#efdad1, #68544b)"
-          stroke="light-dark(#c89b89, #bd9580)"
-        />
-        <path
-          className={openness >= 0.05 && voiced && animated ? 'vocal-fold' : ''}
-          d={
-            openness < 0.05
-              ? 'M59 13L59 46'
-              : voiced
-                ? 'M 59 13 Q 51 29 59 46 Q 67 29 59 13'
-                : 'M 59 13 L 46 42 Q 59 51 73 42 Z'
-          }
-          fill="light-dark(#676256, #262422)"
-          stroke="light-dark(#b37366, #c18a77)"
-        />
-      </svg>
+      <VocalFolds
+        mode={phonation}
+        tension={phonation === 'creaky' ? 0.2 : 0.5}
+        animated={animated}
+        open={!voiced}
+        closed={openness < 0.05}
+      />
       <div>
         <strong>
           声带 <span>Vocal folds</span>
@@ -46,7 +30,7 @@ export function Glottis({
           {openness < 0.05
             ? '闭塞 · Closure'
             : voiced
-              ? '振动 · Voiced'
+              ? phonationLabels[phonation]
               : '开放 · Voiceless'}
         </p>
       </div>

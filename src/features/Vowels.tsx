@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import type { PointerEvent } from 'react';
 import { Play, RotateCcw, Volume2 } from 'lucide-react';
 import { useAudio } from '../engine/audio';
@@ -12,9 +12,15 @@ import { useVowelMotion } from '../engine/vowel-motion';
 import { VocalTract } from '../components/vocal-tract/VocalTract';
 import { FrontMouth } from '../components/vocal-tract/FrontMouth';
 import { Range } from '../components/Controls';
+import { PhonationLab } from './PhonationLab';
 
 export function Vowels() {
   const audio = useAudio(vowelAudio);
+  const phonationPlayer = useRef<HTMLAudioElement>(null);
+  function playVowel(symbol: string) {
+    phonationPlayer.current?.pause();
+    void audio.play(symbol);
+  }
   const [value, setValue] = useState<Vowel>(vowels[0]!);
   const [selected, setSelected] = useState<string | null>('i');
   const { pose, move } = useVowelMotion(() => vowelPose(vowels[0]!));
@@ -22,7 +28,7 @@ export function Vowels() {
     setValue(v);
     setSelected(v.symbol);
     move(vowelPose(v));
-    if (playAudio) void audio.play(v.symbol);
+    if (playAudio) playVowel(v.symbol);
   }
   function adjust(key: 'height' | 'backness' | 'rounding', n: number) {
     audio.stop();
@@ -50,74 +56,75 @@ export function Vowels() {
   }
   const marker = vowelChartPoint(value.height, value.backness);
   const approximation = describeVowel(value);
-  const showEquivalents =
-    !selected && approximation.alternatives.length > 0;
+  const showEquivalents = !selected && approximation.alternatives.length > 0;
   return (
     <div className="vowel-lab lab-grid">
-      <section className="vocal-panel">
-        <div className="panel-heading">
-          <h2>
-            元音发音实验台 <span>Vowels</span>
-          </h2>
-          <div className="panel-actions">
-            <button
-              onClick={() => move(vowelPose(value), false, rest)}
-              title="重播口型变化"
-              aria-label="重播口型变化"
-            >
-              <Play size={16} />
-            </button>
-            <button
-              onClick={() => select(vowels[0]!)}
-              title="恢复 i"
-              aria-label="恢复 i"
-            >
-              <RotateCcw size={16} />
-            </button>
+      <div className="vowel-anatomy-column">
+        <section className="vocal-panel">
+          <div className="panel-heading">
+            <h2>
+              元音发音实验台 <span>Vowels</span>
+            </h2>
+            <div className="panel-actions">
+              <button
+                onClick={() => move(vowelPose(value), false, rest)}
+                title="重播口型变化"
+                aria-label="重播口型变化"
+              >
+                <Play size={16} />
+              </button>
+              <button
+                onClick={() => select(vowels[0]!)}
+                title="恢复 i"
+                aria-label="恢复 i"
+              >
+                <RotateCcw size={16} />
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="diagram-stage">
-          <span className="orientation">前 ← → 后</span>
-          <VocalTract
-            pose={pose}
-            place={
-              value.apical === 'retroflex'
-                ? 'retroflex'
-                : value.apical === 'front'
-                  ? 'alveolar'
-                  : value.backness < 0.5
-                    ? 'palatal'
-                    : 'velar'
-            }
-            display={{
-              labels: true,
-              zones: false,
-              points: false,
-              airflow: true,
-            }}
-            flow="smooth"
-          />
-        </div>
-        <div className="mouth-panel">
-          <div>
-            <h3>
-              嘴部正面 <span>Front view</span>
-            </h3>
-            <p>
-              {pose.rounding > 0.7
-                ? '圆唇 · 嘴角收拢'
-                : pose.rounding < 0.3
-                  ? '不圆唇 · 放松展开'
-                  : '圆唇过渡'}
-            </p>
-            <p>与侧面口型同步变化</p>
+          <div className="diagram-stage">
+            <span className="orientation">前 ← → 后</span>
+            <VocalTract
+              pose={pose}
+              place={
+                value.apical === 'retroflex'
+                  ? 'retroflex'
+                  : value.apical === 'front'
+                    ? 'alveolar'
+                    : value.backness < 0.5
+                      ? 'palatal'
+                      : 'velar'
+              }
+              display={{
+                labels: true,
+                zones: false,
+                points: false,
+                airflow: true,
+              }}
+              flow="smooth"
+            />
           </div>
-          <FrontMouth
-            rounding={pose.rounding}
-            openness={Math.max(0, Math.min(1, (pose.jaw - 0.18) / 0.52))}
-          />
-        </div>
-      </section>
+          <div className="mouth-panel">
+            <div>
+              <h3>
+                嘴部正面 <span>Front view</span>
+              </h3>
+              <p>
+                {pose.rounding > 0.7
+                  ? '圆唇 · 嘴角收拢'
+                  : pose.rounding < 0.3
+                    ? '不圆唇 · 放松展开'
+                    : '圆唇过渡'}
+              </p>
+              <p>与侧面口型同步变化</p>
+            </div>
+            <FrontMouth
+              rounding={pose.rounding}
+              openness={Math.max(0, Math.min(1, (pose.jaw - 0.18) / 0.52))}
+            />
+          </div>
+        </section>
+      </div>
       <div className="right-column vowel-controls">
         <section className="sound-card">
           <div className="vowel-heading">
@@ -248,7 +255,7 @@ export function Vowels() {
                   }}
                   onClick={(e) => {
                     if (e.detail === 0) select(v);
-                    else void audio.play(v.symbol);
+                    else playVowel(v.symbol);
                   }}
                   title={v.zh}
                   aria-label={`${v.symbol} ${v.zh}`}
@@ -263,7 +270,7 @@ export function Vowels() {
             <button
               className="text-button"
               disabled={!selected || !vowelAudio[selected]}
-              onClick={() => selected && void audio.play(selected)}
+              onClick={() => selected && playVowel(selected)}
             >
               <Volume2 size={16} />
               {selected ? `播放 [${selected}]` : '自由构形'}
@@ -376,6 +383,7 @@ export function Vowels() {
           </div>
         </section>
       </div>
+      <PhonationLab onPlayRecording={audio.stop} player={phonationPlayer} />
     </div>
   );
 }
