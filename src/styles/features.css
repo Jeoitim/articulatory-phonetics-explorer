@@ -1185,9 +1185,23 @@ output.notice {
   display: flex;
   flex-wrap: wrap;
   gap: 8px 14px;
-  margin: 12px 0;
+  margin: 0;
   align-items: baseline;
   font-size: 14px;
+}
+.vowel-equivalents-slot {
+  position: relative;
+  min-height: 84px;
+  margin: 12px 0;
+  contain: layout paint;
+}
+.vowel-equivalents-reserve {
+  visibility: hidden;
+  pointer-events: none;
+}
+.vowel-equivalents-content {
+  position: absolute;
+  inset: 0;
 }
 .vowel-equivalents b {
   font-size: 22px;
@@ -1197,6 +1211,11 @@ output.notice {
   width: 100%;
   font-size: 13px;
   color: var(--muted-foreground);
+}
+@media (max-width: 420px) {
+  .vowel-equivalents-slot {
+    min-height: 108px;
+  }
 }
 .mark-trigger {
   color: inherit;
