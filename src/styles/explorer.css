@@ -447,7 +447,8 @@ main {
   font-weight: 500;
   display: block;
 }
-.inset strong > span {
+.inset strong > span,
+.inset p > span {
   color: light-dark(#99a08e, var(--night-subtle));
   font-size: 9px;
   margin-left: 5px;
@@ -455,7 +456,8 @@ main {
 .inset p {
   font-size: 10px;
   color: light-dark(#929b85, var(--night-copy));
-  margin-top: 5px;
+  margin-top: 4px;
+  line-height: 1.35;
 }
 .inset .status-dot {
   margin-left: auto;
@@ -1088,10 +1090,13 @@ footer {
   .sagittal-stage {
     padding-top: 56px;
   }
-  .inset svg {
+  .inset svg,
+  .inset .vocal-folds-small {
     width: 57px;
+    height: 40px;
   }
-  .inset strong > span {
+  .inset strong > span,
+  .inset p > span {
     display: none;
   }
   .mode-tabs [data-slot='tabs-list'] {
@@ -1204,8 +1209,27 @@ footer {
   .display-settings {
     grid-template-columns: 1fr 1fr;
   }
-  .inset svg {
-    width: 75px;
+  .inset {
+    padding: 8px 8px;
+    gap: 6px;
+  }
+  .inset svg,
+  .inset .vocal-folds-small {
+    width: 48px;
+    height: 36px;
+    max-width: 48px;
+    max-height: 36px;
+    flex-shrink: 0;
+  }
+  .inset strong {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  .inset p {
+    font-size: 10px;
+    margin-top: 3px;
+    line-height: 1.3;
+    word-break: break-word;
   }
   .view-tag {
     left: 14px;

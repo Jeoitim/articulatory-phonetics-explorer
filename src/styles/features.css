@@ -237,6 +237,9 @@
   bottom: 10px;
   left: 10px;
 }
+.lesson-stage {
+  container-type: inline-size;
+}
 .lesson-actions {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -246,12 +249,39 @@
   padding-top: 16px;
   border-top: 1px solid var(--border);
 }
+.lesson-actions.actions-wrap {
+  grid-template-columns: 1fr 1fr;
+  width: calc(100% - 24px);
+  margin: 14px auto 12px;
+  padding-top: 14px;
+}
+.lesson-actions.actions-wrap .text-button {
+  min-height: 44px;
+  font-size: 12px;
+}
+@container (max-width: 540px) {
+  .lesson-actions {
+    grid-template-columns: 1fr 1fr;
+    width: calc(100% - 24px);
+    margin: 14px auto 12px;
+    padding-top: 14px;
+  }
+  .lesson-actions .text-button {
+    min-height: 44px;
+    font-size: 12px;
+  }
+}
 .lesson-actions .text-button {
   min-height: 42px;
   justify-content: center;
   gap: 7px;
   white-space: nowrap;
   padding: 9px 10px;
+  min-width: 0;
+}
+.lesson-actions .text-button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .lesson-actions .text-button svg {
   flex: 0 0 auto;
@@ -1529,14 +1559,20 @@ output.notice {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
   vertical-align: middle;
-  border: 1px solid currentColor;
+  border: 0;
   border-radius: 50%;
   color: inherit;
   background: transparent;
   cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.15s ease;
+}
+.sibilant-info:hover {
+  opacity: 1;
 }
 .sibilant-info:focus-visible,
 .phonation-options button:focus-visible {
@@ -1621,9 +1657,27 @@ output.notice {
   color: light-dark(#546048, #d3dcc6);
 }
 .inset .vocal-folds-small {
-  width: 110px;
-  height: 74px;
+  width: 80px;
+  height: 54px;
+  max-width: 80px;
+  max-height: 54px;
   flex-shrink: 0;
+}
+@media (max-width: 900px) {
+  .inset .vocal-folds-small {
+    width: 54px;
+    height: 38px;
+    max-width: 54px;
+    max-height: 38px;
+  }
+}
+@media (max-width: 720px) {
+  .inset .vocal-folds-small {
+    width: 48px;
+    height: 36px;
+    max-width: 48px;
+    max-height: 36px;
+  }
 }
 .phonation-lab > p {
   font-size: 16px;

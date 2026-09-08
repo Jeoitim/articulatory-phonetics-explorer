@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Check,
   ArrowRight,
@@ -35,6 +35,25 @@ export function Lessons() {
   const [f, setF] = useState<Features>(soundBySymbol('t'));
   const anim = useArticulation(soundBySymbol('t'));
   const audio = useAudio();
+  const actionsRef = useRef<HTMLDivElement>(null);
+  const [wrapActions, setWrapActions] = useState(false);
+
+  useEffect(() => {
+    const el = actionsRef.current;
+    if (!el) return;
+    const checkOverflow = () => {
+      const isNarrow = el.clientWidth < 540;
+      const hasOverflow = Array.from(el.children).some(
+        (child) =>
+          (child as HTMLElement).scrollWidth > (child as HTMLElement).clientWidth,
+      );
+      setWrapActions(isNarrow || hasOverflow);
+    };
+    checkOverflow();
+    const ro = new ResizeObserver(checkOverflow);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   const match = infer(anim.pose, f);
   const achieved =
     (lesson.start === lesson.target && observed) ||
@@ -273,7 +292,11 @@ export function Lessons() {
                     edit({ ...anim.pose, velum: lowered ? 1 : 0 });
                   }}
                 />
-                <div className="lesson-actions" aria-label="课程演示控制">
+                <div
+                  ref={actionsRef}
+                  className={`lesson-actions${wrapActions ? ' actions-wrap' : ''}`}
+                  aria-label="课程演示控制"
+                >
                   <button
                     className="text-button"
                     onClick={() => {

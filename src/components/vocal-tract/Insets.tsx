@@ -27,11 +27,17 @@ export function Glottis({
           声带 <span>Vocal folds</span>
         </strong>
         <p>
-          {openness < 0.05
-            ? '闭塞 · Closure'
-            : voiced
-              ? phonationLabels[phonation]
-              : '开放 · Voiceless'}
+          {openness < 0.05 ? (
+            <>
+              闭塞 <span>Closure</span>
+            </>
+          ) : voiced ? (
+            phonationLabels[phonation]
+          ) : (
+            <>
+              开放 <span>Voiceless</span>
+            </>
+          )}
         </p>
       </div>
       <i className={voiced ? 'status-dot on' : 'status-dot'} />
