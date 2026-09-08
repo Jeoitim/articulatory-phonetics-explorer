@@ -191,22 +191,28 @@ export function Lessons() {
               <strong>拖动滑块，连续改变调音构形</strong>
             </div>
             <div className="continuum-context" aria-label="构形说明和语言例子">
-              <p className="continuum-note">
-                {fricativeContinuum[Math.round(continuum)]!.note}
-              </p>
               <div className="continuum-examples" aria-label="四种擦音的语言例子">
                 {fricativeContinuum.map((step) => (
                   <p key={step.symbol}>
                     <b>[{step.symbol}]</b> {step.example}
                   </p>
                 ))}
-                <a
-                  href="https://ling.cuhk.edu.hk/files/seminar/1st_2324/Poster_20231114.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  粤语咝音变体：香港中文大学研究介绍 ↗
-                </a>
+                <div className="continuum-sources" aria-label="相关研究来源">
+                  <a
+                    href="https://ling.cuhk.edu.hk/event/language-variation-and-bilingualism-in-hong-kong-insights-from-sibilant-production-in-cantonese-and-english/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    粤语咝音变体：香港中文大学同主题讲座页 ↗
+                  </a>
+                  <a
+                    href="https://hub.hku.hk/handle/10722/338106"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    相关研究：香港大学学者库 ↗
+                  </a>
+                </div>
               </div>
               <p className="chart-note">
                 整数节点为教学预设；节点之间是连续过渡，不保证每个中间位置都有唯一
@@ -224,6 +230,9 @@ export function Lessons() {
                   ? `[${fricativeContinuum[continuum]!.symbol}]`
                   : `[${fricativeContinuum[Math.floor(continuum)]!.symbol}] → [${fricativeContinuum[Math.ceil(continuum)]!.symbol}]`}
               </output>
+              <p className="continuum-note">
+                {fricativeContinuum[Math.round(continuum)]!.note}
+              </p>
               <div className="continuum-stops">
                 {fricativeContinuum.map((step, i) => (
                   <button

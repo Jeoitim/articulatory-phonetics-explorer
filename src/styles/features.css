@@ -667,10 +667,10 @@
   background: light-dark(#eef2e8, var(--night-muted));
 }
 .continuum-note {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.75;
-  color: light-dark(#526444, var(--night-ink));
+  margin: 0 0 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted-foreground);
 }
 .continuum-controls {
   margin-top: 18px;
@@ -1656,8 +1656,11 @@ output.notice {
   min-width: 32px;
   font-size: 18px;
 }
-.continuum-examples a {
+.continuum-sources {
   grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
   margin-top: 2px;
 }
 .continuum-context > .chart-note {
@@ -1668,7 +1671,7 @@ output.notice {
   .continuum-examples {
     grid-template-columns: 1fr;
   }
-  .continuum-examples a {
+  .continuum-sources {
     grid-column: auto;
   }
 }
