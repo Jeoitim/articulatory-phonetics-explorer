@@ -47,6 +47,12 @@ GitHub Pages 的项目站点运行在 `/articulatory-phonetics-explorer/` 子路
 
 舌面曲线按相邻段长度归一化切线，抬高的舌面前部或后部形成宽冠，接近腭面时平滑调整方向；后缘通过圆弧过渡回到舌根附着区。硬腭、软腭和小舌预设同时调整邻近舌面点，分散抬高幅度，保持原调音目标。宽冠与后缘弧度有独立回归检查；这些外形改进仍是定性的教学近似。
 
+软腭、小舌音保留前舌支撑与宽阔抬高区，不通过强压舌冠来满足过紧的二维面积目标。咽音的舌根后缩采用一段向下延续的后部轮廓，再平滑回到下方附着处，避免单点被拉成尖突。手动下颌移动带动游离前舌，对近腭接触区保留补偿；这些联动仍是几何近似。
+
+默认软腭／小舌构形采用适度后收的前舌，不要求舌尖上翘或反卷；这是可编辑的展示姿态，不是脱离元音语境的唯一发音标准。
+
+咽部形状参照 [Hermes 等（2017）的实时 MRI 与轮廓图，PDF 第 3 页](https://www.isca-archive.org/interspeech_2017/hermes17_interspeech.pdf#page=3)，以及 [Shar 与 Ingram（2011）的 MRI 测量图，PDF 第 2 页](https://www.internationalphoneticassociation.org/icphs-proceedings/ICPhS2011/OnlineProceedings/RegularSession/Shar/Shar.pdf#page=2)。参考文献与 SVG 许可列于 [anatomy.txt](public/attribution/anatomy.txt)，具体用途、修改依据和限制见[舌形校准记录](docs/laminal-shape-review.md)。文献图像未作为网站素材分发，也未进行影像轮廓配准。
+
 生物力学依据：舌组织的近不可压缩性、非线性弹性及下颌/舌骨附着关系，参见 [Kajee 等，2013](https://doi.org/10.1002/cnm.2531) 和 [Subject-Specific Biomechanical Modelling of the Oropharynx](https://pmc.ncbi.nlm.nih.gov/articles/PMC5699225/)。本实现借鉴这些原则，不复现论文中的三维有限元求解器。
 
 IPA 表示类别，而非唯一口型；预测只表示最近的教学构形。卷舌有多种实现，图中采用一种弯曲舌尖示意；[ɧ]、咽音和会厌音存在较大实现差异。喉入口图只说明狭窄关系，不能用于精确重建喉部生理。

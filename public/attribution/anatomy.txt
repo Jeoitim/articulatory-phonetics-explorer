@@ -6,3 +6,35 @@ This site's interactive anatomy is a simplified, redrawn pedagogical SVG with se
 The interactive anatomical SVG adaptation is offered under CC BY-SA 3.0; changes include redrawing, recoloring, Chinese/English labels and dynamic articulators.
 
 The original static contours are retained in their native coordinate system. Movable tongue, velum, lip and mandibular surfaces replace the corresponding original structures. Bone texture, nasal conchae, muscle fibers and laryngeal inlet overlays are qualitative educational additions, not a measured anatomical reconstruction.
+
+Additional sagittal shape references (reviewed 2026-09-08)
+
+Tavin, Fricatives-sch.svg (/sh/) and Fricatives-s-z.svg (/s z/), 2011.
+https://commons.wikimedia.org/wiki/File:Fricatives-sch.svg
+https://commons.wikimedia.org/wiki/File:Fricatives-s-z.svg
+License: CC BY-SA 3.0 https://creativecommons.org/licenses/by-sa/3.0/
+Used as qualitative comparisons of the anterior tongue and domed postalveolar contour; these additional SVG files are not bundled or directly traced.
+
+Richard Wright and Dan McCloy, phonetics teaching sagittal sections, 2011.
+https://commons.wikimedia.org/wiki/File:IPA_s_laminal_Sagittal_Section.svg
+https://commons.wikimedia.org/wiki/File:IPA_%CA%83_laminal_Sagittal_Section.svg
+https://commons.wikimedia.org/wiki/File:IPA_k_Sagittal_Section.svg
+Original collection: https://github.com/drammock/phonetics-teaching-assets
+License: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+Used for qualitative laminal and dorsal constriction comparisons. These are teaching diagrams, not MRI or measured subject-specific contours.
+
+MRI and contour literature (bibliographic references, not incorporated assets)
+
+Zainab Hermes, Marissa Barlaz, Ryan Shosted, Zhi-Pei Liang, Brad Sutton (2017).
+Phonetic Correlates of Pharyngeal and Pharyngealized Consonants in Saudi, Lebanese, and Jordanian Arabic: an rt-MRI Study.
+Interspeech 2017, pp. 201-205. DOI: 10.21437/Interspeech.2017-1601.
+https://www.isca-archive.org/interspeech_2017/hermes17_interspeech.html
+https://www.isca-archive.org/interspeech_2017/hermes17_interspeech.pdf#page=3
+Especially PDF page 3 (printed p. 203), Figures 1-6: MRI boundary extraction, pharyngeal /ħ ʕ/ and pharyngealized /sˤ/ contours across three speakers. Reference for a continuous posterior tongue contour and variation in constriction location; not a universal template or a fitted reconstruction.
+
+Saeed Shar and John Ingram (2011). MRI Investigation of Arabic Gutturals.
+Proceedings of ICPhS XVII, pp. 1802-1805.
+https://www.internationalphoneticassociation.org/icphs-proceedings/ICPhS2011/OnlineProceedings/RegularSession/Shar/Shar.pdf#page=2
+Especially PDF page 2 (printed p. 1803), Figure 1: MRI measurement of tongue-root/pharyngeal width, epiglottal width and laryngeal height. These are distinct anatomical measures, not a single root displacement.
+
+Research figures and MRI data retain their respective rights; they are cited and were inspected locally, not redistributed as website assets or relicensed under the anatomical SVG's CC BY-SA license. The implementation uses qualitative geometric principles only. Sagittal area is not 3D tongue volume; no medical validation, individual registration, muscle simulation, or author endorsement is claimed.

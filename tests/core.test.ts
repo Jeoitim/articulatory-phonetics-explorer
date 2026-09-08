@@ -954,6 +954,75 @@ void test('palatal and velar crowns spread elevation over a broad tongue surface
   }
 });
 
+void test('laminal families keep supported crowns and their intended constrictions', () => {
+  for (const sound of consonants) {
+    const base = preset(sound);
+    const poses = [
+      ...(sound.place === 'postalveolar' && sound.variant !== 'sje' &&
+        sound.airstream === 'pulmonic-egressive' ? [base] : []),
+      ...articulatoryVariants(sound)
+        .filter((v) => v.mark === '̻' ||
+          (sound.place === 'postalveolar' && v.mark !== '̺'))
+        .map((v) => v.pose),
+    ];
+    for (const pose of poses) {
+      const { tip, blade } = pose.tongue;
+      assert.ok(blade.x > tip.x, sound.symbol + ' anterior apex');
+      assert.ok((tip.y - blade.y) / (blade.x - tip.x) < 1.2,
+        sound.symbol + ' no steep folded blade');
+      assert.ok(isPlausible(pose), sound.symbol);
+      const points = surface(pose).slice(16, 33);
+      assert.ok(points.filter((q) => q.y <= blade.y + 30).length >= 8,
+        sound.symbol + ' supported blade crown');
+      assert.equal(infer(pose, sound).candidates[0]!.sound.symbol, sound.symbol);
+    }
+  }
+});
+
+void test('posterior gestures redistribute tissue and jaw motion preserves dorsal closure', () => {
+  for (const symbol of ['k', 'ɡ', 'ŋ', 'x', 'ɣ', 'q', 'ɢ', 'ʁ', 'ħ', 'ʕ']) {
+    const sound = soundBySymbol(symbol), pose = preset(sound);
+    // Sagittal area is not 3D volume: a 1.4 cap previously encouraged an
+    // artificially depressed foretongue. Check shape and contact instead.
+    assert.ok(tongueArea(pose) / tongueArea(rest) < 1.66, symbol + ' bounded expansion');
+    if (sound.place === 'velar' || sound.place === 'uvular') {
+      assert.ok(pose.tongue.tip.x > 240 && pose.tongue.blade.x > 300,
+        symbol + ' relaxed anterior tongue is drawn back');
+      assert.ok(pose.tongue.tip.x < pose.tongue.blade.x && pose.retroflex === 0,
+        symbol + ' retraction is not retroflexion');
+      assert.ok(pose.tongue.blade.y - pose.tongue.dorsum.y < 120,
+        symbol + ' foretongue not forced down');
+      assert.ok(pose.tongue.front.y - pose.tongue.dorsum.y < 45,
+        symbol + ' broad elevated body');
+    }
+    assert.ok(isPlausible(pose), symbol);
+    assert.equal(infer(pose, sound).candidates[0]!.sound.symbol, symbol);
+  }
+  const k = preset(soundBySymbol('k'));
+  const moved = moveJaw(k, k.jaw + 0.1);
+  assert.ok(moved.jaw > k.jaw);
+  assert.ok(Math.hypot(moved.tongue.tip.x - k.tongue.tip.x,
+    moved.tongue.tip.y - k.tongue.tip.y) > 1, 'free apex follows jaw');
+  assert.deepEqual(moved.tongue.dorsum, k.tongue.dorsum, 'dorsal closure stays on palate');
+  assert.ok(isPlausible(moved));
+  assert.deepEqual(moveJaw(k, NaN), k);
+});
+
+void test('retracted root has a broad descending wall instead of a pointed spur', () => {
+  for (const symbol of ['ħ', 'ʕ']) {
+    const pose = preset(soundBySymbol(symbol));
+    const upper = surface(pose), lower = underside(pose);
+    const root = pose.tongue.root;
+    const before = upper[upper.length - 2]!, after = lower[0]!;
+    assert.ok(before.y < root.y && after.y > root.y, 'continuous descent');
+    assert.ok(Math.abs(after.x - root.x) < (after.y - root.y) * 0.25,
+      'root continues downward, not diagonally back to attachment');
+    const wall = lower.filter((q) => q.x > root.x - 25 && q.y > root.y);
+    assert.ok(Math.max(...wall.map((q) => q.y)) - root.y > 60,
+      'posterior narrowing extends over tissue, not one vertex');
+  }
+});
+
 void test('posterior tongue forms a shoulder and returns smoothly toward its attachment', () => {
   for (const symbol of ['ɡ', 'k', 'q', 'ʁ']) {
     const p = preset(soundBySymbol(symbol));

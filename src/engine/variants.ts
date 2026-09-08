@@ -24,8 +24,10 @@ export function articulatoryVariants(sound: Consonant): ArticulatoryVariant[] {
     !['trill', 'tap', 'approximant'].includes(sound.manner)
   ) {
     const laminal = structuredClone(base);
-    laminal.tongue.tip = { x: 185, y: 455 };
+    // A relaxed anterior apex and a supported blade, not a folded flap.
+    laminal.tongue.tip = { x: 175, y: 435 };
     laminal.tongue.blade = { x: 220, y: 385 + gap };
+    laminal.tongue.front = { x: 335, y: 455 };
     if (isPlausible(laminal)) pushVariant('舌叶型', laminal, '̻');
     const apical = structuredClone(base);
     apical.tongue.tip = { x: 230, y: 385 + gap };
@@ -37,8 +39,8 @@ export function articulatoryVariants(sound: Consonant): ArticulatoryVariant[] {
   ) {
     const apical = structuredClone(base);
     apical.tongue.tip = { x: 270, y: 347 + gap };
-    apical.tongue.blade = { x: 300, y: 455 };
-    apical.tongue.front = { x: 385, y: 455 };
+    apical.tongue.blade = { x: 306, y: 395 + gap };
+    apical.tongue.front = { x: 385, y: 425 };
     if (isPlausible(apical)) pushVariant('舌尖型', apical, '̺');
   } else if (sound.place === 'retroflex') {
     const weakerRetroflex = structuredClone(base);

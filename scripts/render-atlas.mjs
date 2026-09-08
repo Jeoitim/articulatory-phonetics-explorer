@@ -24,7 +24,12 @@ for (const [i, symbol] of (
       animated: false,
     }),
   );
-  const svg = html.slice(html.indexOf('<svg'), html.indexOf('</svg>') + 6);
+  // The rasterizer does not inherit browser theme variables or color-scheme.
+  const svg = html.slice(html.indexOf('<svg'), html.indexOf('</svg>') + 6)
+    .replace(/light-dark\(([^,]+),[^)]+\)/g, '$1')
+    .replace(/var\(--tract-contact\)/g, '#b38c3f')
+    .replace(/var\(--tract-active\)/g, '#fff5dd')
+    .replace(/var\(--tract-passive\)/g, '#5898ad');
   await writeFile('work/atlas/' + i + '.svg', svg);
   const png = await sharp(Buffer.from(svg))
     .resize(320, 400)

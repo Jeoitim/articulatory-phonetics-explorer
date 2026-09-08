@@ -101,14 +101,30 @@ export function jawPath(path: string, jaw: number) {
   );
 }
 export function moveJaw(p: Pose, jaw: number) {
-  const next = constrain(
-    p,
-    'front',
-    { x: p.tongue.front.x, y: p.tongue.front.y + (jaw - p.jaw) * 35 },
-    false,
-  );
-  next.jaw = jaw;
-  return limitLowerLip(isPlausible(next) ? next : { ...p, jaw: p.jaw });
+  if (!Number.isFinite(jaw)) return structuredClone(p);
+  const next = structuredClone(p);
+  next.jaw = Math.max(0, Math.min(1, jaw));
+  // Carry free tissue with the mandible, tapering toward the attached root.
+  // Near-palatal tissue compensates so changing the jaw need not tear an
+  // existing primary constriction away from its target.
+  for (const [i, key] of tongueKeys.entries()) {
+    const point = p.tongue[key];
+    const before = jawPoint(point, p.jaw), after = jawPoint(point, next.jaw);
+    const freedom = Math.max(0, Math.min(1, (point.y - roofY(point.x) - 15) / 70));
+    const weight = [0.55, 0.5, 0.4, 0.18, 0][i]! * freedom;
+    next.tongue[key] = boundPoint({
+      x: point.x + (after.x - before.x) * weight,
+      y: point.y + (after.y - before.y) * weight,
+    }, key);
+  }
+  if (isPlausible(next)) return limitLowerLip(next);
+  let lo = 0, hi = 1;
+  for (let i = 0; i < 12; i++) {
+    const mid = (lo + hi) / 2;
+    if (isPlausible(mixPose(p, next, mid))) lo = mid;
+    else hi = mid;
+  }
+  return limitLowerLip(mixPose(p, next, lo));
 }
 // All landmarks share the original Wikimedia SVG's 800 × 1000 coordinate system.
 export const roof: Point[] = [
@@ -222,7 +238,7 @@ export function surface(p: Pose): Point[] {
   };
   const directions = pts.map((q, i) => {
     if (i === 0) return unit(pts[1]!.x - q.x, pts[1]!.y - q.y);
-    if (i === pts.length - 1) return unit(557 - q.x, 798 - q.y);
+    if (i === pts.length - 1) return rootTangent(p);
     const before = pts[i - 1]!,
       after = pts[i + 1]!;
     // Chord-normalized directions keep a long root segment from turning a
@@ -231,10 +247,16 @@ export function surface(p: Pose): Point[] {
     const incoming = unit(q.x - before.x, q.y - before.y);
     const outgoing = unit(after.x - q.x, after.y - q.y);
     const base = unit(incoming.x + outgoing.x, incoming.y + outgoing.y);
+    // A raised blade also has a broad crown. Apply this only when the apex
+    // remains anterior, leaving the reversed tangent of a curled tip intact.
     const crownWeight =
-      i >= 2 ? clamp((Math.min(before.y, after.y) - q.y) / 45, 0, 1) : 0;
+      i >= 2 || (i === 1 && before.x < q.x)
+        ? clamp((Math.min(before.y, after.y) - q.y) / 45, 0, 1)
+        : 0;
     const proximity = clamp((40 - (q.y - roofY(q.x))) / 40, 0, 1);
-    const crown = unit(1, ((roofY(q.x + 2) - roofY(q.x - 2)) / 4) * proximity);
+    const roofSlope = ((roofY(q.x + 2) - roofY(q.x - 2)) / 4) * proximity;
+    // The descending uvula is not a tangent template for the tongue crown.
+    const crown = unit(1, i >= 3 ? clamp(roofSlope, -0.6, 0.6) : roofSlope);
     return unit(
       base.x * (1 - crownWeight) + crown.x * crownWeight,
       base.y * (1 - crownWeight) + crown.y * crownWeight,
@@ -285,6 +307,18 @@ export function surface(p: Pose): Point[] {
   out.push(pts[pts.length - 1]!);
   return out;
 }
+// A retracted root is a posterior wall segment, not the pointed end of a
+// tongue pulled diagonally toward its fixed hyoid attachment. Use the same
+// downward tangent on both sides of this landmark, with continuous blending
+// for manual retraction and secondary pharyngealization.
+function rootTangent(p: Pose): Point {
+  const root = p.tongue.root;
+  const retraction = clamp((root.x - 580) / 80, 0, 1);
+  const dx = (557 - root.x) * (1 - retraction);
+  const dy = 798 - root.y;
+  const length = Math.hypot(dx, dy) || 1;
+  return { x: dx / length, y: dy / length };
+}
 export function underside(p: Pose): Point[] {
   const tip = p.tongue.tip,
     blade = p.tongue.blade,
@@ -313,7 +347,14 @@ export function underside(p: Pose): Point[] {
   };
   const floorCurve = (a: Point, b: Point, end: Point) =>
     curve(jawPoint(a, p.jaw), jawPoint(b, p.jaw), jawPoint(end, p.jaw));
-  floorCurve({ x: 557, y: 798 }, { x: 557, y: 811 }, { x: 548, y: 812 });
+  const rootDirection = rootTangent(p);
+  const rootHandle = Math.hypot(557 - start.x, 798 - start.y);
+  curve(
+    { x: start.x + rootDirection.x * rootHandle,
+      y: start.y + rootDirection.y * rootHandle },
+    jawPoint({ x: 557, y: 811 }, p.jaw),
+    jawPoint({ x: 548, y: 812 }, p.jaw),
+  );
   floorCurve({ x: 495, y: 850 }, { x: 428, y: 839 }, { x: 398, y: 819 });
   const attachment = jawPoint({ x: 235, y: 738 }, p.jaw);
   // A broad mandibular attachment supports the belly. Do not route the
@@ -615,10 +656,10 @@ export function preset(s: Consonant): Pose {
       [543, 746],
     ],
     postalveolar: [
-      [218, 425],
+      [195, 420],
       [270, 347 + gap],
-      [352, 425],
-      [463, 505],
+      [352, 390],
+      [463, 485],
       [543, 746],
     ],
     retroflex: [
@@ -636,28 +677,33 @@ export function preset(s: Consonant): Pose {
       [545, 725],
     ],
     velar: [
-      [171, 533],
-      [280, 485],
-      [420, 420],
+      [260, 470],
+      [320, 440],
+      [420, 400],
       [552, 374 + gap],
       [550, 725],
     ],
     uvular: [
-      [173, 540],
-      [285, 495],
-      [435, 455],
+      [265, 490],
+      [330, 470],
+      [435, 450],
       [608, 438 + gap + (s.manner === 'nasal' ? 60 : 0)],
       [575, 725],
     ],
     pharyngeal: [
-      [174, 542],
-      [270, 526],
-      [388, 534],
-      [534, 590],
+      [185, 530],
+      [280, 500],
+      [410, 490],
+      [550, 535],
       [wallX(645) - gap - 7, 645],
     ],
   };
   const shape = shapes[s.place];
+  // The jaw contributes to dorsal closure; these are neutral-context drawing
+  // presets, not phoneme-specific measured jaw angles. Leave pharyngeals more
+  // open and do not confuse mandibular elevation with closing the lips.
+  if (s.place === 'velar' || s.place === 'uvular') p.jaw = closing ? 0.16 : 0.22;
+  if (s.place === 'pharyngeal') p.jaw = 0.28;
   if (shape)
     tongueKeys.forEach(
       (k, i) => (p.tongue[k] = { x: shape[i]![0]!, y: shape[i]![1]! }),
@@ -678,12 +724,15 @@ export function preset(s: Consonant): Pose {
     p.lowerLip = 0.55;
   }
   if (s.variant === 'alveolo-palatal') {
-    p.tongue.tip = { x: 184, y: 477 };
+    p.tongue.tip = { x: 190, y: 445 };
     p.tongue.blade = { x: 290, y: 354 + gap };
     p.tongue.front = { x: 392, y: 369 };
     p.tongue.dorsum = { x: 490, y: 470 };
   }
   if (s.variant === 'sje') {
+    // This separate double-constriction schematic needs room for its raised
+    // dorsum; it is not a universal Swedish realization of this variable sound.
+    p.tongue.front.y = 410;
     p.tongue.dorsum = { x: 565, y: 440 };
     p.rounding = 0.35;
   }
@@ -701,10 +750,11 @@ export function preset(s: Consonant): Pose {
     p.larynx = 1;
   }
   if (s.airstream === 'click') {
+    p.jaw = 0.22;
     p.tongue.dorsum = { x: 552, y: 374 };
     p.tongue.root = { x: 550, y: 725 };
     p.tongue.front =
-      s.place === 'postalveolar' ? { x: 380, y: 470 } : { x: 400, y: 485 };
+      s.place === 'postalveolar' ? { x: 380, y: 480 } : { x: 400, y: 485 };
   }
   return p;
 }
