@@ -5,7 +5,7 @@ import type {
   TongueKey,
   Consonant,
 } from '../domain/phonetics';
-import { zones } from './geometry';
+import { zones, roofY } from './geometry';
 export interface ArticulatoryContact {
   active: string;
   passive: string;
@@ -122,14 +122,35 @@ export function articulationContact(
       key: 'tip',
       note: '这里展示一种卷舌构形；卷舌并不要求所有语言都采用强烈反卷。',
     };
-  const z = zones.find((z) => z.place === place),
-    key = z
-      ? [...z.keys].sort(
+  const z = zones.find((z) => z.place === place);
+  let key: TongueKey = 'tip';
+  if (z) {
+    if (
+      (place === 'alveolar' || place === 'postalveolar') &&
+      z.keys.includes('blade') &&
+      z.keys.includes('tip')
+    ) {
+      const bladeGap = p.tongue.blade.y - roofY(p.tongue.blade.x);
+      const tipGap = p.tongue.tip.y - roofY(p.tongue.tip.x);
+      if (bladeGap < tipGap - 8) {
+        key = 'blade';
+      } else if (tipGap < bladeGap - 8) {
+        key = 'tip';
+      } else {
+        key = [...z.keys].sort(
           (a, b) =>
             Math.hypot(p.tongue[a].x - z.point.x, p.tongue[a].y - z.point.y) -
             Math.hypot(p.tongue[b].x - z.point.x, p.tongue[b].y - z.point.y),
-        )[0]!
-      : 'tip';
+        )[0]!;
+      }
+    } else {
+      key = [...z.keys].sort(
+        (a, b) =>
+          Math.hypot(p.tongue[a].x - z.point.x, p.tongue[a].y - z.point.y) -
+          Math.hypot(p.tongue[b].x - z.point.x, p.tongue[b].y - z.point.y),
+      )[0]!;
+    }
+  }
   return {
     active: names[key],
     passive: passive[place] || place,

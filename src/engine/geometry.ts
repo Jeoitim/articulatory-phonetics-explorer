@@ -563,49 +563,137 @@ export function constrain(
   const dx = target.x - original.x,
     dy = target.y - original.y;
   for (let i = 0; i < 5; i++) {
-    const k = tongueKeys[i]!,
-      w =
-        key === k
-          ? 1
-          : // Broad coherent motion in the body; more local freedom at the apex.
-            index >= 2 && i >= 2
-            ? i === 4 || index === 4
-              ? 0.38
-              : 0.78
-            : Math.exp(-Math.pow(Math.abs(i - index) / 1.38, 2));
-    p.tongue[k] = {
-      x: pose.tongue[k].x + dx * w,
-      y:
-        pose.tongue[k].y +
-        dy *
-          (k === 'root' && key !== 'root'
-            ? w * 0.32
-            : key === 'dorsum' && k === 'front'
-              ? 0.4
-              : key === 'front' && k === 'dorsum'
-                ? 0.55
-                : w),
-    };
+    const k = tongueKeys[i]!;
+    let wx =
+      key === k
+        ? 1
+        : index >= 2 && i >= 2
+          ? i === 4 || index === 4
+            ? 0.38
+            : 0.78
+          : Math.exp(-Math.pow(Math.abs(i - index) / 1.38, 2));
+    let wy =
+      key === k
+        ? 1
+        : k === 'root' && key !== 'root'
+          ? wx * 0.32
+          : key === 'dorsum' && k === 'front'
+            ? 0.4
+            : key === 'front' && k === 'dorsum'
+              ? 0.55
+              : wx;
+
+    // Retraction coupling: when retracting the body posteriorly (dx > 0)
+    // toward velar/uvular/pharyngeal positions, the anterior tongue retracts
+    // with the muscular hydrostat instead of stretching into an extreme wedge.
+    // Also anchor the root near the hyoid unless explicitly dragged.
+    const uvularBlend =
+      index >= 3 && dx > 0 ? clamp((target.x - 550) / 58, 0, 1) : 0;
+    if (index >= 3 && dx > 0) {
+      if (k === 'root' && key === 'dorsum') {
+        wx = 0.06 * (1 - uvularBlend) + 0.22 * uvularBlend;
+        wy = 0.04;
+      } else if (k === 'front') {
+        wx = Math.max(wx, 0.78 * (1 - uvularBlend) + 0.55 * uvularBlend);
+      } else if (k === 'blade') {
+        wx = Math.max(wx, 0.68 * (1 - uvularBlend) + 0.42 * uvularBlend);
+      } else if (k === 'tip') {
+        wx = Math.max(wx, 0.65 * (1 - uvularBlend) + 0.48 * uvularBlend);
+      }
+    }
+
+    // Forward contraction: when advancing anterior articulators (dx < 0)
+    // toward dental/alveolar targets, retracting body tissue follows forward
+    // so anterior and posterior articulators do not deadlock.
+    if (index < 2 && dx < 0) {
+      if (k === 'tip' && key === 'blade') wx = Math.max(wx, 0.82);
+      if (k === 'front') wx = Math.max(wx, 0.75);
+      if (k === 'dorsum') wx = Math.max(wx, 0.65);
+    }
+
+    // Asymmetric vertical decoupling between tip and blade:
+    // 1. Lowering the tip (dy > 0) to form a laminal gesture or rest behind
+    // incisors should not drag an elevated blade away from its constriction.
+    if (key === 'tip' && k === 'blade' && dy > 0 && pose.tongue.blade.y < 460) {
+      wy = 0;
+    }
+    // 2. Elevating the blade (dy < 0) should not pull a lowered tip into an
+    // unwanted apical curl.
+    if (
+      key === 'blade' &&
+      k === 'tip' &&
+      dy < 0 &&
+      pose.tongue.tip.y >= pose.tongue.blade.y
+    ) {
+      wy = 0;
+    }
+
+    let nextX = pose.tongue[k].x + dx * wx;
+    let nextY = pose.tongue[k].y + dy * wy;
+
+    // Posterior elevation releases prior high coronal constrictions toward
+    // neutral dorsal height instead of pinning them to the roof or floor.
+    if (index >= 3 && (dy < 0 || uvularBlend > 0)) {
+      const targetBladeY = 440 * (1 - uvularBlend) + 470 * uvularBlend;
+      const targetFrontY = 410 * (1 - uvularBlend) + 450 * uvularBlend;
+      const targetTipY = 470 * (1 - uvularBlend) + 490 * uvularBlend;
+      const relaxStrength = Math.max(Math.min(1, -dy / 80), uvularBlend * 0.9);
+      if (k === 'blade' && pose.tongue.blade.y < targetBladeY) {
+        nextY =
+          pose.tongue.blade.y +
+          (targetBladeY - pose.tongue.blade.y) * relaxStrength;
+      }
+      if (k === 'front' && pose.tongue.front.y < targetFrontY) {
+        nextY =
+          pose.tongue.front.y +
+          (targetFrontY - pose.tongue.front.y) * relaxStrength;
+      }
+      if (k === 'tip' && pose.tongue.tip.y < targetTipY) {
+        nextY =
+          pose.tongue.tip.y + (targetTipY - pose.tongue.tip.y) * relaxStrength;
+      }
+      if (k === 'root' && uvularBlend > 0) {
+        nextY =
+          pose.tongue.root.y + (725 - pose.tongue.root.y) * uvularBlend * 0.8;
+      }
+    }
+
+    // Advancing anterior articulators forward relaxes prior dorsal elevation.
+    if (index < 2 && dx < 0 && k === 'dorsum' && pose.tongue.dorsum.y < 500) {
+      nextY = Math.min(520, pose.tongue.dorsum.y + -dx * 0.7);
+    }
+    if (
+      key === 'blade' &&
+      k === 'tip' &&
+      dx < 0 &&
+      pose.tongue.tip.y > 430 &&
+      target.y < 420
+    ) {
+      nextY = Math.max(430, pose.tongue.tip.y + dy * 0.5);
+    }
+
+    // Only dragging the tip itself allows moving into the anterior escape zone (< 176).
+    // Coupling from blade drags must keep the tip at or behind the alveolar boundary.
+    if (key !== 'tip' && k === 'tip') {
+      nextX = Math.max(165, nextX);
+    }
+
+    p.tongue[k] = { x: nextX, y: nextY };
   }
-  // Distributed compensatory motion approximates tissue redistribution. It is not
-  // a claim that sagittal area equals conserved 3D volume.
-  if (dy < 0 && index >= 2) {
-    // Posterior elevation releases the anterior tongue instead of inflating
-    // the entire dorsum. The root remains supported near the hyoid.
-    p.tongue.tip.y += -dy * (index === 3 ? 0.65 : 0.16);
-    p.tongue.blade.y += -dy * (index === 3 ? 0.48 : 0.11);
-  }
+
   if (dy < 0 && index < 2) p.tongue.dorsum.y += Math.min(18, -dy * 0.1);
   if (key === 'tip') {
     // Bending is not translation: posterior apex movement lets the blade bow
     // forward and down. This continuous response makes apical curling reachable.
     const bend =
       clamp((target.x - 245) / 65, 0, 1) * clamp((470 - target.y) / 100, 0, 1);
-    p.tongue.blade.x +=
-      (Math.min(p.tongue.blade.x, target.x - 40) - p.tongue.blade.x) *
-      bend *
-      0.72;
-    p.tongue.blade.y = Math.max(p.tongue.blade.y, target.y + 58 * bend);
+    if (bend > 0) {
+      p.tongue.blade.x +=
+        (Math.min(p.tongue.blade.x, target.x - 40) - p.tongue.blade.x) *
+        bend *
+        0.72;
+      p.tongue.blade.y = Math.max(p.tongue.blade.y, target.y + 58 * bend);
+    }
   }
   p.retroflex =
     key === 'tip'

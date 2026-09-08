@@ -1250,3 +1250,71 @@ void test('all phonation presets and extreme controls render bounded geometry', 
     );
   }
 });
+
+void test('tongue body reaches velum and uvula from coronal postures with coordinated retraction', () => {
+  const sh = preset(soundBySymbol('ʃ'));
+  const velarTarget = { x: 552, y: 374 };
+  const toVelar = constrain(sh, 'dorsum', velarTarget, false);
+  assert.equal(Math.round(toVelar.tongue.dorsum.x), velarTarget.x);
+  assert.equal(Math.round(toVelar.tongue.dorsum.y), velarTarget.y);
+  assert.ok(toVelar.tongue.tip.x > 220, 'tip retracts with dorsal pull');
+  assert.ok(toVelar.tongue.blade.x > 290, 'blade retracts with dorsal pull');
+  assert.ok(isPlausible(toVelar));
+
+  const uvularTarget = { x: 608, y: 438 };
+  const toUvular = constrain(sh, 'dorsum', uvularTarget, false);
+  assert.equal(Math.round(toUvular.tongue.dorsum.x), uvularTarget.x);
+  assert.equal(Math.round(toUvular.tongue.dorsum.y), uvularTarget.y);
+  assert.ok(isPlausible(toUvular));
+
+  const fromRest = constrain(rest, 'dorsum', velarTarget, false);
+  assert.equal(Math.round(fromRest.tongue.dorsum.x), velarTarget.x);
+  assert.equal(Math.round(fromRest.tongue.dorsum.y), velarTarget.y);
+  assert.ok(fromRest.tongue.tip.x > 210, 'rest foretongue retracts posteriorly');
+  assert.ok(fromRest.tongue.blade.x > 290, 'rest blade retracts posteriorly');
+  assert.ok(isPlausible(fromRest));
+});
+
+void test('anterior articulators advance without deadlocking against a retracted dorsum', () => {
+  const k = preset(soundBySymbol('k'));
+  const alveolarTarget = { x: 220, y: 385 };
+
+  const bladeToAlveolar = constrain(k, 'blade', alveolarTarget, false);
+  assert.equal(Math.round(bladeToAlveolar.tongue.blade.x), alveolarTarget.x);
+  assert.equal(Math.round(bladeToAlveolar.tongue.blade.y), alveolarTarget.y);
+  assert.ok(
+    bladeToAlveolar.tongue.dorsum.x < 500,
+    'dorsum advances forward when anterior blade is dragged forward',
+  );
+  assert.ok(isPlausible(bladeToAlveolar));
+
+  const tipToAlveolar = constrain(k, 'tip', alveolarTarget, false);
+  assert.equal(Math.round(tipToAlveolar.tongue.tip.x), alveolarTarget.x);
+  assert.equal(Math.round(tipToAlveolar.tongue.tip.y), alveolarTarget.y);
+  assert.ok(isPlausible(tipToAlveolar));
+
+  const dentalTarget = { x: 164, y: 418 };
+  const tipToDental = constrain(k, 'tip', dentalTarget, false);
+  assert.equal(Math.round(tipToDental.tongue.tip.x), dentalTarget.x);
+  assert.equal(Math.round(tipToDental.tongue.tip.y), dentalTarget.y);
+  assert.ok(isPlausible(tipToDental));
+});
+
+void test('laminal postures decouple lower tip adjustments from blade constriction', () => {
+  const sh = preset(soundBySymbol('ʃ'));
+  assert.equal(infer(sh, soundBySymbol('ʃ')).contact.key, 'blade');
+
+  for (const targetY of [420, 450, 480, 505]) {
+    const loweredTip = constrain(sh, 'tip', { x: 195, y: targetY }, false);
+    assert.equal(Math.round(loweredTip.tongue.tip.y), targetY);
+    assert.ok(
+      loweredTip.tongue.blade.y <= 365,
+      `blade remains elevated when tip is at ${targetY}`,
+    );
+    assert.ok(isPlausible(loweredTip));
+    const match = infer(loweredTip, soundBySymbol('ʃ'));
+    assert.equal(match.contact.key, 'blade', 'contact articulator remains blade');
+    assert.match(match.contact.active, /舌叶/);
+  }
+});
+
