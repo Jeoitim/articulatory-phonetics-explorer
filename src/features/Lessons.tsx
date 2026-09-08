@@ -190,70 +190,76 @@ export function Lessons() {
               <MoveHorizontal size={18} />
               <strong>拖动滑块，连续改变调音构形</strong>
             </div>
-            <p className="continuum-help">
-              鼠标拖动或手指滑动；键盘可用方向键微调，End 到达
-              [ç]。也可点击下方音标。
-            </p>
-            <Range
-              label="连续构形 · s → ʃ → ɕ → ç"
-              min={0}
-              max={3}
-              step={0.01}
-              value={continuum}
-              onChange={(t) => {
-                setContinuum(t);
-                setF(soundBySymbol('s'));
-                edit(sampleFricativeContinuum(t));
-              }}
-            />
-            <div className="continuum-scale" aria-hidden="true">
-              <span>s</span>
-              <span>ʃ</span>
-              <span>ɕ</span>
-              <span>ç</span>
-            </div>
-            <output className="continuum-position" aria-live="polite">
-              当前位置：
-              {Number.isInteger(continuum)
-                ? `[${fricativeContinuum[continuum]!.symbol}]`
-                : `[${fricativeContinuum[Math.floor(continuum)]!.symbol}] → [${fricativeContinuum[Math.ceil(continuum)]!.symbol}]`}
-            </output>
-            <div className="continuum-stops">
-              {fricativeContinuum.map((step, i) => (
-                <button
-                  key={step.symbol}
-                  aria-pressed={continuum === i}
-                  onClick={() => {
-                    setContinuum(i);
-                    setF(soundBySymbol(step.symbol));
-                    edit(sampleFricativeContinuum(i));
-                  }}
+            <div className="continuum-context" aria-label="构形说明和语言例子">
+              <p className="continuum-note">
+                {fricativeContinuum[Math.round(continuum)]!.note}
+              </p>
+              <div className="continuum-examples" aria-label="四种擦音的语言例子">
+                {fricativeContinuum.map((step) => (
+                  <p key={step.symbol}>
+                    <b>[{step.symbol}]</b> {step.example}
+                  </p>
+                ))}
+                <a
+                  href="https://ling.cuhk.edu.hk/files/seminar/1st_2324/Poster_20231114.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <b>[{step.symbol}]</b>
-                  <span>{step.active}</span>
-                  <small>{step.passive}</small>
-                </button>
-              ))}
+                  粤语咝音变体：香港中文大学研究介绍 ↗
+                </a>
+              </div>
+              <p className="chart-note">
+                整数节点为教学预设；节点之间是连续过渡，不保证每个中间位置都有唯一
+                IPA 对应。
+              </p>
             </div>
-            <p>{fricativeContinuum[Math.round(continuum)]!.note}</p>
-            <div className="continuum-examples" aria-label="四种擦音的语言例子">
-              {fricativeContinuum.map((step) => (
-                <p key={step.symbol}>
-                  <b>[{step.symbol}]</b> {step.example}
-                </p>
-              ))}
-              <a
-                href="https://ling.cuhk.edu.hk/files/seminar/1st_2324/Poster_20231114.pdf"
-                target="_blank"
-                rel="noreferrer"
-              >
-                粤语咝音变体：香港中文大学研究介绍 ↗
-              </a>
+            <div className="continuum-controls">
+              <p className="continuum-help">
+                鼠标拖动或手指滑动；键盘可用方向键微调，End 到达
+                [ç]。也可点击下方音标。
+              </p>
+              <output className="continuum-position" aria-live="polite">
+                当前位置：
+                {Number.isInteger(continuum)
+                  ? `[${fricativeContinuum[continuum]!.symbol}]`
+                  : `[${fricativeContinuum[Math.floor(continuum)]!.symbol}] → [${fricativeContinuum[Math.ceil(continuum)]!.symbol}]`}
+              </output>
+              <div className="continuum-stops">
+                {fricativeContinuum.map((step, i) => (
+                  <button
+                    key={step.symbol}
+                    aria-pressed={continuum === i}
+                    onClick={() => {
+                      setContinuum(i);
+                      setF(soundBySymbol(step.symbol));
+                      edit(sampleFricativeContinuum(i));
+                    }}
+                  >
+                    <b>[{step.symbol}]</b>
+                    <span>{step.active}</span>
+                    <small>{step.passive}</small>
+                  </button>
+                ))}
+              </div>
+              <Range
+                label="连续构形 · s → ʃ → ɕ → ç"
+                min={0}
+                max={3}
+                step={0.01}
+                value={continuum}
+                onChange={(t) => {
+                  setContinuum(t);
+                  setF(soundBySymbol('s'));
+                  edit(sampleFricativeContinuum(t));
+                }}
+              />
+              <div className="continuum-scale" aria-hidden="true">
+                <span>s</span>
+                <span>ʃ</span>
+                <span>ɕ</span>
+                <span>ç</span>
+              </div>
             </div>
-            <p className="chart-note">
-              整数节点为教学预设；节点之间是连续过渡，不保证每个中间位置都有唯一
-              IPA 对应。
-            </p>
           </div>
         )}
         {lesson.target && (
