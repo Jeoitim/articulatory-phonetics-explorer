@@ -5,14 +5,16 @@ import { Popover } from '@base-ui/react/popover';
 import { Volume2, X, Pause, Play, RotateCcw, AudioLines } from 'lucide-react';
 import { markExplanations, referenceForMark } from '../data/ipa-mark-details';
 import { ipaAudioSource } from '../data/ipa-reference-audio';
+import { ipaReferenceLocalAudio } from '../data/ipa-reference-local';
 import type { ReferenceClip } from '../data/ipa-reference-audio';
 import { referencePreview, referenceFrame } from '../engine/reference-preview';
 import type { ReferencePreviewModel } from '../engine/reference-preview';
 import { VocalTract } from './vocal-tract/VocalTract';
-import { Glottis } from './vocal-tract/Insets';
+import { Glottis, TongueInset } from './vocal-tract/Insets';
 import { FrontMouth } from './vocal-tract/FrontMouth';
 import { articulationContact } from '../engine/contact';
 import { markEnglish } from '../data/ipa-mark-details';
+import { resolveAudioUrl } from '../engine/audio';
 
 function DetailAnimation({
   model,
@@ -56,6 +58,7 @@ function DetailAnimation({
         highlightContact
         flow={frame.flow}
         pressure={frame.pressure}
+        lateral={model.lateral || frame.flow === 'lateral'}
         animated={!paused}
       />
       <div className="reference-phase">
@@ -76,10 +79,19 @@ function DetailAnimation({
           openness={frame.pose.glottis}
           animated={animate && !paused && progress < 1}
         />
-        <FrontMouth
-          rounding={frame.pose.rounding}
-          openness={Math.max(0, Math.min(1, (frame.pose.jaw - 0.18) / 0.52))}
-        />
+        {!model.lateral && (
+          <FrontMouth
+            rounding={frame.pose.rounding}
+            openness={Math.max(0, Math.min(1, (frame.pose.jaw - 0.18) / 0.52))}
+          />
+        )}
+        {model.lateral && (
+          <TongueInset
+            lateral
+            airstream={model.sound?.airstream}
+            animated={animate && !paused && progress < 1}
+          />
+        )}
       </div>
       <figcaption>{model.description}动画与录音不逐帧同步。</figcaption>
     </figure>
@@ -119,11 +131,16 @@ export function IPAReferenceDetails({
     const token = ++generation.current;
     audio.pause();
     setClip(next);
-    setReplay(0);
+    // Selecting a recording starts a fresh visual gesture alongside it. The
+    // keyed animation remount also resets its timeline when the same example
+    // is chosen again.
+    setReplay((n) => n + 1);
     setAnimationPaused(false);
     setError('');
     setPlayback('loading');
-    audio.src = next.url;
+    // Reference clips are cached under public/audio when available. Keep the
+    // official URL as a transparent fallback for a partially populated cache.
+    audio.src = resolveAudioUrl(ipaReferenceLocalAudio[next.url] ?? next.url);
     void audio.play().catch(() => {
       if (token === generation.current) {
         setError('示例暂未播放成功，请重试或打开 IPA 录音来源。');

@@ -83,10 +83,16 @@ export function VocalTract({
   const clampValue = (value: number) => Math.max(0, Math.min(1, value));
   const label = locked || hover;
   const contact = articulationContact(pose, place);
+  const selectedPlace = place === 'retroflex' ? 'postalveolar' : place;
+  const lipTargetContact = contact.passive === '上唇';
   const activePoint = contact.key ? pose.tongue[contact.key] : null;
-  const passivePoint = zones.find(
-    (z) => z.place === (place === 'retroflex' ? 'postalveolar' : place),
-  )?.point;
+  const upperLipPoint = upperLipTarget;
+  const passivePoint =
+    contact.passive === '上唇'
+      ? upperLipPoint
+      : zones.find(
+          (z) => z.place === (place === 'retroflex' ? 'postalveolar' : place),
+        )?.point;
   const meta = (name: string) => ({
     'data-anatomy-label': name,
     pointerEvents: 'visiblePainted' as const,
@@ -125,9 +131,13 @@ export function VocalTract({
   const lipBase = jawPoint(lowerLipBaseAnchor, pose.jaw);
   const lip = lowerLipPoint(pose);
   const air = airflowPath(pose, lip, airstream);
+  // A sagittal cut cannot show left/right separation, so lateral release gets
+  // a small moving side-channel trace at the anterior constriction. It keeps
+  // the main airway intact while making the extra airflow visible in a detail
+  // bubble without relying on the rounding inset.
+  const lateralAir = `M ${tip.x + 8} ${tip.y + 13} Q ${tip.x - 28} ${tip.y + 43} ${tip.x - 68} ${tip.y + 20} T ${Math.max(54, tip.x - 142)} ${tip.y + 22}`;
   const mouthFloor = jawPoint({ x: 139, y: 745 }, pose.jaw);
   const jawControl = jawPoint({ x: 116, y: 790 }, pose.jaw);
-  const upperLipPoint = upperLipTarget;
   const upperIncisorPoint = { x: 168, y: 399 };
   const upperIncisorContactPoint = upperIncisorContact;
   const labialActivePoint =
@@ -703,6 +713,15 @@ export function VocalTract({
               strokeWidth={flow === 'burst' ? 7 : 4}
               strokeDasharray="3 39"
             />
+            {lateral && (
+              <path
+                d={lateralAir}
+                className="air-dashes lateral-airflow"
+                strokeWidth="4"
+                strokeDasharray="3 22"
+                markerEnd={'url(#' + id + 'arrow)'}
+              />
+            )}
             {flow === 'turbulent' && airstream === 'pulmonic-egressive' && (
               <path
                 className="turbulence"
@@ -767,24 +786,20 @@ export function VocalTract({
                 <circle
                   cx={z.point.x}
                   cy={z.point.y}
-                  r={
-                    (place === 'retroflex' ? 'postalveolar' : place) === z.place
-                      ? 23
-                      : 11
-                  }
+                  r={!lipTargetContact && selectedPlace === z.place ? 23 : 11}
                   fill={
-                    (place === 'retroflex' ? 'postalveolar' : place) === z.place
+                    !lipTargetContact && selectedPlace === z.place
                       ? 'light-dark(#bc954f25, #d9b97535)'
                       : 'light-dark(#bc954f08, #d9b97510)'
                   }
                   stroke={
-                    (place === 'retroflex' ? 'postalveolar' : place) === z.place
+                    !lipTargetContact && selectedPlace === z.place
                       ? 'light-dark(#b38c3f, #e3c483)'
                       : 'light-dark(#bda977, #a99c77)'
                   }
                   strokeWidth="1.8"
                   strokeDasharray={
-                    (place === 'retroflex' ? 'postalveolar' : place) === z.place
+                    !lipTargetContact && selectedPlace === z.place
                       ? undefined
                       : '3 5'
                   }
@@ -982,7 +997,11 @@ export function VocalTract({
           </span>
         </div>
       )}
-      {lateral && <div className="lateral-note">侧向通道请见俯视图</div>}
+      {lateral && (
+        <div className="lateral-note">
+          侧向气流 · Lateral airflow；俯视图可查看左右通道
+        </div>
+      )}
     </div>
   );
 }

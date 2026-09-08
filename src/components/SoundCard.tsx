@@ -2,7 +2,7 @@ import { articulationContact } from '../engine/contact';
 import { airstreamLabels } from '../data/non-pulmonic';
 import { preset } from '../engine/geometry';
 import { articulatoryVariants } from '../engine/variants';
-import type { Pose } from '../domain/phonetics';
+import type { Pose, VariantMark } from '../domain/phonetics';
 import { useState } from 'react';
 import { Volume2, ArrowUpRight, Info } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -12,8 +12,14 @@ import type {
   Features,
   Match,
 } from '../domain/phonetics';
-import { placeLabels, mannerLabels } from '../data/labels';
+import {
+  placeLabels,
+  mannerLabels,
+  variantPrefixLabels,
+  variantEnglishPrefixLabels,
+} from '../data/labels';
 import { UnmatchedSoundCard } from './UnmatchedSoundCard';
+import { IPAToken } from './IPAToken';
 export function SoundCard({
   sound,
   features,
@@ -22,6 +28,7 @@ export function SoundCard({
   audioStatus,
   audio,
   onVariant,
+  onReset,
 }: {
   sound: Consonant;
   features: Features;
@@ -29,7 +36,8 @@ export function SoundCard({
   onAudio: () => void;
   audioStatus: string;
   audio?: AudioExample;
-  onVariant?: (pose: Pose) => void;
+  onVariant?: (pose: Pose, mark?: VariantMark) => void;
+  onReset?: () => void;
 }) {
   const [tab, setTab] = useState('articulation');
   if (match?.status === 'none' || match?.status === 'unsupported')
@@ -38,6 +46,25 @@ export function SoundCard({
     match?.contact ??
     articulationContact(preset(sound), sound.place, sound.manner, sound);
   const variants = articulatoryVariants(sound);
+  const variantMark = match?.variantMark;
+  const specificVariant = Boolean(match?.nonTypical && variantMark);
+  const displayedSymbol =
+    sound.symbol + (specificVariant && variantMark ? variantMark : '');
+  const title =
+    specificVariant && variantMark
+      ? `${variantPrefixLabels[variantMark] ?? ''}${sound.zh}`
+      : sound.zh;
+  const englishName =
+    specificVariant && variantMark
+      ? `${variantEnglishPrefixLabels[variantMark] ?? 'Modified'} ${
+          sound.name.length > 0
+            ? sound.name[0]!.toLowerCase() + sound.name.slice(1)
+            : sound.name
+        }`
+      : sound.name;
+  // A marked realization is only playable when its exact local reference clip
+  // exists. Never silently substitute the unmarked consonant recording.
+  const canPlayAudio = !specificVariant || Boolean(audio);
   return (
     <aside className="sound-card">
       <div className="sound-summary">
@@ -49,24 +76,28 @@ export function SoundCard({
         </div>
         <div className="symbol-row">
           <div className="big-ipa">
-            <span>[</span>
-            {sound.symbol}
-            {match?.nonTypical && <sup className="non-typical-star">*</sup>}
-            <span>]</span>
+            <span className="ipa-bracket">[</span>
+            <IPAToken
+              symbol={sound.symbol}
+              mark={specificVariant ? variantMark : undefined}
+            />
+            <span className="ipa-bracket">]</span>
           </div>
-          <button
-            className="audio-button"
-            onClick={onAudio}
-            aria-label={`播放 ${sound.symbol} 示例发音`}
-          >
-            <Volume2 size={22} />
-          </button>
+          {canPlayAudio && (
+            <button
+              className="audio-button"
+              onClick={onAudio}
+              aria-label={`播放 ${displayedSymbol} 示例发音`}
+            >
+              <Volume2 size={22} />
+            </button>
+          )}
         </div>
-        <h2>{sound.zh}</h2>
-        <p className="english-name">{sound.name}</p>
+        <h2>{title}</h2>
+        <p className="english-name">{englishName}</p>
         <div className="match-badge">
           <i />
-          {match?.nonTypical ? '非典型主动调音变体 *' : '最近的典型构形'}{' '}
+          {match?.nonTypical ? '主动调音变体' : '最近的典型构形'}{' '}
           <span>· 教学示意</span>
         </div>
         {match && (
@@ -87,14 +118,24 @@ export function SoundCard({
           <div className="realization-options">
             <span>主动调音变体</span>
             <div>
-              <button onClick={() => onVariant(preset(sound))}>教学预设</button>
+              <button
+                onClick={() =>
+                  onReset ? onReset() : onVariant(preset(sound))
+                }
+              >
+                教学预设
+              </button>
               {variants.map((v) => (
-                <button key={v.label} onClick={() => onVariant(v.pose)}>
-                  {v.label} *
+                <button key={v.label} onClick={() => onVariant(v.pose, v.mark)}>
+                  {v.label}
+                  {v.mark ? ` · [${sound.symbol}${v.mark}]` : ''}
                 </button>
               ))}
             </div>
-            <p>* 仅表示与本项目预设不同，不表示不合法或不可发音。</p>
+            <p>
+              齿化、舌唇、舌尖性、舌叶性、腭化、软腭化、咽化、唇化、送气与清浊化均直接使用
+              IPA 附加符号标示。只有存在同一变体的本地录音时才提供播放入口。
+            </p>
           </div>
         )}
       </div>
@@ -175,21 +216,25 @@ export function SoundCard({
               ))}
             </TabsContent>
           </Tabs>
-          <div className="audio-caption">
-            <Volume2 size={14} />
-            <span>{audioStatus || 'Example pronunciation · 示例发音'}</span>
-          </div>
-          <a
-            className="source-link"
-            href={
-              audio?.source ??
-              `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(sound.audioFile.replaceAll(' ', '_'))}`
-            }
-            target="_blank"
-            rel="noreferrer"
-          >
-            录音来源与许可 <ArrowUpRight size={13} />
-          </a>
+          {canPlayAudio && (
+            <>
+              <div className="audio-caption">
+                <Volume2 size={14} />
+                <span>{audioStatus || 'Example pronunciation · 示例发音'}</span>
+              </div>
+              <a
+                className="source-link"
+                href={
+                  audio?.source ??
+                  `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(sound.audioFile.replaceAll(' ', '_'))}`
+                }
+                target="_blank"
+                rel="noreferrer"
+              >
+                录音来源与许可 <ArrowUpRight size={13} />
+              </a>
+            </>
+          )}
           {audio && (
             <details className="audio-attribution">
               <summary>

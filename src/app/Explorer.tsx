@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { ThemeSwitch } from '../components/ThemeSwitch';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import type { Features, Mode, Pose } from '../domain/phonetics';
+import type { Features, Mode, Pose, VariantHint } from '../domain/phonetics';
 import { soundBySymbol } from '../data/consonants';
 import { infer } from '../engine/inference';
 import { useArticulation } from '../engine/animation';
@@ -31,12 +31,13 @@ import { Compare } from '../features/Compare';
 import { Lessons } from '../features/Lessons';
 import { Vowels } from '../features/Vowels';
 import { useExplorerTool } from '../engine/webmcp';
-import { useAudio } from '../engine/audio';
+import { useAudio, variantAudioFor } from '../engine/audio';
 const initial = soundBySymbol('ʃ');
 export default function Explorer() {
   const [mode, setMode] = useState<Mode>('explore');
   const [selected, setSelected] = useState(initial);
   const [features, setFeatures] = useState<Features>(initial);
+  const [variantHint, setVariantHint] = useState<VariantHint>();
   const [display, setDisplay] = useState<Display>({
     labels: true,
     zones: true,
@@ -47,20 +48,62 @@ export default function Explorer() {
   const animation = useArticulation(initial);
   const audio = useAudio();
   const match = useMemo(
-    () => infer(animation.pose, features),
-    [animation.pose, features],
+    () => infer(animation.pose, features, variantHint),
+    [animation.pose, features, variantHint],
   );
   const active = mode === 'build' ? match.candidates[0]!.sound : selected;
-  function edit(p: Pose) {
+  const markedVariant =
+    mode === 'build' && Boolean(match.nonTypical && match.variantMark);
+  const variantAudio = markedVariant
+    ? variantAudioFor(active.symbol, match.variantMark)
+    : undefined;
+  const cardAudio = markedVariant
+    ? variantAudio
+    : audio.manifest[active.symbol];
+  function playCardAudio() {
+    if (markedVariant) {
+      if (variantAudio) void audio.playAudio(variantAudio);
+      return;
+    }
+    void audio.play(active.symbol);
+  }
+  function edit(p: Pose, hint?: VariantHint) {
+    const nextPose = structuredClone(p);
+    const nextHint = hint?.mark ? hint : undefined;
+    if (nextHint) {
+      nextPose.variantOf = nextHint.symbol;
+      nextPose.variantMark = nextHint.mark;
+    } else {
+      // A drag or a return to the teaching preset starts a fresh manual
+      // construction; the previous marked realization must not cling to it.
+      delete nextPose.variantOf;
+      delete nextPose.variantMark;
+    }
     audio.stop();
+    setVariantHint(nextHint);
     setMode('build');
-    animation.edit(p);
+    animation.edit(nextPose);
+  }
+  function resetTeachingPreset() {
+    const base = mode === 'build' ? active : selected;
+    audio.stop();
+    setVariantHint(undefined);
+    setFeatures(base);
+    setMode('build');
+    // Re-selecting the base sound resets the animation's internal sound as
+    // well as its pose, preventing a previous marked realization from being
+    // reconstructed by stale variant metadata or animation state.
+    animation.select(base, false);
   }
   function changeFeatures(f: Features) {
     audio.stop();
+    setVariantHint(undefined);
     setFeatures(f);
+    const nextPose = structuredClone(animation.pose);
+    delete nextPose.variantOf;
+    delete nextPose.variantMark;
     animation.edit({
-      ...animation.pose,
+      ...nextPose,
       velum: f.velum === 'lowered' ? 1 : 0,
       glottis: f.airstream === 'ejective' ? 0 : f.voiced ? 0.16 : 1,
       larynx:
@@ -81,6 +124,7 @@ export default function Explorer() {
   }
   function select(symbol: string) {
     setMode('explore');
+    setVariantHint(undefined);
     const s = soundBySymbol(symbol);
     setSelected(s);
     setFeatures(s);
@@ -90,6 +134,7 @@ export default function Explorer() {
   useExplorerTool((symbol) => {
     const s = soundBySymbol(symbol);
     setMode('explore');
+    setVariantHint(undefined);
     setSelected(s);
     setFeatures(s);
     animation.select(s);
@@ -143,7 +188,11 @@ export default function Explorer() {
           value={mode}
           onValueChange={(v) => {
             setMode(v as Mode);
-            animation.edit(animation.pose);
+            setVariantHint(undefined);
+            const nextPose = structuredClone(animation.pose);
+            delete nextPose.variantOf;
+            delete nextPose.variantMark;
+            animation.edit(nextPose);
             audio.stop();
           }}
           className="mode-tabs"
@@ -340,16 +389,23 @@ export default function Explorer() {
             </div>
             <div className="right-column">
               <SoundCard
-                onVariant={(p) => {
-                  setFeatures(active);
-                  edit(p);
+                onVariant={(p, mark) => {
+                  const nextFeatures =
+                    mark === '̥' || mark === '̊'
+                      ? { ...active, voiced: false }
+                      : mark === '̬'
+                        ? { ...active, voiced: true }
+                        : active;
+                  setFeatures(nextFeatures);
+                  edit(p, mark ? { symbol: active.symbol, mark } : undefined);
                 }}
                 sound={active}
                 features={features}
                 match={mode === 'build' ? match : undefined}
-                onAudio={() => audio.play(active.symbol)}
+                onAudio={playCardAudio}
                 audioStatus={audio.status}
-                audio={audio.manifest[active.symbol]}
+                audio={cardAudio}
+                onReset={resetTeachingPreset}
               />
             </div>
           </div>

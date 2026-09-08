@@ -1,4 +1,4 @@
-import type { Place, Manner } from '../domain/phonetics';
+import type { Place, Manner, VariantMark } from '../domain/phonetics';
 export const placeLabels: Record<Place, string> = {
   bilabial: '双唇',
   labiodental: '唇齿',
@@ -48,4 +48,46 @@ export const mannerEnglish: Record<Manner, string> = {
   approximant: 'Approximant',
   'lateral-approximant': 'Lateral approximant',
   affricate: 'Affricate',
+};
+
+/**
+ * Chinese prefixes for the secondary marks exposed by the construction lab.
+ * Keeping these beside the place/manner labels lets a displayed title read as
+ * one precise phonetic term, for example “清化浊齿龈鼻音” for [n̥].
+ */
+export const variantPrefixLabels: Partial<Record<VariantMark, string>> = {
+  '̪': '齿化',
+  '̺': '舌尖性',
+  '̻': '舌叶性',
+  '̼': '舌唇性',
+  ʷ: '唇化',
+  ʲ: '腭化',
+  ˠ: '软腭化',
+  ˤ: '咽化',
+  ʰ: '送气',
+  '̥': '清化',
+  '̊': '清化',
+  '̬': '浊化',
+};
+
+/**
+ * English prefixes for the constructible secondary realizations. Voice
+ * changes use a full phrase so the base category remains unambiguous, e.g.
+ * “Voiceless realization of voiced alveolar nasal”.
+ */
+export const variantEnglishPrefixLabels: Partial<
+  Record<VariantMark, string>
+> = {
+  '̪': 'Dentalized',
+  '̺': 'Apical',
+  '̻': 'Laminal',
+  '̼': 'Linguolabial',
+  ʷ: 'Labialized',
+  ʲ: 'Palatalized',
+  ˠ: 'Velarized',
+  ˤ: 'Pharyngealized',
+  ʰ: 'Aspirated',
+  '̥': 'Voiceless realization of',
+  '̊': 'Voiceless realization of',
+  '̬': 'Voiced realization of',
 };

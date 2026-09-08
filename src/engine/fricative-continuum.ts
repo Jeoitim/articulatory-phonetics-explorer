@@ -11,7 +11,7 @@ export const fricativeContinuum = [
     symbol: 'ʃ',
     active: '舌叶（本教学预设）',
     passive: '龈后',
-    note: '舌叶抬起，舌面呈拱形，但不要求 [ɕ] 那样强的舌面前部抬高。舌尖型可显示 [ʃ*]。',
+    note: '舌叶抬起，舌面呈拱形，但不要求 [ɕ] 那样强的舌面前部抬高。舌尖型可显示为 [ʃ̺]。',
   },
   {
     symbol: 'ɕ',

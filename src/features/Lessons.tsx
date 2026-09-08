@@ -326,7 +326,9 @@ export function Lessons() {
                 : edited
                   ? match.status === 'none' || match.status === 'unsupported'
                     ? match.explanation
-                    : `[${match.candidates[0]?.sound.symbol}${match.nonTypical ? '*' : ''}] ${match.explanation}`
+                    : match.nonTypical
+                      ? match.explanation
+                      : `[${match.candidates[0]?.sound.symbol ?? ''}] ${match.explanation}`
                   : '提示：拖动控制点或调整参数，系统将根据构形与特征共同判断。'}
             </output>
           </>

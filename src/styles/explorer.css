@@ -528,22 +528,32 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 0 2px;
+  gap: 16px;
+  margin: 0 0 10px;
 }
 .big-ipa {
   font-family: 'Segoe UI', Arial, sans-serif;
   font-size: 85px;
-  line-height: 1.4;
+  line-height: 1.1;
   font-weight: 300;
   letter-spacing: -5px;
+  min-height: 112px;
+  padding: 7px 0 13px;
   color: light-dark(#506447, var(--night-ink));
 }
-.big-ipa > span {
+.big-ipa > .ipa-bracket {
   font-size: 58px;
   color: light-dark(#abb69d, var(--night-subtle));
   vertical-align: 5px;
   margin: 0 6px;
   font-weight: 200;
+}
+.big-ipa .ipa-token {
+  display: inline-block;
+  line-height: 1.2;
+  padding-bottom: 0.1em;
+  white-space: nowrap;
+  font-variant-ligatures: none;
 }
 .audio-button {
   display: grid;
@@ -562,6 +572,8 @@ main {
   font-size: 19px;
   font-weight: 550;
   letter-spacing: 0.5px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 .english-name {
   font-size: 12px;
@@ -1141,17 +1153,21 @@ footer {
   }
   .big-ipa {
     font-size: 67px;
+    min-height: 94px;
+    padding: 5px 0 12px;
   }
   .symbol-row {
-    float: left;
-    margin-right: 20px;
-    gap: 16px;
+    float: none;
+    width: 100%;
+    margin: 0 0 12px;
+    gap: 12px;
   }
-  .sound-card > h2 {
-    padding-top: 23px;
+  .sound-card h2 {
+    padding-top: 0;
+    line-height: 1.4;
   }
   .features {
-    clear: both;
+    clear: none;
     padding-top: 15px;
   }
   .section-heading {

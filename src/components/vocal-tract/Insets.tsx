@@ -57,13 +57,15 @@ export function Glottis({
 export function TongueInset({
   lateral,
   airstream = 'pulmonic-egressive',
+  animated = true,
 }: {
   lateral: boolean;
   airstream?: Airstream;
+  animated?: boolean;
 }) {
   const inward = airstream === 'click' || airstream === 'implosive';
   return (
-    <div className="inset">
+    <div className={'inset' + (animated ? '' : ' motion-still')}>
       <svg
         viewBox="0 0 120 58"
         aria-label={lateral ? '俯视图：气流绕过舌头两侧' : '俯视图：中央气流'}
@@ -79,6 +81,7 @@ export function TongueInset({
         />
         {lateral ? (
           <path
+            className={animated ? 'air-dashes' : undefined}
             d={
               inward
                 ? 'M36 18V42l-4-6m4 6l4-6 M84 18V42l-4-6m4 6l4-6'
@@ -90,6 +93,7 @@ export function TongueInset({
           />
         ) : (
           <path
+            className={animated ? 'air-dashes' : undefined}
             d={
               inward
                 ? 'M60 14V43l-4-7m4 7l4-7'

@@ -40,6 +40,25 @@ const declaration = source.statements
 const records = literal(declaration.initializer);
 const clean = (s) =>
   s.replaceAll('◌', '').replaceAll('\u034f', '').normalize('NFD').trim();
+const decodeHtmlEntities = (value) =>
+  value.replace(
+    /&(#x?[0-9a-f]+|amp|lt|gt|quot|apos|nbsp);/gi,
+    (full, entity) => {
+      const lower = entity.toLowerCase();
+      if (lower === 'amp') return '&';
+      if (lower === 'lt') return '<';
+      if (lower === 'gt') return '>';
+      if (lower === 'quot') return '"';
+      if (lower === 'apos') return "'";
+      if (lower === 'nbsp') return '\u00a0';
+      const code = lower.startsWith('#x')
+        ? Number.parseInt(lower.slice(2), 16)
+        : Number.parseInt(lower.slice(1), 10);
+      return Number.isFinite(code) ? String.fromCodePoint(code) : full;
+    },
+  );
+const cleanExample = (value) =>
+  decodeHtmlEntities(value).replace(/<\/?u\s*>/gi, '');
 const authors = [
   ['JE', 'J. Esling'],
   ['JH', 'J. House'],
@@ -65,13 +84,15 @@ for (const item of records.filter(
         item.U_No.replaceAll(' + ', '_') + (i === 0 ? '' : '_' + i);
       clips.push({
         speaker,
-        example: exampleText
+        example: cleanExample(exampleText)
           .replaceAll('\u034f', '')
           .replaceAll('\u0342', '\u0303'),
         context: exampleText
           ? []
           : context.map((s) =>
-              s.replaceAll('\u034f', '').replaceAll('\u0342', '\u0303'),
+              cleanExample(s)
+                .replaceAll('\u034f', '')
+                .replaceAll('\u0342', '\u0303'),
             ),
         url: `https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/${code}/${filename}.mp3`,
       });
@@ -89,7 +110,7 @@ for (const item of records.filter(
 }
 await writeFile(
   'src/data/ipa-reference-audio.ts',
-  `// Official interactive IPA chart metadata, retrieved 2026-09-07. Audio streams from its original host.\nexport const ipaAudioSource = ${JSON.stringify(sourceUrl)};\nexport interface ReferenceClip { speaker: string; example: string; context: string[]; url: string; }\nexport const ipaReferenceAudio: Record<string, { ipaNumber: string; clips: ReferenceClip[] }> = ${JSON.stringify(inventory, null, 2)};\n`,
+  `// Official interactive IPA chart metadata, retrieved 2026-09-07. Source URLs are retained; the local cache is generated separately by fetch-ipa-reference.mjs.\nexport const ipaAudioSource = ${JSON.stringify(sourceUrl)};\nexport interface ReferenceClip { speaker: string; example: string; context: string[]; url: string; }\nexport const ipaReferenceAudio: Record<string, { ipaNumber: string; clips: ReferenceClip[] }> = ${JSON.stringify(inventory, null, 2)};\n`,
 );
 console.log(
   `${Object.keys(inventory).length} reference symbols, ${Object.values(inventory).reduce((n, r) => n + r.clips.length, 0)} source-listed recordings`,

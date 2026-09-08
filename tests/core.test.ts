@@ -34,18 +34,25 @@ import { IPAMarks } from '../src/components/IPAMarks';
 import { interpolate } from '../src/engine/geometry';
 import { vowelMotionProgress } from '../src/engine/vowel-motion';
 import { UnmatchedSoundCard } from '../src/components/UnmatchedSoundCard';
+import { IPAToken } from '../src/components/IPAToken';
 import { vowelAudio } from '../src/data/vowel-audio';
-import { onlineAudioUrl, resolveAudioUrl } from '../src/engine/audio';
+import {
+  onlineAudioUrl,
+  resolveAudioUrl,
+  variantAudioFor,
+} from '../src/engine/audio';
 import {
   chineseIPAReference,
   markExplanations,
   referenceForMark,
 } from '../src/data/ipa-mark-details';
 import { ipaReferenceAudio } from '../src/data/ipa-reference-audio';
+import { ipaReferenceLocalAudio } from '../src/data/ipa-reference-local';
 import {
   referencePreview,
   referenceFrame,
 } from '../src/engine/reference-preview';
+import { articulationContact } from '../src/engine/contact';
 void test('open central vowels use centralization and keep equivalent notation without relabeling near-open anchors', () => {
   for (const height of [0.94, 1])
     for (const backness of [0.42, 0.5, 0.58]) {
@@ -84,11 +91,27 @@ void test('every reference entry has an explanation and source audio maps diacri
       );
       assert.ok(clip.speaker);
       assert.ok(!clip.example.includes('<'));
+      assert.ok(!clip.example.includes('&#'));
+      assert.match(
+        ipaReferenceLocalAudio[clip.url] ?? '',
+        /^\/audio\/ipa-reference\/.+\.mp3$/,
+      );
+      assert.ok(
+        readFileSync('public' + ipaReferenceLocalAudio[clip.url]!).length > 100,
+      );
     }
   const markup = renderToStaticMarkup(createElement(IPAMarks, { query: '' }));
   assert.ok(markup.includes(chineseIPAReference));
   assert.ok(!markup.includes('按所提供'));
   assert.ok(markup.includes('查看说明与示例发音'));
+  assert.equal(
+    ipaReferenceAudio['ꜜ']?.clips[0]?.example,
+    "He's determined to ꜜtake charge.",
+  );
+  assert.equal(
+    ipaReferenceAudio['ꜛ']?.clips[0]?.example,
+    "He's determined to ꜛtake charge.",
+  );
 });
 void test('detail previews change the intended feature and stay bounded for supported examples', () => {
   const nasal = referencePreview('ẽ')!;
@@ -99,13 +122,35 @@ void test('detail previews change the intended feature and stay bounded for supp
   assert.ok(moreRounded.to.rounding > moreRounded.from.rounding);
   const lower = referencePreview('e̞')!;
   assert.ok(lower.to.jaw > lower.from.jaw);
-  for (const example of ['n̥', 'd̥', 'ŋ̊', 's̬', 't̪', 'tʷ', 'e̽', 'u̟', 'ɔ̜', 'ẽ']) {
+  for (const example of [
+    'n̥',
+    'd̥',
+    'ŋ̊',
+    's̬',
+    't̪',
+    'tʷ',
+    't̺',
+    't̻',
+    'tʲ',
+    'tˠ',
+    'tˤ',
+    'ɫ',
+    'dⁿ',
+    'dˡ',
+    'e̽',
+    'u̟',
+    'ɔ̜',
+    'ẽ',
+  ]) {
     const model = referencePreview(example)!;
     assert.ok(model, example);
     for (const t of [0, 0.25, 0.5, 0.75, 1])
       assert.ok(isPlausible(interpolate(model.from, model.to, t)), example);
+    if (model.release) assert.ok(isPlausible(model.release), example);
   }
-  for (const example of ['ˌfoʊnəˈtɪʃən', 'e˩˥', 'dⁿ', 'b̤a̤'])
+  assert.equal(referenceFrame(referencePreview('dⁿ')!, 0.7).flow, 'nasal');
+  assert.equal(referenceFrame(referencePreview('dˡ')!, 0.7).flow, 'lateral');
+  for (const example of ['ˌfoʊnəˈtɪʃən', 'e˩˥', 'b̤a̤'])
     assert.equal(referencePreview(example), null);
 });
 void test('reference plosives retain closure, pressure and release instead of continuous airflow', () => {
@@ -305,7 +350,7 @@ void test('fricative continuum has distinct articulators and ordered categories 
     'blade contact alone must not imply alveolo-palatal',
   );
 });
-void test('all exposed active-articulator variants remain valid, keep their symbol, and carry an asterisk', () => {
+void test('all exposed active-articulator variants remain valid and carry IPA marks', () => {
   let count = 0;
   for (const sound of consonants)
     for (const variant of articulatoryVariants(sound)) {
@@ -320,8 +365,132 @@ void test('all exposed active-articulator variants remain valid, keep their symb
   const sh = soundBySymbol('ʃ'),
     apical = articulatoryVariants(sh)[0]!.pose;
   assert.equal(infer(apical, sh).place, 'postalveolar');
-  assert.match(infer(apical, sh).explanation, /ʃ\*/);
+  assert.match(infer(apical, sh).explanation, /ʃ̺/);
+  assert.equal(infer(apical, sh).variantMark, '̺');
+  assert.ok(!infer(apical, sh).explanation.includes('*'));
   assert.equal(infer(preset(sh), sh).nonTypical, false);
+});
+void test('dentalized alveolar constructions keep their manner and display the dental mark', () => {
+  for (const symbol of ['t', 'd']) {
+    const sound = soundBySymbol(symbol);
+    const dental = articulatoryVariants(sound).find((v) => v.mark === '̪');
+    assert.ok(dental, symbol);
+    const match = infer(dental.pose, sound);
+    assert.equal(match.candidates[0]!.sound.symbol, symbol);
+    assert.equal(match.place, 'dental');
+    assert.equal(match.variantMark, '̪');
+    assert.equal(match.nonTypical, true);
+    assert.match(match.explanation, new RegExp(`${symbol}̪`));
+    const markup = renderToStaticMarkup(
+      createElement(IPAToken, { symbol, mark: match.variantMark }),
+    );
+    assert.ok(markup.includes(`${symbol}̪`));
+    assert.ok(!markup.includes('<sup'));
+  }
+});
+void test('linguolabial constructions keep the tongue-to-upper-lip contact in build and detail views', () => {
+  for (const symbol of ['t', 'd']) {
+    const sound = soundBySymbol(symbol);
+    const variant = articulatoryVariants(sound).find((v) => v.mark === '̼');
+    assert.ok(variant, symbol);
+    const match = infer(variant.pose, sound);
+    assert.equal(match.candidates[0]!.sound.symbol, symbol);
+    assert.equal(match.variantMark, '̼');
+    assert.equal(match.contact.active, '舌尖前端');
+    assert.equal(match.contact.passive, '上唇');
+    assert.notEqual(match.status, 'none');
+    const model = referencePreview(`${symbol}̼`);
+    assert.ok(model, symbol);
+    assert.equal(
+      articulationContact(model.to, model.place, model.sound?.manner).passive,
+      '上唇',
+    );
+    assert.equal(
+      articulationContact(
+        referenceFrame(model, 0.4).pose,
+        model.place,
+        model.sound?.manner,
+      ).passive,
+      '上唇',
+    );
+    const markup = renderToStaticMarkup(
+      createElement(VocalTract, {
+        pose: model.to,
+        place: model.place,
+        highlightContact: true,
+        display: { labels: false, zones: true, points: false, airflow: false },
+      }),
+    );
+    assert.ok(markup.includes('舌尖前端接近上唇'));
+    assert.ok(markup.includes('M118 422 L115 422'));
+  }
+});
+void test('the existing apex drag reaches dental and upper-lip targets without a virtual landmark', () => {
+  const sound = soundBySymbol('t');
+  for (const target of [
+    { x: 164, y: 418, passive: '上齿' },
+    { x: 118, y: 422, passive: '上唇' },
+  ]) {
+    let pose = preset(sound);
+    for (let i = 1; i <= 20; i++)
+      pose = constrain(
+        pose,
+        'tip',
+        {
+          x: 220 + ((target.x - 220) * i) / 20,
+          y: 385 + ((target.y - 385) * i) / 20,
+        },
+        false,
+      );
+    assert.equal(pose.tongue.tip.x, target.x);
+    assert.equal(pose.tongue.tip.y, target.y);
+    assert.ok(isPlausible(pose));
+    assert.equal(surface(pose).length, 65);
+    assert.equal(infer(pose, sound).contact.passive, target.passive);
+  }
+});
+void test('phonation and aspiration variants are independently constructible', () => {
+  for (const [symbol, mark] of [
+    ['n', '̥'],
+    ['d', '̥'],
+    ['t', '̬'],
+    ['t', 'ʰ'],
+  ] as const) {
+    const sound = soundBySymbol(symbol);
+    const variant = articulatoryVariants(sound).find((v) => v.mark === mark);
+    assert.ok(variant, `${symbol}${mark}`);
+    const match = infer(variant.pose, sound);
+    assert.equal(match.candidates[0]!.sound.symbol, symbol);
+    assert.equal(match.variantMark, mark);
+    assert.equal(match.nonTypical, true);
+    assert.notEqual(match.status, 'none');
+  }
+  assert.equal(referencePreview('tʰ')?.to.aspiration, 1);
+  assert.equal(referencePreview('n̥')?.to.velum, 1);
+});
+void test('variant audio is offered only for an exact locally cached example', () => {
+  for (const [symbol, mark] of [
+    ['n', '̥'],
+    ['t', '̪'],
+    ['t', '̼'],
+    ['d', '̻'],
+    ['t', 'ʷ'],
+  ] as const) {
+    const audio = variantAudioFor(symbol, mark);
+    assert.ok(audio, `${symbol}${mark}`);
+    assert.match(audio.audioUrl, /^\/audio\/ipa-reference\//);
+  }
+  assert.equal(variantAudioFor('ɹ', '̥'), undefined);
+});
+void test('IPA active-articulator marks stay in one text run instead of a drifting superscript', () => {
+  const sound = soundBySymbol('ʃ');
+  const pose = articulatoryVariants(sound)[0]!.pose;
+  const match = infer(pose, sound);
+  const markup = renderToStaticMarkup(
+    createElement(IPAToken, { symbol: sound.symbol, mark: match.variantMark }),
+  );
+  assert.match(markup, /class="ipa-token">ʃ̺<\/span>/);
+  assert.ok(!markup.includes('<sup'));
 });
 void test('inventory audit reports combined articulators and all canonical primary places consistently', () => {
   for (const s of consonants) {
@@ -499,6 +668,21 @@ void test('lip contact target and rounding distinguish bilabial, labiodental and
       .symbol,
     'ɰ',
   );
+});
+void test('voiceless bilabial fricative remains reachable from h and near closure', () => {
+  const target = soundBySymbol('ɸ');
+  const openJaw = preset(soundBySymbol('h'));
+  for (const lowerLip of [0.48, 0.52, 0.55]) {
+    const match = infer({ ...openJaw, lowerLip }, target);
+    assert.equal(match.candidates[0]?.sound.symbol, 'ɸ');
+    assert.equal(match.place, 'bilabial');
+    assert.notEqual(match.status, 'none');
+  }
+  const nearClosed = infer({ ...preset(target), lowerLip: 0.99 }, target);
+  assert.equal(nearClosed.candidates[0]?.sound.symbol, 'ɸ');
+  assert.equal(nearClosed.place, 'bilabial');
+  assert.notEqual(nearClosed.status, 'none');
+  assert.equal(infer({ ...preset(target), lowerLip: 1 }, target).status, 'none');
 });
 void test('lower lip stays attached to the jaw and caps stretch as the jaw opens', () => {
   const f = preset(soundBySymbol('f'));

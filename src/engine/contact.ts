@@ -73,6 +73,26 @@ export function articulationContact(
       key: 'blade',
       note: '[ɧ] 的实际构形差异很大；此图只展示一种近似，不把它当作统一精确模板。',
     };
+  // A linguolabial gesture uses the tongue tip or blade against the upper
+  // lip. It is easy to misread as dental when only the nearest chart zone is
+  // considered, so detect the anterior tongue point before place fallbacks.
+  const linguolabialKey: TongueKey | null =
+    p.variantMark === '̼'
+      ? 'tip'
+      : p.tongue.tip.x <= 135 &&
+          p.tongue.tip.y >= 390 &&
+          p.tongue.tip.y <= 475
+        ? 'tip'
+        : p.tongue.blade.x <= 145
+          ? 'blade'
+          : null;
+  if (linguolabialKey)
+    return {
+      active: linguolabialKey === 'tip' ? '舌尖前端' : '舌叶（舌尖后方）',
+      passive: '上唇',
+      key: linguolabialKey,
+      note: '舌尖或舌叶与上唇形成接触或狭窄；舌唇音用附加符号 [t̼ d̼] 标示。',
+    };
   if (place === 'bilabial')
     return { active: '下唇', passive: '上唇', key: null };
   if (place === 'labiodental')
@@ -116,7 +136,7 @@ export function articulationContact(
     key,
     ...(place === 'postalveolar' && key === 'tip'
       ? {
-          note: '可形成舌尖型 [ʃ]。本项目采用舌叶型教学预设，舌尖型以星号标注；还需结合舌尖朝向与整体形状区分卷舌音。',
+          note: '可形成舌尖型 [ʃ̺]。本项目采用舌叶型教学预设；舌尖性与舌叶性用 IPA 附加符号区分，还需结合舌尖朝向与整体形状区分卷舌音。',
         }
       : {}),
   };

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import type { AudioExample } from '../domain/phonetics';
+import type { AudioExample, VariantMark } from '../domain/phonetics';
+import { ipaAudioSource, ipaReferenceAudio } from '../data/ipa-reference-audio';
+import { ipaReferenceLocalAudio } from '../data/ipa-reference-local';
 
 const audioTimeout = 8000;
 
@@ -42,6 +44,34 @@ export function onlineAudioUrl(source: string) {
   }
 }
 
+/**
+ * Resolve a locally cached IPA reference clip for one exact marked symbol.
+ * The chart often has examples for only one base consonant, so do not fall
+ * back to the unmarked consonant: a variant without its own clip has no
+ * pronunciation entry in the construction card.
+ */
+export function variantAudioFor(
+  symbol: string,
+  mark?: VariantMark,
+): AudioExample | undefined {
+  if (!mark) return undefined;
+  const entry = ipaReferenceAudio[mark];
+  const clip = entry?.clips.find(
+    (candidate) => candidate.example === symbol + mark,
+  );
+  if (!clip) return undefined;
+  const audioUrl = ipaReferenceLocalAudio[clip.url];
+  if (!audioUrl) return undefined;
+  return {
+    audioUrl,
+    speaker: clip.speaker,
+    source: ipaAudioSource,
+    license: 'IPA reference chart',
+    licenseUrl: ipaAudioSource,
+    attribution: `${clip.speaker} · International Phonetic Association`,
+  };
+}
+
 export function useAudio(initialManifest: Record<string, AudioExample> = {}) {
   const [manifest, setManifest] =
     useState<Record<string, AudioExample>>(initialManifest);
@@ -70,13 +100,8 @@ export function useAudio(initialManifest: Record<string, AudioExample> = {}) {
     player.current?.pause();
     setStatus('');
   }
-  async function play(symbol: string) {
+  async function playAudio(item: AudioExample) {
     stop();
-    const item = manifest[symbol];
-    if (!item) {
-      setStatus('该示例录音暂不可用，请查看来源页面。');
-      return;
-    }
     const token = request.current;
     const localUrl = resolveAudioUrl(item.audioUrl);
     const onlineUrl = onlineAudioUrl(item.source);
@@ -140,5 +165,14 @@ export function useAudio(initialManifest: Record<string, AudioExample> = {}) {
           : '录音加载失败，请重试或查看来源。',
       );
   }
-  return { play, stop, status, manifest };
+  async function play(symbol: string) {
+    const item = manifest[symbol];
+    if (!item) {
+      stop();
+      setStatus('该示例录音暂不可用，请查看来源页面。');
+      return;
+    }
+    return playAudio(item);
+  }
+  return { play, playAudio, stop, status, manifest };
 }

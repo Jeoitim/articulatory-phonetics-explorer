@@ -173,9 +173,13 @@ export const rest: Pose = {
   dentalContact: 0,
   uvula: 0,
   larynx: 0,
+  aspiration: 0,
 };
 const bounds: Record<TongueKey, [number, number, number, number]> = {
-  tip: [145, 335, 340, 600],
+  // Leave enough anterior room for the existing upper-lip target. The point
+  // is still bounded by the drawing and tissue constraints; it simply no
+  // longer stops at the alveolar ridge when the user drags it forward.
+  tip: [96, 335, 340, 600],
   blade: [200, 360, 340, 620],
   front: [285, 455, 339, 665],
   dorsum: [395, 625, 365, 725],
@@ -186,11 +190,31 @@ function boundPoint(p: Point, key: TongueKey) {
   const [x0, x1, y0, y1] = bounds[key];
   let y = clamp(p.y, y0, y1);
   const x = clamp(p.x, x0, Math.min(x1, wallX(y) - 10));
-  if (key !== 'root') y = Math.max(y, roofY(x));
+  if (key !== 'root') {
+    // The apex can leave the palate boundary while it is dragged to the
+    // upper lip. Keep that escape limited to the same anterior span used by
+    // the surface/underside curves so a manual linguolabial gesture remains
+    // continuous and ordinary tongue landmarks still follow the palate.
+    const anteriorEscape = key === 'tip' ? clamp((176 - x) / 61, 0, 1) : 0;
+    const roofFloor = roofY(x) - anteriorEscape * 28;
+    // Reject out-of-bounds vertical drags at the palate boundary. A genuine
+    // upper-lip drag is close to the target and explicitly enters this small
+    // anterior window; an extreme pointer jump must remain palate-safe.
+    const allowAnteriorEscape =
+      anteriorEscape > 0 && p.y >= roofFloor - 0.001;
+    y = Math.max(y, allowAnteriorEscape ? roofFloor : roofY(x));
+  }
   return { x, y };
 }
+
 export function surface(p: Pose): Point[] {
-  const pts = tongueKeys.map((k) => p.tongue[k]),
+  const tip = p.tongue.tip,
+    pts = tongueKeys.map((k) => p.tongue[k]),
+    // Moving the apex from the alveolar ridge to the upper lip is still one
+    // continuous landmark motion. A distance based taper keeps the first
+    // tangent and terminal cap smooth throughout that motion.
+    tipReach = clamp((220 - tip.x) / 102, 0, 1),
+    tipEscape = tipReach * clamp((roofY(tip.x) - tip.y) / 28, 0, 1),
     out: Point[] = [];
   const unit = (x: number, y: number) => {
     const length = Math.hypot(x, y) || 1;
@@ -198,7 +222,7 @@ export function surface(p: Pose): Point[] {
   };
   const directions = pts.map((q, i) => {
     if (i === 0) return unit(pts[1]!.x - q.x, pts[1]!.y - q.y);
-    if (i === 4) return unit(557 - q.x, 798 - q.y);
+    if (i === pts.length - 1) return unit(557 - q.x, 798 - q.y);
     const before = pts[i - 1]!,
       after = pts[i + 1]!;
     // Chord-normalized directions keep a long root segment from turning a
@@ -218,11 +242,11 @@ export function surface(p: Pose): Point[] {
   });
   // Arc-length-scaled Hermite handles maintain tangent direction across
   // landmarks, with a rounded posterior shoulder returning to the hyoid.
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < pts.length - 1; i++) {
     const a = pts[i]!,
       b = pts[i + 1]!;
     const length = Math.hypot(b.x - a.x, b.y - a.y);
-    const strength = i < 2 ? 0.65 : 0.95;
+    const strength = i === 0 ? 0.65 - tipReach * 0.12 : i === 1 ? 0.65 : 0.95;
     const t0 = {
         x: directions[i]!.x * length * strength,
         y: directions[i]!.y * length * strength,
@@ -245,17 +269,27 @@ export function surface(p: Pose): Point[] {
         (t3 - 2 * t2 + t) * t0.y +
         (-2 * t3 + 3 * t2) * b.y +
         (t3 - t2) * t1.y;
-      if (x <= 610) y = Math.max(y, roofY(x));
+      // The anterior tip can pass in front of the palate while it approaches
+      // the upper lip. Fade that exclusion floor in continuously with the
+      // apex position; ordinary poses keep the full palate boundary.
+      const anteriorWeight = clamp((176 - x) / 61, 0, 1);
+      // Keep the first sample exactly on the draggable apex. The remaining
+      // samples ease into the palate floor, so the contact point and the
+      // rendered tongue surface never appear one pixel apart.
+      if (!(i === 0 && j === 0 && tipEscape > 0))
+        y = Math.max(y, roofY(x) - tipEscape * 28 * anteriorWeight);
       x = Math.min(x, wallX(y) - 7);
       out.push({ x, y });
     }
   }
-  out.push(pts[4]!);
+  out.push(pts[pts.length - 1]!);
   return out;
 }
 export function underside(p: Pose): Point[] {
   const tip = p.tongue.tip,
     blade = p.tongue.blade,
+    tipReach = clamp((220 - tip.x) / 102, 0, 1),
+    tipEscape = tipReach * clamp((roofY(tip.x) - tip.y) / 28, 0, 1),
     out: Point[] = [];
   let start = p.tongue.root;
   const curve = (a: Point, b: Point, end: Point) => {
@@ -297,9 +331,12 @@ export function underside(p: Pose): Point[] {
   };
   const u = unit(blade.x - tip.x, blade.y - tip.y),
     n = { x: -u.y, y: u.x };
+  // Taper the terminal cap gradually as the tip reaches the lip or incisor;
+  // the body thickness remains unchanged and there is no inserted apex.
+  const tipThickness = 27 - tipReach * 7;
   const cap = {
-    x: tip.x + u.x * 24 + n.x * 27,
-    y: tip.y + u.y * 24 + n.y * 27,
+    x: tip.x + u.x * 24 + n.x * tipThickness,
+    y: tip.y + u.y * 24 + n.y * tipThickness,
   };
   const freeLength = Math.hypot(cap.x - attachment.x, cap.y - attachment.y);
   const tangent = Math.min(60, freeLength * 0.28);
@@ -315,7 +352,13 @@ export function underside(p: Pose): Point[] {
   );
   return out.map((q) => ({
     x: q.x,
-    y: q.y < 610 ? Math.max(q.y, roofY(q.x)) : q.y,
+    y:
+      q.y < 610
+        ? Math.max(
+            q.y,
+            roofY(q.x) - tipEscape * 28 * clamp((176 - q.x) / 61, 0, 1),
+          )
+        : q.y,
   }));
 }
 function cross(a: Point, b: Point, c: Point) {
@@ -449,6 +492,13 @@ export function mixPose(a: Pose, b: Pose, t: number): Pose {
     'larynx',
   ] as const)
     p[k] = a[k] + (b[k] - a[k]) * t;
+  p.aspiration =
+    (a.aspiration ?? 0) + ((b.aspiration ?? 0) - (a.aspiration ?? 0)) * t;
+  // Carry a selected marked gesture through the approach animation so the
+  // contact overlay follows its intended articulator instead of flashing back
+  // to the nearest chart zone. Drop the source mark halfway through recovery.
+  p.variantOf = b.variantOf ?? (t < 0.5 ? a.variantOf : undefined);
+  p.variantMark = b.variantMark ?? (t < 0.5 ? a.variantMark : undefined);
   return p;
 }
 export function constrain(

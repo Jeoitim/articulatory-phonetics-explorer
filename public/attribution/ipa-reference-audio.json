@@ -1,0 +1,823 @@
+{
+  "sourcePage": "https://www.internationalphoneticassociation.org/IPAcharts/IPA_charts_TI/IPA_charts_TI.html#eng",
+  "notice": "Reference clips are cached from the International Phonetic Association interactive chart. The original source URL is retained for every recording.",
+  "recordings": {
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0361.mp3": {
+      "localUrl": "/audio/ipa-reference/2a0a0356d4cb2c36.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0361.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/035C.mp3": {
+      "localUrl": "/audio/ipa-reference/25da9da3de046c66.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/035C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0361.mp3": {
+      "localUrl": "/audio/ipa-reference/337f7bc515dedf6e.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0361.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0361.mp3": {
+      "localUrl": "/audio/ipa-reference/46e6979fb1fb78e3.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0361.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/035C.mp3": {
+      "localUrl": "/audio/ipa-reference/a9d0583dbf193481.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/035C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/035C.mp3": {
+      "localUrl": "/audio/ipa-reference/8512b8edaca5079e.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/035C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0361.mp3": {
+      "localUrl": "/audio/ipa-reference/35b767bfce4e0991.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0361.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0325_1.mp3": {
+      "localUrl": "/audio/ipa-reference/849487ae1781196c.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0325_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0325_2.mp3": {
+      "localUrl": "/audio/ipa-reference/710178b7cca50964.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0325_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0325_2.mp3": {
+      "localUrl": "/audio/ipa-reference/a619ffd29eefb07c.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0325_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/035C.mp3": {
+      "localUrl": "/audio/ipa-reference/a4123924310e2d70.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/035C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0325_1.mp3": {
+      "localUrl": "/audio/ipa-reference/d4ab0c2c9a39aa56.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0325_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0325_1.mp3": {
+      "localUrl": "/audio/ipa-reference/dc9e029a338729e7.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0325_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0325_3.mp3": {
+      "localUrl": "/audio/ipa-reference/d853b61da60cb060.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0325_3.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0325_1.mp3": {
+      "localUrl": "/audio/ipa-reference/579204e0b363ded0.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0325_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0325_2.mp3": {
+      "localUrl": "/audio/ipa-reference/95d4d83473432f4c.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0325_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0324_3.mp3": {
+      "localUrl": "/audio/ipa-reference/e41b09e9234f37db.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0324_3.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0324_2.mp3": {
+      "localUrl": "/audio/ipa-reference/8cf35998d7ffbede.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0324_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0325_2.mp3": {
+      "localUrl": "/audio/ipa-reference/0e6072b070a5f0d9.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0325_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0324_1.mp3": {
+      "localUrl": "/audio/ipa-reference/159bccbb3e167d26.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0324_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0324_2.mp3": {
+      "localUrl": "/audio/ipa-reference/005a0e4632c0f2b5.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0324_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0324_1.mp3": {
+      "localUrl": "/audio/ipa-reference/69f18779ed0a9fd9.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0324_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0324_3.mp3": {
+      "localUrl": "/audio/ipa-reference/03ed5d30452cdaad.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0324_3.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/032A_2.mp3": {
+      "localUrl": "/audio/ipa-reference/80c3d6acdb162897.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/032A_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/032A_1.mp3": {
+      "localUrl": "/audio/ipa-reference/6b354d212e63c29a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/032A_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/032A_1.mp3": {
+      "localUrl": "/audio/ipa-reference/b4cc1d0dad61f03b.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/032A_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0325_3.mp3": {
+      "localUrl": "/audio/ipa-reference/e456a2a81150e5c5.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0325_3.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/032A_1.mp3": {
+      "localUrl": "/audio/ipa-reference/7c391703201f6ac5.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/032A_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/032A_2.mp3": {
+      "localUrl": "/audio/ipa-reference/67e96b47db50590d.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/032A_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/032A_2.mp3": {
+      "localUrl": "/audio/ipa-reference/2717fe092e336533.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/032A_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/032A_2.mp3": {
+      "localUrl": "/audio/ipa-reference/25267209baa7a316.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/032A_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/032C_1.mp3": {
+      "localUrl": "/audio/ipa-reference/546ed5d558e82e90.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/032C_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/032A_1.mp3": {
+      "localUrl": "/audio/ipa-reference/d484e79ff1077d3f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/032A_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/032C_1.mp3": {
+      "localUrl": "/audio/ipa-reference/243d32adb4038213.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/032C_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/032C_2.mp3": {
+      "localUrl": "/audio/ipa-reference/d3b8902bfc7a63c0.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/032C_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/032C_2.mp3": {
+      "localUrl": "/audio/ipa-reference/62189e74a704a62f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/032C_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0330_1.mp3": {
+      "localUrl": "/audio/ipa-reference/970ee101d13769b3.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0330_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/032C_1.mp3": {
+      "localUrl": "/audio/ipa-reference/8cd37bf1214ba7b7.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/032C_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0330_1.mp3": {
+      "localUrl": "/audio/ipa-reference/c675b773ec3be5cd.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0330_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0330_2.mp3": {
+      "localUrl": "/audio/ipa-reference/98cd3d037e9768b2.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0330_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0330_3.mp3": {
+      "localUrl": "/audio/ipa-reference/aeff41eae9d26849.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0330_3.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0330_2.mp3": {
+      "localUrl": "/audio/ipa-reference/d80c67d5a1a83769.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0330_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0330_3.mp3": {
+      "localUrl": "/audio/ipa-reference/92adcf6aff884e4b.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0330_3.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/032C_1.mp3": {
+      "localUrl": "/audio/ipa-reference/19c210be336684d7.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/032C_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033A_1.mp3": {
+      "localUrl": "/audio/ipa-reference/3874855524dc448e.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033A_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033A_2.mp3": {
+      "localUrl": "/audio/ipa-reference/c128d7688e08899f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033A_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033A_1.mp3": {
+      "localUrl": "/audio/ipa-reference/73813ee7dc5856de.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033A_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033A_1.mp3": {
+      "localUrl": "/audio/ipa-reference/96208f3647e54f4e.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033A_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033A_2.mp3": {
+      "localUrl": "/audio/ipa-reference/34e2b01e0430b828.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033A_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033A_2.mp3": {
+      "localUrl": "/audio/ipa-reference/65df1d0ae96d69c9.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033A_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B0_1.mp3": {
+      "localUrl": "/audio/ipa-reference/6ebaa5736843334a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B0_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B0_2.mp3": {
+      "localUrl": "/audio/ipa-reference/4b8ce1232e35b885.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B0_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033A_1.mp3": {
+      "localUrl": "/audio/ipa-reference/e94f0382c90911f2.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033A_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B0_1.mp3": {
+      "localUrl": "/audio/ipa-reference/8b72533ba6843423.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B0_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B0_2.mp3": {
+      "localUrl": "/audio/ipa-reference/dabf2925c0a2652a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B0_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B0_1.mp3": {
+      "localUrl": "/audio/ipa-reference/aec4b802b32bebe9.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B0_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033A_2.mp3": {
+      "localUrl": "/audio/ipa-reference/7e52b32535afcad5.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033A_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033C_2.mp3": {
+      "localUrl": "/audio/ipa-reference/c475a7d98c7a606d.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033C_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B0_2.mp3": {
+      "localUrl": "/audio/ipa-reference/9ab143b25d6ad3a4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B0_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B0_1.mp3": {
+      "localUrl": "/audio/ipa-reference/89bf94a97076985f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B0_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033C_1.mp3": {
+      "localUrl": "/audio/ipa-reference/6639cabaa4fe96b9.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033C_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033C_1.mp3": {
+      "localUrl": "/audio/ipa-reference/fb04f77fc1b87868.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033C_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033C_2.mp3": {
+      "localUrl": "/audio/ipa-reference/5b0ab06079dcf4f4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033C_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B0_2.mp3": {
+      "localUrl": "/audio/ipa-reference/f2a7c4dab88fb297.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B0_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033C_1.mp3": {
+      "localUrl": "/audio/ipa-reference/6d40ed8d4aa8b5f2.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033C_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033C_2.mp3": {
+      "localUrl": "/audio/ipa-reference/c5206eb7efd6649f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033C_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033C_1.mp3": {
+      "localUrl": "/audio/ipa-reference/710676d1b08ad959.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033C_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033B_1.mp3": {
+      "localUrl": "/audio/ipa-reference/a11fab28417aa1cb.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033B_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033C_2.mp3": {
+      "localUrl": "/audio/ipa-reference/6916a177b0ebfd22.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033C_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033B_1.mp3": {
+      "localUrl": "/audio/ipa-reference/4a4378afd5c23c36.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033B_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033B_2.mp3": {
+      "localUrl": "/audio/ipa-reference/7e9e6adbca3d0856.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/033B_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033B_1.mp3": {
+      "localUrl": "/audio/ipa-reference/29076b7e36584b01.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033B_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033B_2.mp3": {
+      "localUrl": "/audio/ipa-reference/dbf7b62ad14c6b0c.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/033B_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033B_2.mp3": {
+      "localUrl": "/audio/ipa-reference/c7744a132ec97a20.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033B_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033B_2.mp3": {
+      "localUrl": "/audio/ipa-reference/73dd0dc368a86487.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033B_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033B_1.mp3": {
+      "localUrl": "/audio/ipa-reference/6a3cb8f8e2cdd14a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/033B_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0339.mp3": {
+      "localUrl": "/audio/ipa-reference/94eb3e8140d20cc8.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0339.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B7_2.mp3": {
+      "localUrl": "/audio/ipa-reference/5d9ac5b925821e24.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B7_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B7_1.mp3": {
+      "localUrl": "/audio/ipa-reference/d3152c99c9e54afe.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B7_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B7_1.mp3": {
+      "localUrl": "/audio/ipa-reference/145f88ddd45526bb.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B7_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B7_2.mp3": {
+      "localUrl": "/audio/ipa-reference/0baa73460d5401af.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B7_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0303.mp3": {
+      "localUrl": "/audio/ipa-reference/3221ccb4bc31816f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0303.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B7_2.mp3": {
+      "localUrl": "/audio/ipa-reference/93d319257fc4ca38.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B7_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B7_2.mp3": {
+      "localUrl": "/audio/ipa-reference/3bad3b9bf29e0323.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B7_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B7_1.mp3": {
+      "localUrl": "/audio/ipa-reference/d4db28ce3e925995.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B7_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0303.mp3": {
+      "localUrl": "/audio/ipa-reference/6aaad030b3ca8a84.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0303.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0303.mp3": {
+      "localUrl": "/audio/ipa-reference/077e00175422ad8d.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0303.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B7_1.mp3": {
+      "localUrl": "/audio/ipa-reference/8b2ab07d65c7e86c.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B7_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0303.mp3": {
+      "localUrl": "/audio/ipa-reference/986448c749523bb9.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0303.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B2_2.mp3": {
+      "localUrl": "/audio/ipa-reference/2ab64fb8bbdc4335.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B2_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B2_1.mp3": {
+      "localUrl": "/audio/ipa-reference/a54988dcad8556ab.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B2_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031C.mp3": {
+      "localUrl": "/audio/ipa-reference/44689f5b850877bc.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B2_1.mp3": {
+      "localUrl": "/audio/ipa-reference/b7211c78da140c58.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02B2_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B2_2.mp3": {
+      "localUrl": "/audio/ipa-reference/a9c9059395128d9d.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B2_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B2_2.mp3": {
+      "localUrl": "/audio/ipa-reference/7b9d0158019d8ce0.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02B2_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/207F.mp3": {
+      "localUrl": "/audio/ipa-reference/149b63bc05ac3f5a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/207F.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B2_1.mp3": {
+      "localUrl": "/audio/ipa-reference/b60e989527d8ea7f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02B2_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/207F.mp3": {
+      "localUrl": "/audio/ipa-reference/ef551a5baa2f3f27.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/207F.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/207F.mp3": {
+      "localUrl": "/audio/ipa-reference/ca0e846b41a84aae.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/207F.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031F.mp3": {
+      "localUrl": "/audio/ipa-reference/58421f5571821637.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031F.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B2_2.mp3": {
+      "localUrl": "/audio/ipa-reference/02462ea4a28acdca.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B2_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E0_1.mp3": {
+      "localUrl": "/audio/ipa-reference/e10c51f9f078ef68.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E0_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B2_1.mp3": {
+      "localUrl": "/audio/ipa-reference/39af2c3e9a5d574a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02B2_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E0_2.mp3": {
+      "localUrl": "/audio/ipa-reference/eab5a398594c91ad.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E0_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E0_1.mp3": {
+      "localUrl": "/audio/ipa-reference/3f7307a310c81468.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E0_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/207F.mp3": {
+      "localUrl": "/audio/ipa-reference/174593cff295c797.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/207F.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E0_2.mp3": {
+      "localUrl": "/audio/ipa-reference/ee1681e880fea6e4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E0_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E1.mp3": {
+      "localUrl": "/audio/ipa-reference/8f15ffc35def0dc5.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E0_2.mp3": {
+      "localUrl": "/audio/ipa-reference/9627caf0afb37d95.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E0_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E1.mp3": {
+      "localUrl": "/audio/ipa-reference/6ab5117e7ac1fcdd.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E0_1.mp3": {
+      "localUrl": "/audio/ipa-reference/684368b4737ef287.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E0_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E0_1.mp3": {
+      "localUrl": "/audio/ipa-reference/32d9e1609f59619a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E0_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E0_2.mp3": {
+      "localUrl": "/audio/ipa-reference/9fb4d91cdad01518.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E0_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E1.mp3": {
+      "localUrl": "/audio/ipa-reference/733fccecfdba1e2b.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E4_1.mp3": {
+      "localUrl": "/audio/ipa-reference/c80fd93743ed06ae.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E4_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E4_2.mp3": {
+      "localUrl": "/audio/ipa-reference/938147e40841e4f3.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02E4_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E1.mp3": {
+      "localUrl": "/audio/ipa-reference/262fb7cc006f2280.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E4_2.mp3": {
+      "localUrl": "/audio/ipa-reference/daeb27f66377e656.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E4_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E4_1.mp3": {
+      "localUrl": "/audio/ipa-reference/72b6d07ef195a59a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02E4_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E4_1.mp3": {
+      "localUrl": "/audio/ipa-reference/ed26a8ec3289c145.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E4_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E4_2.mp3": {
+      "localUrl": "/audio/ipa-reference/98ff42560500d5e8.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02E4_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E4_1.mp3": {
+      "localUrl": "/audio/ipa-reference/eb616cbb1db47f70.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E4_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031A.mp3": {
+      "localUrl": "/audio/ipa-reference/30ee83b934f95652.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031A.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031A.mp3": {
+      "localUrl": "/audio/ipa-reference/41fe8142fbd50a85.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031A.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0334.mp3": {
+      "localUrl": "/audio/ipa-reference/e806c46fadc83b91.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0334.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0334.mp3": {
+      "localUrl": "/audio/ipa-reference/2b88a733e79b715a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0334.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033D.mp3": {
+      "localUrl": "/audio/ipa-reference/3784a5e35c10a628.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/033D.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031A.mp3": {
+      "localUrl": "/audio/ipa-reference/5ec4b40892c850f2.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031A.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E4_2.mp3": {
+      "localUrl": "/audio/ipa-reference/9cb9966c9d95df27.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02E4_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/031D_2.mp3": {
+      "localUrl": "/audio/ipa-reference/e020f738c1bc0a75.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/031D_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0334.mp3": {
+      "localUrl": "/audio/ipa-reference/24de7ee094ee0666.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0334.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031D_1.mp3": {
+      "localUrl": "/audio/ipa-reference/3f6b0ee60766980a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031D_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031D_1.mp3": {
+      "localUrl": "/audio/ipa-reference/1eaced95aa867391.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031D_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031D_2.mp3": {
+      "localUrl": "/audio/ipa-reference/f05badd90444382f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031D_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031E_1.mp3": {
+      "localUrl": "/audio/ipa-reference/4e7d05a3231059bd.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031E_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031D_2.mp3": {
+      "localUrl": "/audio/ipa-reference/7e32f8fa8ecce62b.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031D_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031D_1.mp3": {
+      "localUrl": "/audio/ipa-reference/e25d4a63feda7d02.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031D_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/031E_2.mp3": {
+      "localUrl": "/audio/ipa-reference/ca4c751435c2d952.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/031E_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031E_1.mp3": {
+      "localUrl": "/audio/ipa-reference/b304bb149e5feef2.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031E_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031E_2.mp3": {
+      "localUrl": "/audio/ipa-reference/e3faa0061fd1a1b9.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/031E_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031D_2.mp3": {
+      "localUrl": "/audio/ipa-reference/e0b88216fdd195e6.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031D_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031E_2.mp3": {
+      "localUrl": "/audio/ipa-reference/b7922bc8ff6f20d4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031E_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031E_1.mp3": {
+      "localUrl": "/audio/ipa-reference/94d70112101808bc.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/031E_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0318.mp3": {
+      "localUrl": "/audio/ipa-reference/ddf1f7fe71d5dfcb.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0318.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0318.mp3": {
+      "localUrl": "/audio/ipa-reference/11b63d030695c50e.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0318.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0318.mp3": {
+      "localUrl": "/audio/ipa-reference/d29ebebd30f35232.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0318.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02DE_1.mp3": {
+      "localUrl": "/audio/ipa-reference/aa227bce1fccb987.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02DE_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02DE_2.mp3": {
+      "localUrl": "/audio/ipa-reference/2bf913f40afc366a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/02DE_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0318.mp3": {
+      "localUrl": "/audio/ipa-reference/dcadb2cc50b82290.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0318.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02DE_1.mp3": {
+      "localUrl": "/audio/ipa-reference/d07ef2b0982198c4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02DE_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02DE_1.mp3": {
+      "localUrl": "/audio/ipa-reference/40fa1cb0b3b6cb38.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02DE_1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031E_2.mp3": {
+      "localUrl": "/audio/ipa-reference/20a531cd4d79774c.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/031E_2.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0319.mp3": {
+      "localUrl": "/audio/ipa-reference/26bb57cc3ce96313.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0319.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0319.mp3": {
+      "localUrl": "/audio/ipa-reference/4c60d34c94902c99.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0319.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02C8.mp3": {
+      "localUrl": "/audio/ipa-reference/26757580adea4d78.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02C8.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0319.mp3": {
+      "localUrl": "/audio/ipa-reference/9ae16c1956bb89f4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0319.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0319.mp3": {
+      "localUrl": "/audio/ipa-reference/55dd3035e21e1fd8.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0319.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02CC.mp3": {
+      "localUrl": "/audio/ipa-reference/f96b9ff9926ae819.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02CC.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02C8.mp3": {
+      "localUrl": "/audio/ipa-reference/117e8a1db75b85ea.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02C8.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02CC.mp3": {
+      "localUrl": "/audio/ipa-reference/b1a160c4f2382f5e.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02CC.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0306.mp3": {
+      "localUrl": "/audio/ipa-reference/55b56b2089aceacc.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0306.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02D0.mp3": {
+      "localUrl": "/audio/ipa-reference/65967fd112463609.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02D0.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02CC.mp3": {
+      "localUrl": "/audio/ipa-reference/0b84540c6dad34fc.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/02CC.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02D1.mp3": {
+      "localUrl": "/audio/ipa-reference/97939004b8ac5bd1.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/02D1.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02C8.mp3": {
+      "localUrl": "/audio/ipa-reference/b267e157d8f6f762.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/02C8.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/002E.mp3": {
+      "localUrl": "/audio/ipa-reference/7588def2c0dd034a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/002E.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/030B.mp3": {
+      "localUrl": "/audio/ipa-reference/61ce6da3bb45b938.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/030B.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/030C.mp3": {
+      "localUrl": "/audio/ipa-reference/3d0fbacc15a30fd4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/030C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/030C.mp3": {
+      "localUrl": "/audio/ipa-reference/0c9320ab0dc3a936.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/030C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/030B.mp3": {
+      "localUrl": "/audio/ipa-reference/61084c5072c7127c.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/030B.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/030B.mp3": {
+      "localUrl": "/audio/ipa-reference/2a853c07b91440e4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/030B.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0301.mp3": {
+      "localUrl": "/audio/ipa-reference/12ff0e962c015c0c.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0301.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0301.mp3": {
+      "localUrl": "/audio/ipa-reference/9403c84ef27e4e0f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0301.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0302.mp3": {
+      "localUrl": "/audio/ipa-reference/025db6b3f6f1567f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0302.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/030C.mp3": {
+      "localUrl": "/audio/ipa-reference/f7f12caccbcf8a39.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/030C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0301.mp3": {
+      "localUrl": "/audio/ipa-reference/51499a9c1e986377.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0301.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/030C.mp3": {
+      "localUrl": "/audio/ipa-reference/83043bf690963483.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/030C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0302.mp3": {
+      "localUrl": "/audio/ipa-reference/ec21bfba6bd91068.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0302.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0304.mp3": {
+      "localUrl": "/audio/ipa-reference/f6fc45c296d14b82.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0304.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0304.mp3": {
+      "localUrl": "/audio/ipa-reference/ed4dccfa22a7ffd5.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0304.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0302.mp3": {
+      "localUrl": "/audio/ipa-reference/1dab49879aa8c507.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/0302.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/1DC4.mp3": {
+      "localUrl": "/audio/ipa-reference/e14adda9ca524c5b.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/1DC4.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0300.mp3": {
+      "localUrl": "/audio/ipa-reference/06c9e056c800cce9.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/0300.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0300.mp3": {
+      "localUrl": "/audio/ipa-reference/e85abe90b182d9b4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0300.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0304.mp3": {
+      "localUrl": "/audio/ipa-reference/51518ccfb530ac36.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/0304.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/1DC4.mp3": {
+      "localUrl": "/audio/ipa-reference/f5bcaf5e827446a5.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/1DC4.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/1DC4.mp3": {
+      "localUrl": "/audio/ipa-reference/3806d76b482ed04a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/1DC4.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0302.mp3": {
+      "localUrl": "/audio/ipa-reference/d761ff055f701e23.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0302.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0300.mp3": {
+      "localUrl": "/audio/ipa-reference/139672111fd820d4.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/0300.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/1DC5.mp3": {
+      "localUrl": "/audio/ipa-reference/e7ed05dc0d9b38a0.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/1DC5.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/030F.mp3": {
+      "localUrl": "/audio/ipa-reference/fc2f9562d3927353.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/030F.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/030F.mp3": {
+      "localUrl": "/audio/ipa-reference/c5393154d1b6b37f.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/030F.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/030F.mp3": {
+      "localUrl": "/audio/ipa-reference/d646552dedd12333.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/030F.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/1DC5.mp3": {
+      "localUrl": "/audio/ipa-reference/7a4696ed523bd09a.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/1DC5.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/1DC8.mp3": {
+      "localUrl": "/audio/ipa-reference/8f4cd937a491cde0.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/1DC8.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/1DC5.mp3": {
+      "localUrl": "/audio/ipa-reference/a8c9441a822c80a3.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/PL/1DC5.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/1DC8.mp3": {
+      "localUrl": "/audio/ipa-reference/39533e380077f035.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JE/1DC8.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/1DC8.mp3": {
+      "localUrl": "/audio/ipa-reference/d0a226f755053974.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/1DC8.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/A71C.mp3": {
+      "localUrl": "/audio/ipa-reference/859ba6e902948c7d.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/A71C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/2197.mp3": {
+      "localUrl": "/audio/ipa-reference/c389f3b6ea3b2b2b.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/2197.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/A71C.mp3": {
+      "localUrl": "/audio/ipa-reference/3cc7bdb51455b9b8.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/A71C.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/A71B.mp3": {
+      "localUrl": "/audio/ipa-reference/e77343c1203361ed.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/A71B.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/2198.mp3": {
+      "localUrl": "/audio/ipa-reference/51dab39ad652d914.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/2198.mp3"
+    },
+    "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/A71B.mp3": {
+      "localUrl": "/audio/ipa-reference/d5f7efda81d005df.mp3",
+      "sourceUrl": "https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/A71B.mp3"
+    }
+  },
+  "failed": []
+}

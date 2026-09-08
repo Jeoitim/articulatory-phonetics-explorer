@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vinext dev",
     "audio:check": "node scripts/check-audio-cache.mjs --require-complete",
+    "audio:ipa-reference": "node scripts/fetch-ipa-reference.mjs",
     "prebuild": "npm run audio:check",
     "build": "vinext build",
     "build:static": "node scripts/build-static.mjs",

@@ -1,4 +1,4 @@
-// Official interactive IPA chart metadata, retrieved 2026-09-07. Audio streams from its original host.
+// Official interactive IPA chart metadata, retrieved 2026-09-07. Source URLs are retained; the local cache is generated separately by fetch-ipa-reference.mjs.
 export const ipaAudioSource =
   'https://www.internationalphoneticassociation.org/IPAcharts/IPA_charts_TI/IPA_charts_TI.html#eng';
 export interface ReferenceClip {
@@ -1501,15 +1501,13 @@ export const ipaReferenceAudio: Record<
     clips: [
       {
         speaker: 'J. House',
-        example:
-          'He&#39;s determined to ꜜ&#60;u&#62;take&#60;&#47;u&#62; charge.',
+        example: "He's determined to ꜜtake charge.",
         context: [],
         url: 'https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/A71C.mp3',
       },
       {
         speaker: 'J. Wells',
-        example:
-          'He&#39;s determined to ꜜ&#60;u&#62;take&#60;&#47;u&#62; charge.',
+        example: "He's determined to ꜜtake charge.",
         context: [],
         url: 'https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/A71C.mp3',
       },
@@ -1531,15 +1529,13 @@ export const ipaReferenceAudio: Record<
     clips: [
       {
         speaker: 'J. House',
-        example:
-          'He&#39;s determined to ꜛ&#60;u&#62;take&#60;&#47;u&#62; charge.',
+        example: "He's determined to ꜛtake charge.",
         context: [],
         url: 'https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JH/A71B.mp3',
       },
       {
         speaker: 'J. Wells',
-        example:
-          'He&#39;s determined to ꜛ&#60;u&#62;take&#60;&#47;u&#62; charge.',
+        example: "He's determined to ꜛtake charge.",
         context: [],
         url: 'https://www.internationalphoneticassociation.org/IPAcharts/common_files/sounds/JW/A71B.mp3',
       },

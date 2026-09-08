@@ -56,6 +56,11 @@ export interface Pose {
   dentalContact: number;
   uvula: number;
   larynx: number;
+  /** Extra glottal airflow used by an aspirated secondary articulation. */
+  aspiration?: number;
+  /** Internal hint retained by a constructible variant until the next drag. */
+  variantOf?: string;
+  variantMark?: VariantMark;
 }
 export interface AudioExample {
   audioUrl: string;
@@ -80,8 +85,27 @@ export interface Consonant extends Features {
   secondaryPlace?: Place;
   variant?: ExtendedPlace | 'dark-l' | 'lateral-tap';
 }
+export type VariantMark =
+  | '̪'
+  | '̺'
+  | '̻'
+  | '̼'
+  | 'ʷ'
+  | 'ʲ'
+  | 'ˠ'
+  | 'ˤ'
+  | 'ʰ'
+  | '̥'
+  | '̊'
+  | '̬';
+export interface VariantHint {
+  symbol: string;
+  mark?: VariantMark;
+}
 export type Match = {
   nonTypical?: boolean;
+  /** IPA place or active-articulator mark used for the displayed realization. */
+  variantMark?: VariantMark;
   contact: {
     active: string;
     passive: string;
