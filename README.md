@@ -2,6 +2,12 @@
 
 交互式调音语音学实验室。使用 React、TypeScript strict 和可变形 SVG 展示调音部位、方法、声带、软腭与气流的共同作用。
 
+## 界面预览
+
+![Articulatory Phonetics Explorer 浅色界面，展示发音器官剖面、调音关系与音标信息](docs/screenshots/articulatory-light.png)
+
+*浅色界面中的调音实验台与音标信息面板，可对照舌位、气流和主动、被动调音部位。*
+
 ## 启动与检查
 
 ```sh
